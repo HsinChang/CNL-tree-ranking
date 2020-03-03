@@ -56,12 +56,17 @@
     $s$ source, $o$ object, a path $P_{s, o}=v_{1}, v_{2} \ldots v_{n}$
 2. *Comments*: Shorter paths are still preferred, here e $k(v)$ is the degree of entity $v$, i.e., the number of WKG statements in which it participates. It is a similar idea to the specificity used in ConnectionLens
 
-### Finding Top-k Min-Cost Connected Trees in Databases
-#### Answers
-1. GST (group Steiner tree) problem
-## References
-[1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th ACM international conference on Information and knowledge management. 2011.
+### Finding Top-k Min-Cost Connected Trees in Databases [4]
+Comments: It is way better wr
+
+
+
+
+
+[1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th d knowledge management. 2011.
 
 [2] Le, Wangchao, et al. "Scalable keyword search on large RDF data." IEEE Transactions on knowledge and data engineering 26.11 (2014): 2774-2788.
 
 [3]Ciampaglia, Giovanni Luca, et al. "Computational fact checking from knowledge networks." PloS one 10.6 (2015).
+
+[4]Ding, Bolin, et al. "Finding top-k min-cost connected trees in databases." 2007 IEEE 23rd International Conference on Data Engineering. IEEE, 2007.
