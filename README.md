@@ -1,2 +1,1 @@
-# Internship-cnl
- things done during the internship at INRIA
+# Learning to rank answer trees
