@@ -9,6 +9,8 @@
     - [Computational fact checking from knowledge networks [3]](#computational-fact-checking-from-knowledge-networks-3)
       - [answers:](#answers-2)
       - [ranking:](#ranking-1)
+    - [Finding Top-k Min-Cost Connected Trees in Databases](#finding-top-k-min-cost-connected-trees-in-databases)
+      - [Answers](#answers-3)
   - [References](#references)
 
 ## Related works
@@ -53,6 +55,10 @@
     $$
     $s$ source, $o$ object, a path $P_{s, o}=v_{1}, v_{2} \ldots v_{n}$
 2. *Comments*: Shorter paths are still preferred, here e $k(v)$ is the degree of entity $v$, i.e., the number of WKG statements in which it participates. It is a similar idea to the specificity used in ConnectionLens
+
+### Finding Top-k Min-Cost Connected Trees in Databases
+#### Answers
+1. GST (group Steiner tree) problem
 ## References
 [1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th ACM international conference on Information and knowledge management. 2011.
 
