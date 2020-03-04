@@ -35,8 +35,10 @@
 ### Scalable keyword search on large RDF data. [2]
 #### answers:
 1. $$A(q)=\underset{g \in C(q)}{\operatorname{argmin}} s(g), \text { and } s(g)=\sum_{r, v_{i} \in g, i=1, m} d\left(r, v_{i}\right)$$
-   $g$ is an answer subgraph of $G$, $C(q)$ set of candidate answers, $d\left(r, v_{i}\right)$ is the distance from a root answer node $r$ to other answer nodes $v_{i}$, and $r$ is the reachable node for all other nodes. (Still they don't care about the directions)
-2. **termination** Comments: The general idea is as above, but their description is really confusing.
+   $g$ is an answer subgraph of $G$, $C(q)$ set of candidate answers, $d\left(r, v_{i}\right)$ is the distance from a root answer node $r$ to other answer nodes $v_{i}$, and $r$ is the reachable node for all other nodes. (Still they don't care about the directions, general idea is *go from the nodes, search for a root*)
+2. **termination** Idea is, We will maintain a set $M$ of length $m$ for each node we explored, it contains: keywords that are reachable to the node and the best known distance. Keywords not yet reached will hold a `nil` value in that position. A $M$ without `nil` delivers an answer.
+
+
    
 ### Computational fact checking from knowledge networks [3]
 #### answers:
