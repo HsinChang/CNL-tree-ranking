@@ -44,9 +44,14 @@
 <li><a href="#ranking-1">ranking:</a></li>
 </ul>
 </li>
+<li><a href="#finding-top-k-min-cost-connected-trees-in-databases-4">Finding Top-k Min-Cost Connected Trees in Databases [4]</a>
+<ul>
+<li><a href="#generals">Generals:</a></li>
+<li><a href="#comments">Comments:</a></li>
 </ul>
 </li>
-<li><a href="#references">References</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -104,15 +109,25 @@ where <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>
 <p><em>Comments</em>: Shorter paths are still preferred, here e <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>k</mi><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">k(v)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span><span class="mopen">(</span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span><span class="mclose">)</span></span></span></span> is the degree of entity <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>v</mi></mrow><annotation encoding="application/x-tex">v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03588em;">v</span></span></span></span>, i.e., the number of WKG statements in which it participates. It is a similar idea to the specificity used in ConnectionLens</p>
 </li>
 </ol>
-<h3 id="finding-top-k-min-cost-connected-trees-in-databases">Finding Top-k Min-Cost Connected Trees in Databases</h3>
-<h4 id="answers-3">Answers</h4>
+<h3 id="finding-top-k-min-cost-connected-trees-in-databases-4">Finding Top-k Min-Cost Connected Trees in Databases [4]</h3>
+<h4 id="generals">Generals:</h4>
+<p>The algorithm proposed by the authors is called DPBF (Dynamic Programming Best First), the general idea is to treat the problem as a <em>Steiner tree problem</em>, and get min-cost rooted trees:<br></p>
 <ol>
-<li>GST (group Steiner tree) problem</li>
+<li>They built a priority queue of trees, the element in this queue contains: its root, its keywords covered, its cost. The priority is decided by the cost.</li>
+<li>For a new tree generated, they will check if there is already a tree with the same root and keyword coverage in the queue. If not, it is enqueued, otherwise it is only enqueued if it has a smaller cost.</li>
+<li>So tree GROW and tree MERGE are performed, an answer is given when a tree containing all keywords is found</li>
 </ol>
-<h2 id="references">References</h2>
-<p>[1] Elbassuoni, Shady, and Roi Blanco. &quot;Keyword search over RDF graphs.&quot; Proceedings of the 20th ACM international conference on Information and knowledge management. 2011.</p>
+<h4 id="comments">Comments:</h4>
+<ol>
+<li>It is way better written than [2]</li>
+<li><em>The optimal substructure property</em> does not hold: The case is, for a certain query, we do have different nodes that match exactly the same set of keywords, those nodes have the same <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi mathvariant="bold">p</mi></mrow><annotation encoding="application/x-tex">\mathbf{p}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.63888em;vertical-align:-0.19444em;"></span><span class="mord"><span class="mord mathbf">p</span></span></span></span></span>, but they are not even connected by
+<code>sameAs</code> edges. So our settings cannot be simplified to a <strong>Steiner tree problem</strong>, like in this paper.</li>
+<li>For directed graphs, the authors have kept only the nodes reachable by following the given direction as <em>neighbors</em>. So in our <em>ConnectionLens</em> case, it means the answer tree can only have one <em>inversion</em> at the root node of the tree.</li>
+</ol>
+<p>[1] Elbassuoni, Shady, and Roi Blanco. &quot;Keyword search over RDF graphs.&quot; Proceedings of the 20th d knowledge management. 2011.</p>
 <p>[2] Le, Wangchao, et al. &quot;Scalable keyword search on large RDF data.&quot; IEEE Transactions on knowledge and data engineering 26.11 (2014): 2774-2788.</p>
 <p>[3]Ciampaglia, Giovanni Luca, et al. &quot;Computational fact checking from knowledge networks.&quot; PloS one 10.6 (2015).</p>
+<p>[4]Ding, Bolin, et al. &quot;Finding top-k min-cost connected trees in databases.&quot; 2007 IEEE 23rd International Conference on Data Engineering. IEEE, 2007.</p>
 
     </body>
     </html>

@@ -9,9 +9,9 @@
     - [Computational fact checking from knowledge networks [3]](#computational-fact-checking-from-knowledge-networks-3)
       - [answers:](#answers-2)
       - [ranking:](#ranking-1)
-    - [Finding Top-k Min-Cost Connected Trees in Databases](#finding-top-k-min-cost-connected-trees-in-databases)
-      - [Answers](#answers-3)
-  - [References](#references)
+    - [Finding Top-k Min-Cost Connected Trees in Databases [4]](#finding-top-k-min-cost-connected-trees-in-databases-4)
+      - [Generals:](#generals)
+      - [Comments:](#comments)
 
 ## Related works
 ### Keyword search over RDF graphs [1] :
@@ -57,9 +57,19 @@
 2. *Comments*: Shorter paths are still preferred, here e $k(v)$ is the degree of entity $v$, i.e., the number of WKG statements in which it participates. It is a similar idea to the specificity used in ConnectionLens
 
 ### Finding Top-k Min-Cost Connected Trees in Databases [4]
-Comments: It is way better wr
+
+#### Generals:
+The algorithm proposed by the authors is called DPBF (Dynamic Programming Best First), the general idea is to treat the problem as a *Steiner tree problem*, and get min-cost rooted trees:<br>
+1. They built a priority queue of trees, the element in this queue contains: its root, its keywords covered, its cost. The priority is decided by the cost.
+2. For a new tree generated, they will check if there is already a tree with the same root and keyword coverage in the queue. If not, it is enqueued, otherwise it is only enqueued if it has a smaller cost.
+3. So tree GROW and tree MERGE are performed, an answer is given when a tree containing all keywords is found 
 
 
+#### Comments: 
+1. It is way better written than [2]
+2. *The optimal substructure property* does not hold: The case is, for a certain query, we do have different nodes that match exactly the same set of keywords, those nodes have the same $\mathbf{p}$, but they are not even connected by 
+`sameAs` edges. So our settings cannot be simplified to a **Steiner tree problem**, like in this paper.
+3. For directed graphs, the authors have kept only the nodes reachable by following the given direction as *neighbors*. So in our *ConnectionLens* case, it means the answer tree can only have one *inversion* at the root node of the tree.
 
 
 
