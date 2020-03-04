@@ -14,6 +14,8 @@
       - [Comments:](#comments)
 
 ## Related works
+Graph summarizations[2]?
+
 ### Keyword search over RDF graphs [1] :
 #### answers:
 1. A query of keywords $q=\{q_{1},q_{2},...,q_{m}\}$->extract all triples that match the keyword $q_{i}$ in $q$->list $L=\{L_{1},L_{2},...L_{m}\}$
