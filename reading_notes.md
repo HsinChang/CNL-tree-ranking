@@ -1,6 +1,6 @@
-# Notes of paper reading for answer tree ranking
-- [Notes of paper reading for answer tree ranking](#notes-of-paper-reading-for-answer-tree-ranking)
-  - [Related works](#related-works)
+# Notes for answer tree ranking
+- [Notes for answer tree ranking](#notes-for-answer-tree-ranking)
+  - [Related works for query answering/ranking](#related-works-for-query-answeringranking)
     - [Keyword search over RDF graphs [1] :](#keyword-search-over-rdf-graphs-1)
       - [answers:](#answers)
       - [ranking](#ranking)
@@ -12,8 +12,10 @@
     - [Finding Top-k Min-Cost Connected Trees in Databases [4]](#finding-top-k-min-cost-connected-trees-in-databases-4)
       - [Generals:](#generals)
       - [Comments:](#comments)
+  - [Graph simplification](#graph-simplification)
+    - [works and related works already done in the group](#works-and-related-works-already-done-in-the-group)
 
-## Related works
+## Related works for query answering/ranking
 Graph summarizations[2]?
 
 ### Keyword search over RDF graphs [1] :
@@ -32,7 +34,7 @@ Graph summarizations[2]?
     $D_{j}$: all the terms associated with $t_{j}$, $r_{j}$: the predicate of $t_{j}$,<br> $P(q_{i}|D_{i})$ is the the probability of generating the term $q_{i}$ from the triple document $D_{i}$<br>
     $P(r_{j}|q_{i})$ is the probability that the predicate $r_{j}$ is relevant to the term $q_{i}$
 3. Comment:
-   <br>[1] The key idea (that is useful to us) in this ranking method is the this probability of predicates for a term $q_{i}$, which is to give more importance to certain predicates, it can be tested, but it doesn't seem to be a brilliant solution for our *Paris* problem. 
+   <br>[1] The key idea (that is useful to us) in this ranking method is the this probability of predicates for a term $q_{i}$, which is to give more importance to certain predicates, it can be tested, but it doesn't seem to be a brilliant solution for our *Paris* problem.
 
 ### Scalable keyword search on large RDF data. [2]
 #### answers:
@@ -75,6 +77,8 @@ The algorithm proposed by the authors is called DPBF (Dynamic Programming Best F
 `sameAs` edges. So our settings cannot be simplified to a **Steiner tree problem**, like in this paper.
 3. For directed graphs, the authors have kept only the nodes reachable by following the given direction as *neighbors*. So in our *ConnectionLens* case, it means the answer tree can only have one *inversion* at the root node of the tree.
 
+## Graph simplification
+### works and related works already done in the group
 
 
 [1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th d knowledge management. 2011.
