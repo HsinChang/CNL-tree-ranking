@@ -1,4 +1,4 @@
-# Notes for answer tree ranking
+
 - [Notes for answer tree ranking](#notes-for-answer-tree-ranking)
   - [Related works for query answering/ranking](#related-works-for-query-answeringranking)
     - [Keyword search over RDF graphs [1] :](#keyword-search-over-rdf-graphs-1)
@@ -12,9 +12,12 @@
     - [Finding Top-k Min-Cost Connected Trees in Databases [4]](#finding-top-k-min-cost-connected-trees-in-databases-4)
       - [Generals:](#generals)
       - [Comments:](#comments)
-  - [Graph simplification](#graph-simplification)
-    - [works and related works already done in the group](#works-and-related-works-already-done-in-the-group)
-
+- [Graph Simplification](#graph-simplification)
+  - [works and related works already done in the group](#works-and-related-works-already-done-in-the-group)
+    - [](#)
+    - [RDFQuotient](#rdfquotient)
+- [Data Acquisition](#data-acquisition)
+# Notes for answer tree ranking
 ## Related works for query answering/ranking
 Graph summarizations[2]?
 
@@ -77,9 +80,12 @@ The algorithm proposed by the authors is called DPBF (Dynamic Programming Best F
 `sameAs` edges. So our settings cannot be simplified to a **Steiner tree problem**, like in this paper.
 3. For directed graphs, the authors have kept only the nodes reachable by following the given direction as *neighbors*. So in our *ConnectionLens* case, it means the answer tree can only have one *inversion* at the root node of the tree.
 
-## Graph simplification
-### works and related works already done in the group
+# Graph Simplification
+## works and related works already done in the group
+### 
+### [RDFQuotient](https://rdfquotient.inria.fr/)
 
+# Data Acquisition
 
 [1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th d knowledge management. 2011.
 
