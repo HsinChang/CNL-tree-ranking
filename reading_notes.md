@@ -14,9 +14,11 @@
       - [Comments:](#comments)
 - [Graph Simplification](#graph-simplification)
   - [works and related works already done in the group](#works-and-related-works-already-done-in-the-group)
-    - [](#)
+    - [An Unified Abstraction](#an-unified-abstraction)
+      - [Basic ideas](#basic-ideas)
     - [RDFQuotient](#rdfquotient)
 - [Data Acquisition](#data-acquisition)
+- [References](#references)
 # Notes for answer tree ranking
 ## Related works for query answering/ranking
 Graph summarizations[2]?
@@ -82,11 +84,16 @@ The algorithm proposed by the authors is called DPBF (Dynamic Programming Best F
 
 # Graph Simplification
 ## works and related works already done in the group
-### 
+### An Unified Abstraction
+
+#### Basic ideas
+1. Basic hypothesis: Any dataset consists of some records and some collections. So, *records* and *collections* are defined in different data sources.
+2. 
 ### [RDFQuotient](https://rdfquotient.inria.fr/)
 
 # Data Acquisition
-
+Hmm
+# References
 [1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th d knowledge management. 2011.
 
 [2] Le, Wangchao, et al. "Scalable keyword search on large RDF data." IEEE Transactions on knowledge and data engineering 26.11 (2014): 2774-2788.

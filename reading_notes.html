@@ -21,8 +21,7 @@
         <script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
     </head>
     <body class="vscode-light">
-        <h1 id="notes-for-answer-tree-ranking">Notes for answer tree ranking</h1>
-<ul>
+        <ul>
 <li><a href="#notes-for-answer-tree-ranking">Notes for answer tree ranking</a>
 <ul>
 <li><a href="#related-works-for-query-answeringranking">Related works for query answering/ranking</a>
@@ -52,14 +51,26 @@
 </li>
 </ul>
 </li>
-<li><a href="#graph-simplification">Graph simplification</a>
+</ul>
+</li>
+<li><a href="#graph-simplification">Graph Simplification</a>
 <ul>
-<li><a href="#works-and-related-works-already-done-in-the-group">works and related works already done in the group</a></li>
+<li><a href="#works-and-related-works-already-done-in-the-group">works and related works already done in the group</a>
+<ul>
+<li><a href="#an-unified-abstraction">An Unified Abstraction</a>
+<ul>
+<li><a href="#basic-ideas">Basic ideas</a></li>
+</ul>
+</li>
+<li><a href="#rdfquotient">RDFQuotient</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li><a href="#data-acquisition">Data Acquisition</a></li>
+<li><a href="#references">References</a></li>
 </ul>
+<h1 id="notes-for-answer-tree-ranking">Notes for answer tree ranking</h1>
 <h2 id="related-works-for-query-answeringranking">Related works for query answering/ranking</h2>
 <p>Graph summarizations[2]?</p>
 <h3 id="keyword-search-over-rdf-graphs-1">Keyword search over RDF graphs [1] :</h3>
@@ -130,8 +141,18 @@ where <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>
 <code>sameAs</code> edges. So our settings cannot be simplified to a <strong>Steiner tree problem</strong>, like in this paper.</li>
 <li>For directed graphs, the authors have kept only the nodes reachable by following the given direction as <em>neighbors</em>. So in our <em>ConnectionLens</em> case, it means the answer tree can only have one <em>inversion</em> at the root node of the tree.</li>
 </ol>
-<h2 id="graph-simplification">Graph simplification</h2>
-<h3 id="works-and-related-works-already-done-in-the-group">works and related works already done in the group</h3>
+<h1 id="graph-simplification">Graph Simplification</h1>
+<h2 id="works-and-related-works-already-done-in-the-group">works and related works already done in the group</h2>
+<h3 id="an-unified-abstraction">An Unified Abstraction</h3>
+<h4 id="basic-ideas">Basic ideas</h4>
+<ol>
+<li>Basic hypothesis: Any dataset consists of some records and some collections. So, <em>records</em> and <em>collections</em> are defined in different data sources.</li>
+<li></li>
+</ol>
+<h3 id="rdfquotient"><a href="https://rdfquotient.inria.fr/">RDFQuotient</a></h3>
+<h1 id="data-acquisition">Data Acquisition</h1>
+<p>Hmm</p>
+<h1 id="references">References</h1>
 <p>[1] Elbassuoni, Shady, and Roi Blanco. &quot;Keyword search over RDF graphs.&quot; Proceedings of the 20th d knowledge management. 2011.</p>
 <p>[2] Le, Wangchao, et al. &quot;Scalable keyword search on large RDF data.&quot; IEEE Transactions on knowledge and data engineering 26.11 (2014): 2774-2788.</p>
 <p>[3]Ciampaglia, Giovanni Luca, et al. &quot;Computational fact checking from knowledge networks.&quot; PloS one 10.6 (2015).</p>
