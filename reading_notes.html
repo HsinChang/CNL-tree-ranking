@@ -181,6 +181,7 @@ where <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>
 </div></code></code></pre>
 <p>Which means in the implementation, the algorithm will firstly determine the category, if the category cannot be decided, the label won't.</p>
 <p>We can see that most None values with an identified category come from locations and organizations.</p>
+<p>Actually, in the graph form <code>Gauthier</code> WikiData, all nodes and links in the <code>JSON</code> have a label. And all children have homogeneous structures. The <code>None</code> come from the difficulty in determining, not the lack of labels in the data.</p>
 <h5 id="with-cl-decodexjson">with <code>cl-decodex.json</code></h5>
 <p>It crashed half way with such error report:</p>
 <pre><code><code><div>---------------------------------------------------------------------------

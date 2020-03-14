@@ -126,6 +126,7 @@ Which means in the implementation, the algorithm will firstly determine the cate
 
 We can see that most None values with an identified category come from locations and organizations.
 
+Actually, in the graph form `Gauthier` WikiData, all nodes and links in the `JSON` have a label. And all children have homogeneous structures. The `None` come from the difficulty in determining, not the lack of labels in the data. 
 ##### with `cl-decodex.json`
 It crashed half way with such error report:
 ```
