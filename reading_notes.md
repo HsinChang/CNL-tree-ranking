@@ -128,7 +128,70 @@ We can see that most None values with an identified category come from locations
 
 ##### with `cl-decodex.json`
 It crashed half way with such error report:
+```
+---------------------------------------------------------------------------
 
+TypeError                                 Traceback (most recent call last)
+
+<ipython-input-36-0774f1118777> in <module>
+      3 g = clgraph.CLGraph(d)
+      4 g.push_down_labels()
+----> 5 g.extract_records(MODEL)
+      6 
+
+~/Documents/Xin/cnl/connectionlensui/clgraph.py in extract_records(self, model)
+    163                 self.records[node] = Record(node,parent,recordtype,standalone,self,model)
+    164             elif rca == "Collection":
+--> 165                 self.collections[node] = Collection(node,parent,self)
+    166             else :
+    167                 self.attributs.append(node)
+
+~/Documents/Xin/cnl/connectionlensui/collection.py in __init__(self, node, parent, absG)
+      9 
+     10 class Collection :
+---> 11     def __init__(self,node,parent,absG):
+     12         print("COLLECTION : ",node)
+     13         self.node = node
+
+TypeError: '>' not supported between instances of 'str' and 'NoneType'
+```
+The error comes from identifying node `1138639218147346` as `['Record', None]`.
+which is 
+```json
+    {
+      "datasetId": 1,
+      "id": "1138639218147346",
+      "label": "alsace-actu.com",
+      "type": "JSON_VALUE"
+    }
+```
+with two connections
+```json
+      {
+        "confidence": "1.00",
+        "specificity": ".67",
+        "source": "566140699934737",
+        "label": "",
+        "target": "1138639218147346"
+      },
+      {
+        "confidence": "1.00",
+        "specificity": "1.00",
+        "source": "1138639218147346",
+        "label": "cl:extract",
+        "target": "117643783700505"
+      },
+```
+and the connection with no label leads to
+```json
+    {
+      "datasetId": 1,
+      "id": "566140699934737",
+      "label": "",
+      "type": "JSON_STRUCT"
+    },
+```
+This could be the source of identifying this node as `None`
 ##### with `nosdeputes.fr_deputes_en_mandat_2020-03-03.json`
 It crashed half way with such error report:
 ```

@@ -183,6 +183,66 @@ where <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>
 <p>We can see that most None values with an identified category come from locations and organizations.</p>
 <h5 id="with-cl-decodexjson">with <code>cl-decodex.json</code></h5>
 <p>It crashed half way with such error report:</p>
+<pre><code><code><div>---------------------------------------------------------------------------
+
+TypeError                                 Traceback (most recent call last)
+
+&lt;ipython-input-36-0774f1118777&gt; in &lt;module&gt;
+      3 g = clgraph.CLGraph(d)
+      4 g.push_down_labels()
+----&gt; 5 g.extract_records(MODEL)
+      6 
+
+~/Documents/Xin/cnl/connectionlensui/clgraph.py in extract_records(self, model)
+    163                 self.records[node] = Record(node,parent,recordtype,standalone,self,model)
+    164             elif rca == &quot;Collection&quot;:
+--&gt; 165                 self.collections[node] = Collection(node,parent,self)
+    166             else :
+    167                 self.attributs.append(node)
+
+~/Documents/Xin/cnl/connectionlensui/collection.py in __init__(self, node, parent, absG)
+      9 
+     10 class Collection :
+---&gt; 11     def __init__(self,node,parent,absG):
+     12         print(&quot;COLLECTION : &quot;,node)
+     13         self.node = node
+
+TypeError: '&gt;' not supported between instances of 'str' and 'NoneType'
+</div></code></code></pre>
+<p>The error comes from identifying node <code>1138639218147346</code> as <code>['Record', None]</code>.
+which is</p>
+<pre><code class="language-json"><div>    {
+      <span class="hljs-attr">"datasetId"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-attr">"id"</span>: <span class="hljs-string">"1138639218147346"</span>,
+      <span class="hljs-attr">"label"</span>: <span class="hljs-string">"alsace-actu.com"</span>,
+      <span class="hljs-attr">"type"</span>: <span class="hljs-string">"JSON_VALUE"</span>
+    }
+</div></code></pre>
+<p>with two connections</p>
+<pre><code class="language-json"><div>      {
+        <span class="hljs-attr">"confidence"</span>: <span class="hljs-string">"1.00"</span>,
+        <span class="hljs-attr">"specificity"</span>: <span class="hljs-string">".67"</span>,
+        <span class="hljs-attr">"source"</span>: <span class="hljs-string">"566140699934737"</span>,
+        <span class="hljs-attr">"label"</span>: <span class="hljs-string">""</span>,
+        <span class="hljs-attr">"target"</span>: <span class="hljs-string">"1138639218147346"</span>
+      },
+      {
+        <span class="hljs-attr">"confidence"</span>: <span class="hljs-string">"1.00"</span>,
+        <span class="hljs-attr">"specificity"</span>: <span class="hljs-string">"1.00"</span>,
+        <span class="hljs-attr">"source"</span>: <span class="hljs-string">"1138639218147346"</span>,
+        <span class="hljs-attr">"label"</span>: <span class="hljs-string">"cl:extract"</span>,
+        <span class="hljs-attr">"target"</span>: <span class="hljs-string">"117643783700505"</span>
+      },
+</div></code></pre>
+<p>and the connection with no label leads to</p>
+<pre><code class="language-json"><div>    {
+      <span class="hljs-attr">"datasetId"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-attr">"id"</span>: <span class="hljs-string">"566140699934737"</span>,
+      <span class="hljs-attr">"label"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"type"</span>: <span class="hljs-string">"JSON_STRUCT"</span>
+    },
+</div></code></pre>
+<p>This could be the source of identifying this node as <code>None</code></p>
 <h5 id="with-nosdeputesfrdeputesenmandat2020-03-03json">with <code>nosdeputes.fr_deputes_en_mandat_2020-03-03.json</code></h5>
 <p>It crashed half way with such error report:</p>
 <pre><code><code><div>
