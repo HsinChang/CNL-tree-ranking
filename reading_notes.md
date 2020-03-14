@@ -14,7 +14,7 @@
       - [Comments:](#comments)
 - [Graph Simplification](#graph-simplification)
   - [works and related works already done in the group](#works-and-related-works-already-done-in-the-group)
-    - [An Unified Abstraction](#an-unified-abstraction)
+    - [Irène's work](#ir%c3%a8nes-work)
       - [Basic ideas](#basic-ideas)
       - [Tests](#tests)
         - [with Wikidata Gauthier](#with-wikidata-gauthier)
@@ -88,7 +88,7 @@ The algorithm proposed by the authors is called DPBF (Dynamic Programming Best F
 
 # Graph Simplification
 ## works and related works already done in the group
-### An Unified Abstraction
+### Irène's work
 
 #### Basic ideas
 1. Basic hypothesis: Any dataset consists of some records and some collections. So, *records* and *collections* are defined in different data sources.
