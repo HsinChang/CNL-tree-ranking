@@ -60,6 +60,13 @@
 <li><a href="#an-unified-abstraction">An Unified Abstraction</a>
 <ul>
 <li><a href="#basic-ideas">Basic ideas</a></li>
+<li><a href="#tests">Tests</a>
+<ul>
+<li><a href="#with-wikidata-gauthier">with Wikidata Gauthier</a></li>
+<li><a href="#with-cl-decodexjson">with <code>cl-decodex.json</code></a></li>
+<li><a href="#with-nosdeputesfrdeputesenmandat2020-03-03json">with <code>nosdeputes.fr_deputes_en_mandat_2020-03-03.json</code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#rdfquotient">RDFQuotient</a></li>
@@ -147,8 +154,231 @@ where <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>
 <h4 id="basic-ideas">Basic ideas</h4>
 <ol>
 <li>Basic hypothesis: Any dataset consists of some records and some collections. So, <em>records</em> and <em>collections</em> are defined in different data sources.</li>
-<li></li>
+<li>Algorithm: <a href="https://pad.inria.fr/p/np_iRqpFevLItvyKtRJ_Xin-Internship">https://pad.inria.fr/p/np_iRqpFevLItvyKtRJ_Xin-Internship</a> March 9th</li>
 </ol>
+<h4 id="tests">Tests</h4>
+<p>To begin with, all JSON files to be tested should be in this structure:</p>
+<pre><code><code><div>JSON
+|
+|-nodes
+|   |
+|   |-node
+|   
+|-links
+    |
+    |-link
+</div></code></code></pre>
+<h5 id="with-wikidata-gauthier">with Wikidata Gauthier</h5>
+<p>Count by category:</p>
+<pre><code><code><div>Counter({None: 4097, 'ENTITY_PERSON': 1616, 'ENTITY_LOCATION': 832, 'ENTITY_ORGANIZATION': 152})
+</div></code></code></pre>
+<p>Count by labels identified (With more than 1 appearances):</p>
+<pre><code><code><div>None: 4770, 'Business School': 4, 'Reunion': 3, 'Ministry': 3, 'Saint-Joseph': 2, 'Rally': 2, 'Gaulle': 2, 'Management': 2, 'Nicolas Sarkozy': 2, 'Law': 2, 'Adour': 2, &quot;Giscard d' Estaing&quot;: 2, 'Courson': 2, 'Sorbonne': 2, 'Froment': 2, 'Manuel Valls': 2
+</div></code></code></pre>
+<p>The other 1893 labels only appeared once.</p>
+<p>We can see that there are 673 nodes who have a None value but with a category, the distribution is:</p>
+<pre><code><code><div>None: 4097, 'ENTITY_LOCATION': 566, 'ENTITY_ORGANIZATION': 101, 'ENTITY_PERSON': 6
+</div></code></code></pre>
+<p>Which means in the implementation, the algorithm will firstly determine the category, if the category cannot be decided, the label won't.</p>
+<p>We can see that most None values with an identified category come from locations and organizations.</p>
+<h5 id="with-cl-decodexjson">with <code>cl-decodex.json</code></h5>
+<p>It crashed half way with such error report:</p>
+<h5 id="with-nosdeputesfrdeputesenmandat2020-03-03json">with <code>nosdeputes.fr_deputes_en_mandat_2020-03-03.json</code></h5>
+<p>It crashed half way with such error report:</p>
+<pre><code><code><div>
+---------------------------------------------------------------------------
+
+KeyError                                  Traceback (most recent call last)
+
+&lt;ipython-input-32-5e9a2ec30ebc&gt; in &lt;module&gt;
+      3 g = clgraph.CLGraph(d)
+      4 g.push_down_labels()
+----&gt; 5 g.extract_records(MODEL)
+      6 
+
+~/Documents/Xin/cnl/connectionlensui/clgraph.py in extract_records(self, model)
+    176             if node in self.records.keys() and self.records[node].RecordIsAboutNode != None and self.records[node].RecordIsAboutNode != node :
+    177                 print(&quot;delete :&quot;, self.records[node].RecordIsAbout)
+--&gt; 178                 self.records[node].merge(self.records[self.records[node].RecordIsAboutNode])
+    179                 del self.records[self.records[node].RecordIsAboutNode]
+    180                 track = self.replace(self.records[node].RecordIsAboutNode,node,track)
+
+KeyError: 23914353786907
+</div></code></code></pre>
+<p>The cause of error is from this node:</p>
+<pre><code class="language-json"><div>    {
+      <span class="hljs-attr">"datasetId"</span>: <span class="hljs-number">1</span>,
+      <span class="hljs-attr">"id"</span>: <span class="hljs-string">"23914353786907"</span>,
+      <span class="hljs-attr">"label"</span>: <span class="hljs-string">"Paris"</span>,
+      <span class="hljs-attr">"representativeNodeIds"</span>: [
+        <span class="hljs-string">"1420528873111579"</span>,
+        <span class="hljs-string">"474323360940059"</span>,
+        <span class="hljs-string">"1190826815258651"</span>,
+        <span class="hljs-string">"961843979878427"</span>,
+        <span class="hljs-string">"569706311319579"</span>,
+        <span class="hljs-string">"1933831039877147"</span>,
+        <span class="hljs-string">"428896800473115"</span>,
+        <span class="hljs-string">"761315491577883"</span>,
+        <span class="hljs-string">"797107165331483"</span>,
+        <span class="hljs-string">"369748896383003"</span>,
+        <span class="hljs-string">"512607563808795"</span>,
+        <span class="hljs-string">"133600537215003"</span>,
+        <span class="hljs-string">"2205715155386395"</span>,
+        <span class="hljs-string">"1262325098086427"</span>,
+        <span class="hljs-string">"47361381367835"</span>,
+        <span class="hljs-string">"1448255618547739"</span>,
+        <span class="hljs-string">"777091140288539"</span>,
+        <span class="hljs-string">"1858141888184347"</span>,
+        <span class="hljs-string">"776360799764507"</span>,
+        <span class="hljs-string">"679771648294939"</span>,
+        <span class="hljs-string">"490490027835419"</span>,
+        <span class="hljs-string">"335128791351323"</span>,
+        <span class="hljs-string">"1879040768081947"</span>,
+        <span class="hljs-string">"715170807545883"</span>,
+        <span class="hljs-string">"1465338357088283"</span>,
+        <span class="hljs-string">"116794483277851"</span>,
+        <span class="hljs-string">"411883271094299"</span>,
+        <span class="hljs-string">"130941171269659"</span>,
+        <span class="hljs-string">"648401729355803"</span>,
+        <span class="hljs-string">"456666321518619"</span>,
+        <span class="hljs-string">"592463429369883"</span>,
+        <span class="hljs-string">"1477001442492443"</span>,
+        <span class="hljs-string">"1496063225626651"</span>,
+        <span class="hljs-string">"1420520811659291"</span>,
+        <span class="hljs-string">"1612345927270427"</span>,
+        <span class="hljs-string">"1862585887490075"</span>,
+        <span class="hljs-string">"1059553610301467"</span>,
+        <span class="hljs-string">"968081785487387"</span>,
+        <span class="hljs-string">"587803651997723"</span>,
+        <span class="hljs-string">"304264357347355"</span>,
+        <span class="hljs-string">"1498824420884507"</span>,
+        <span class="hljs-string">"1307874310488091"</span>,
+        <span class="hljs-string">"1846519425663003"</span>,
+        <span class="hljs-string">"111769599082523"</span>,
+        <span class="hljs-string">"2067962758430747"</span>,
+        <span class="hljs-string">"1196066773925915"</span>,
+        <span class="hljs-string">"486604674170907"</span>,
+        <span class="hljs-string">"540655901212699"</span>,
+        <span class="hljs-string">"311819744837659"</span>,
+        <span class="hljs-string">"333988862361627"</span>,
+        <span class="hljs-string">"1752653470105627"</span>,
+        <span class="hljs-string">"2003333822808091"</span>,
+        <span class="hljs-string">"1720010553688091"</span>,
+        <span class="hljs-string">"535346828804123"</span>,
+        <span class="hljs-string">"771848929280027"</span>,
+        <span class="hljs-string">"476471588028443"</span>,
+        <span class="hljs-string">"527569114890267"</span>,
+        <span class="hljs-string">"1454006382624795"</span>,
+        <span class="hljs-string">"1469216266911771"</span>,
+        <span class="hljs-string">"1256590188478491"</span>,
+        <span class="hljs-string">"1813241390956571"</span>,
+        <span class="hljs-string">"307716671143963"</span>,
+        <span class="hljs-string">"1219087969550363"</span>,
+        <span class="hljs-string">"1902505291153435"</span>,
+        <span class="hljs-string">"1211588604330011"</span>,
+        <span class="hljs-string">"642407219593243"</span>,
+        <span class="hljs-string">"1517492421787675"</span>,
+        <span class="hljs-string">"1747858759876635"</span>,
+        <span class="hljs-string">"2031374868414491"</span>,
+        <span class="hljs-string">"1249835499913243"</span>,
+        <span class="hljs-string">"1662903171153947"</span>,
+        <span class="hljs-string">"93419319853081"</span>,
+        <span class="hljs-string">"1045033670148123"</span>,
+        <span class="hljs-string">"1773698475360283"</span>,
+        <span class="hljs-string">"1540651691802651"</span>,
+        <span class="hljs-string">"919645554999323"</span>,
+        <span class="hljs-string">"1893086803263515"</span>,
+        <span class="hljs-string">"943033605423131"</span>,
+        <span class="hljs-string">"1758961405526043"</span>,
+        <span class="hljs-string">"777186273394715"</span>,
+        <span class="hljs-string">"1985173417623579"</span>,
+        <span class="hljs-string">"1228454013960219"</span>,
+        <span class="hljs-string">"1581052998975515"</span>,
+        <span class="hljs-string">"558342207438875"</span>,
+        <span class="hljs-string">"1176407619141659"</span>,
+        <span class="hljs-string">"1351319511105563"</span>,
+        <span class="hljs-string">"1000276487045147"</span>,
+        <span class="hljs-string">"1913423372746779"</span>,
+        <span class="hljs-string">"1139150391607323"</span>,
+        <span class="hljs-string">"825558724247579"</span>,
+        <span class="hljs-string">"979685236277275"</span>,
+        <span class="hljs-string">"989912723619867"</span>,
+        <span class="hljs-string">"1625101171687451"</span>,
+        <span class="hljs-string">"2084250120618011"</span>,
+        <span class="hljs-string">"1019932564258843"</span>,
+        <span class="hljs-string">"1262333159538715"</span>,
+        <span class="hljs-string">"973083109228571"</span>,
+        <span class="hljs-string">"1261259989188635"</span>,
+        <span class="hljs-string">"1806635912658971"</span>,
+        <span class="hljs-string">"991307698798619"</span>,
+        <span class="hljs-string">"373024948748315"</span>,
+        <span class="hljs-string">"1474821416288283"</span>,
+        <span class="hljs-string">"810506271064091"</span>,
+        <span class="hljs-string">"1443311802908699"</span>,
+        <span class="hljs-string">"1930780170256411"</span>,
+        <span class="hljs-string">"915618246164507"</span>,
+        <span class="hljs-string">"1807777519370267"</span>,
+        <span class="hljs-string">"240811682824219"</span>,
+        <span class="hljs-string">"1395719192707099"</span>,
+        <span class="hljs-string">"1835899761459227"</span>,
+        <span class="hljs-string">"1995690460839963"</span>,
+        <span class="hljs-string">"595386510082075"</span>,
+        <span class="hljs-string">"593204670890011"</span>,
+        <span class="hljs-string">"2215812615110683"</span>,
+        <span class="hljs-string">"1252924246196251"</span>,
+        <span class="hljs-string">"941369090637851"</span>,
+        <span class="hljs-string">"712669035233307"</span>,
+        <span class="hljs-string">"1428378788823067"</span>,
+        <span class="hljs-string">"770517301723163"</span>,
+        <span class="hljs-string">"1078000697212955"</span>,
+        <span class="hljs-string">"1274627575775259"</span>,
+        <span class="hljs-string">"732474766262299"</span>,
+        <span class="hljs-string">"1978221250740251"</span>,
+        <span class="hljs-string">"403180369215515"</span>,
+        <span class="hljs-string">"558380391333915"</span>,
+        <span class="hljs-string">"1466180788289563"</span>,
+        <span class="hljs-string">"436915519094811"</span>,
+        <span class="hljs-string">"2097396145192987"</span>,
+        <span class="hljs-string">"454506986864667"</span>,
+        <span class="hljs-string">"1999330731884571"</span>,
+        <span class="hljs-string">"2193390922891291"</span>,
+        <span class="hljs-string">"1237431087005723"</span>,
+        <span class="hljs-string">"1925959283376155"</span>,
+        <span class="hljs-string">"941361029185563"</span>,
+        <span class="hljs-string">"1134759854997531"</span>,
+        <span class="hljs-string">"167564556632091"</span>,
+        <span class="hljs-string">"117632365756443"</span>,
+        <span class="hljs-string">"156216032493595"</span>,
+        <span class="hljs-string">"885598405525531"</span>,
+        <span class="hljs-string">"1438258631278619"</span>,
+        <span class="hljs-string">"1834627457089563"</span>,
+        <span class="hljs-string">"1899341520306203"</span>,
+        <span class="hljs-string">"1555397879005211"</span>,
+        <span class="hljs-string">"2030786441117723"</span>,
+        <span class="hljs-string">"456765074309147"</span>,
+        <span class="hljs-string">"423050665263131"</span>,
+        <span class="hljs-string">"1561021122609179"</span>,
+        <span class="hljs-string">"2041550711291931"</span>,
+        <span class="hljs-string">"309573429755931"</span>,
+        <span class="hljs-string">"856488216100891"</span>,
+        <span class="hljs-string">"1524602727563291"</span>,
+        <span class="hljs-string">"911729070440475"</span>,
+        <span class="hljs-string">"1782140102508571"</span>,
+        <span class="hljs-string">"1577709211746331"</span>,
+        <span class="hljs-string">"2084258182070299"</span>,
+        <span class="hljs-string">"1068129393311771"</span>,
+        <span class="hljs-string">"735499202330651"</span>,
+        <span class="hljs-string">"1068137454764059"</span>,
+        <span class="hljs-string">"77381222006811"</span>,
+        <span class="hljs-string">"2038260932018203"</span>,
+        <span class="hljs-string">"757724331638811"</span>,
+        <span class="hljs-string">"2000248722423835"</span>,
+        <span class="hljs-string">"1986005752086555"</span>
+      ],
+      <span class="hljs-attr">"type"</span>: <span class="hljs-string">"ENTITY_LOCATION"</span>
+    },
+</div></code></pre>
+<p>The problem is, this node, <code>Paris</code>, is already deleted(merged), We have multiple nodes labeled <code>Paris</code>, as this node contains a collection, so it crashed?</p>
 <h3 id="rdfquotient"><a href="https://rdfquotient.inria.fr/">RDFQuotient</a></h3>
 <h1 id="data-acquisition">Data Acquisition</h1>
 <p>Hmm</p>
