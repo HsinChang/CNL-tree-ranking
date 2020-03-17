@@ -20,6 +20,7 @@
         - [with Wikidata Gauthier](#with-wikidata-gauthier)
         - [with `cl-decodex.json`](#with-cl-decodexjson)
         - [with `nosdeputes.fr_deputes_en_mandat_2020-03-03.json`](#with-nosdeputesfrdeputesenmandat2020-03-03json)
+      - [Graph obtained with Neo4J](#graph-obtained-with-neo4j)
     - [RDFQuotient](#rdfquotient)
 - [Data Acquisition](#data-acquisition)
 - [References](#references)
@@ -391,6 +392,37 @@ The cause of error is from this node:
     },
 ```
 The problem is, this node, `Paris`, is already deleted(merged), We have multiple nodes labeled `Paris`, as this node contains a collection, so it crashed?
+#### Graph obtained with Neo4J
+With the data acquired by `Gauthier`, there are 2642 nodes, with a *super* node:
+```json
+{
+  "type": "node",
+  "id": "2677",
+  "labels": [
+    "NamespacePrefixDefinition"
+  ],
+  "properties": {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#": "rdf",
+    "http://purl.org/vocab/relationship/": "ns6",
+    "http://www.wikidata.org/prop/direct/": "ns2",
+    "http://d-nb.info/standards/elementset/gnd#": "ns5",
+    "http://dbpedia.org/ontology/": "ns4",
+    "http://vocab.getty.edu/ontology#": "ns3",
+    "http://schema.org/": "sch",
+    "http://www.w3.org/2000/01/rdf-schema#": "rdfs",
+    "http://purl.org/dc/elements/1.1/": "dc",
+    "http://purl.org/dc/terms/": "dct",
+    "http://www.w3.org/2002/07/owl#": "owl",
+    "http://www.w3.org/2006/vcard/ns#": "ns0",
+    "http://www.w3.org/2004/02/skos/core#": "skos",
+    "http://www.w3.org/ns/shacl#": "sh",
+    "http://xmlns.com/foaf/0.1/": "ns1"
+  }
+}
+```
+and 6895 relations. 
+
+In the `JSON` graph from connection lens, we have 7512 nodes and 11890 edges.
 ### [RDFQuotient](https://rdfquotient.inria.fr/)
 
 # Data Acquisition

@@ -67,6 +67,7 @@
 <li><a href="#with-nosdeputesfrdeputesenmandat2020-03-03json">with <code>nosdeputes.fr_deputes_en_mandat_2020-03-03.json</code></a></li>
 </ul>
 </li>
+<li><a href="#graph-obtained-with-neo4j">Graph obtained with Neo4J</a></li>
 </ul>
 </li>
 <li><a href="#rdfquotient">RDFQuotient</a></li>
@@ -440,6 +441,35 @@ KeyError: 23914353786907
     },
 </div></code></pre>
 <p>The problem is, this node, <code>Paris</code>, is already deleted(merged), We have multiple nodes labeled <code>Paris</code>, as this node contains a collection, so it crashed?</p>
+<h4 id="graph-obtained-with-neo4j">Graph obtained with Neo4J</h4>
+<p>With the data acquired by <code>Gauthier</code>, there are 2642 nodes, with a <em>super</em> node:</p>
+<pre><code class="language-json"><div>{
+  <span class="hljs-attr">"type"</span>: <span class="hljs-string">"node"</span>,
+  <span class="hljs-attr">"id"</span>: <span class="hljs-string">"2677"</span>,
+  <span class="hljs-attr">"labels"</span>: [
+    <span class="hljs-string">"NamespacePrefixDefinition"</span>
+  ],
+  <span class="hljs-attr">"properties"</span>: {
+    <span class="hljs-attr">"http://www.w3.org/1999/02/22-rdf-syntax-ns#"</span>: <span class="hljs-string">"rdf"</span>,
+    <span class="hljs-attr">"http://purl.org/vocab/relationship/"</span>: <span class="hljs-string">"ns6"</span>,
+    <span class="hljs-attr">"http://www.wikidata.org/prop/direct/"</span>: <span class="hljs-string">"ns2"</span>,
+    <span class="hljs-attr">"http://d-nb.info/standards/elementset/gnd#"</span>: <span class="hljs-string">"ns5"</span>,
+    <span class="hljs-attr">"http://dbpedia.org/ontology/"</span>: <span class="hljs-string">"ns4"</span>,
+    <span class="hljs-attr">"http://vocab.getty.edu/ontology#"</span>: <span class="hljs-string">"ns3"</span>,
+    <span class="hljs-attr">"http://schema.org/"</span>: <span class="hljs-string">"sch"</span>,
+    <span class="hljs-attr">"http://www.w3.org/2000/01/rdf-schema#"</span>: <span class="hljs-string">"rdfs"</span>,
+    <span class="hljs-attr">"http://purl.org/dc/elements/1.1/"</span>: <span class="hljs-string">"dc"</span>,
+    <span class="hljs-attr">"http://purl.org/dc/terms/"</span>: <span class="hljs-string">"dct"</span>,
+    <span class="hljs-attr">"http://www.w3.org/2002/07/owl#"</span>: <span class="hljs-string">"owl"</span>,
+    <span class="hljs-attr">"http://www.w3.org/2006/vcard/ns#"</span>: <span class="hljs-string">"ns0"</span>,
+    <span class="hljs-attr">"http://www.w3.org/2004/02/skos/core#"</span>: <span class="hljs-string">"skos"</span>,
+    <span class="hljs-attr">"http://www.w3.org/ns/shacl#"</span>: <span class="hljs-string">"sh"</span>,
+    <span class="hljs-attr">"http://xmlns.com/foaf/0.1/"</span>: <span class="hljs-string">"ns1"</span>
+  }
+}
+</div></code></pre>
+<p>and 6895 relations.</p>
+<p>In the <code>JSON</code> graph from connection lens, we have 7512 nodes and 11890 edges.</p>
 <h3 id="rdfquotient"><a href="https://rdfquotient.inria.fr/">RDFQuotient</a></h3>
 <h1 id="data-acquisition">Data Acquisition</h1>
 <p>Hmm</p>
