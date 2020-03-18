@@ -422,7 +422,15 @@ With the data acquired by `Gauthier`, there are 2642 nodes, with a *super* node:
 ```
 and 6895 relations. 
 
-In the `JSON` graph from connection lens, we have 7512 nodes and 11890 edges.
+In the `JSON` graph from connection lens, we have 7512 nodes and 11890 edges.<br>
+With respect to the number of nodes and edges, Neo4J has a better performance on the simplification than our current algorithm.<br>
+Clearly this may reorient our direction and leads to a new algorithm, i.e.<br>
+We can just replace the `"labels":["Resource"]` and with a value in the **properties** by a simple ranking of labels (If we suppose the simplification of Neo4J is a good)<br>
+As for the edges, Neo4J provided a good label, only some replacements need to be done in order to improve its readability.<br>
+If necessary, It is feasible to write the code to convert this result to a real JSON file (But with embedded structure, it will not be compatible with Irène's code), we need to discuss following points:<br>
+1. Are the nodes merged by Neo4j what we want, are they over-merged or can they be further merged?
+2. Are there always a label in the `properties` that can well represent this node?
+3. 
 ### [RDFQuotient](https://rdfquotient.inria.fr/)
 
 # Data Acquisition
