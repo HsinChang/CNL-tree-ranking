@@ -2,7 +2,18 @@
   - [Java](#java)
     - [Singleton](#singleton)
     - [Factory](#factory)
-
+    - [Builder](#builder)
+    - [Adapter 适配器](#adapter-%e9%80%82%e9%85%8d%e5%99%a8)
+    - [Decorator 装饰器](#decorator-%e8%a3%85%e9%a5%b0%e5%99%a8)
+    - [Strategy](#strategy)
+    - [Observer](#observer)
+    - [JVM](#jvm)
+      - [garbage collection 垃圾回收](#garbage-collection-%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6)
+  - [握手 handshake](#%e6%8f%a1%e6%89%8b-handshake)
+  - [Hive](#hive)
+    - [Hive数据倾斜问题：](#hive%e6%95%b0%e6%8d%ae%e5%80%be%e6%96%9c%e9%97%ae%e9%a2%98)
+    - [Hive中的排序关键字有哪些](#hive%e4%b8%ad%e7%9a%84%e6%8e%92%e5%ba%8f%e5%85%b3%e9%94%ae%e5%ad%97%e6%9c%89%e5%93%aa%e4%ba%9b)
+    - [Hive Join 的实现](#hive-join-%e7%9a%84%e5%ae%9e%e7%8e%b0)
 
 # For interviews
 ## Java
