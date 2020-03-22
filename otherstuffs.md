@@ -131,3 +131,5 @@ https://blog.csdn.net/wxfghy/article/details/81361400
  
 ### Hive Join 的实现
 https://blog.csdn.net/u013668852/article/details/79768266
+
+Sometimes I do hate my life.
