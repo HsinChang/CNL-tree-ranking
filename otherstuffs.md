@@ -18,7 +18,7 @@
 - [HashMap](#hashmap)
 
 # For interviews
-## Java
+## [Java](https://www.runoob.com/java/java-tutorial.html)
 ### Singleton
 饿汉式
 ```java
