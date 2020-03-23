@@ -14,6 +14,7 @@
     - [Hive数据倾斜问题：](#hive%e6%95%b0%e6%8d%ae%e5%80%be%e6%96%9c%e9%97%ae%e9%a2%98)
     - [Hive中的排序关键字有哪些](#hive%e4%b8%ad%e7%9a%84%e6%8e%92%e5%ba%8f%e5%85%b3%e9%94%ae%e5%ad%97%e6%9c%89%e5%93%aa%e4%ba%9b)
     - [Hive Join 的实现](#hive-join-%e7%9a%84%e5%ae%9e%e7%8e%b0)
+- [重写和重载！](#%e9%87%8d%e5%86%99%e5%92%8c%e9%87%8d%e8%bd%bd)
 
 # For interviews
 ## Java
@@ -133,3 +134,5 @@ https://blog.csdn.net/wxfghy/article/details/81361400
 https://blog.csdn.net/u013668852/article/details/79768266
 
 Sometimes I do hate my life.
+
+# 重写和重载！
