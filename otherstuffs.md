@@ -16,6 +16,7 @@
     - [Hive Join 的实现](#hive-join-%e7%9a%84%e5%ae%9e%e7%8e%b0)
 - [重写和重载！](#%e9%87%8d%e5%86%99%e5%92%8c%e9%87%8d%e8%bd%bd)
 - [HashMap](#hashmap)
+    - [小补充：负数的二进制](#%e5%b0%8f%e8%a1%a5%e5%85%85%e8%b4%9f%e6%95%b0%e7%9a%84%e4%ba%8c%e8%bf%9b%e5%88%b6)
 
 # For interviews
 ## [Java](https://www.runoob.com/java/java-tutorial.html)
@@ -141,3 +142,8 @@ https://www.runoob.com/java/java-override-overload.html
 
 # HashMap
 https://juejin.im/post/5e6e0ac9e51d4526fb5df679
+
+### 小补充：负数的二进制
+https://www.jianshu.com/p/6c518e7b4690
+**位运算** 
+https://blog.csdn.net/xiaochunyong/article/details/7748713
