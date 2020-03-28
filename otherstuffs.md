@@ -147,3 +147,5 @@ https://juejin.im/post/5e6e0ac9e51d4526fb5df679
 https://www.jianshu.com/p/6c518e7b4690
 **位运算** 
 https://blog.csdn.net/xiaochunyong/article/details/7748713
+
+I have been playing animal crossing for too long
