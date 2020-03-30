@@ -21,6 +21,7 @@
         - [with `cl-decodex.json`](#with-cl-decodexjson)
         - [with `nosdeputes.fr_deputes_en_mandat_2020-03-03.json`](#with-nosdeputesfrdeputesenmandat2020-03-03json)
       - [Graph obtained with Neo4J](#graph-obtained-with-neo4j)
+      - [The Java implementation](#the-java-implementation)
     - [RDFQuotient](#rdfquotient)
 - [Data Acquisition](#data-acquisition)
 - [References](#references)
@@ -430,7 +431,15 @@ As for the edges, Neo4J provided a good label, only some replacements need to be
 If necessary, It is feasible to write the code to convert this result to a real JSON file (But with embedded structure, it will not be compatible with Irène's code), we need to discuss following points:<br>
 1. Are the nodes merged by Neo4j what we want, are they over-merged or can they be further merged?
 2. Are there always a label in the `properties` that can well represent this node?
-3. 
+
+
+#### The Java implementation
+
+```bash
+
+```
+
+It doesn't work with RDF graphs(graphs with loops)
 ### [RDFQuotient](https://rdfquotient.inria.fr/)
 
 # Data Acquisition
