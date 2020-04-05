@@ -444,7 +444,8 @@ This is soooo boring, I hate this
 ### [RDFQuotient](https://rdfquotient.inria.fr/)
 
 5 April:
-I am literally wasting my time with this boring project
+I am literally wasting my time with this boring project <br>
+The methods in `SyntheticRDFGraphGenerator` are all very badly written! FUCK ALL THIS!
 # Data Acquisition
 Hmm
 # References
