@@ -443,6 +443,8 @@ It doesn't work with RDF graphs(graphs with loops)
 This is soooo boring, I hate this
 ### [RDFQuotient](https://rdfquotient.inria.fr/)
 
+5 April:
+I am literally wasting my time with this boring project
 # Data Acquisition
 Hmm
 # References
