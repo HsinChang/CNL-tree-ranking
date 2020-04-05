@@ -440,7 +440,7 @@ If necessary, It is feasible to write the code to convert this result to a real 
 ```
 
 It doesn't work with RDF graphs(graphs with loops)
-This is soooo boring
+This is soooo boring, I hate this
 ### [RDFQuotient](https://rdfquotient.inria.fr/)
 
 # Data Acquisition
