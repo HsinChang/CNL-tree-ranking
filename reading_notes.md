@@ -447,7 +447,7 @@ This is soooo boring, I hate this
 I am literally wasting my time with this boring project <br>
 The methods in `SyntheticRDFGraphGenerator` are all very badly written! FUCK ALL THIS!
 # Data Acquisition
-Hmm dsahfiuasdhfiuah
+Hmm dsahfiuasdhfiuah sdbffdasbhadf
 # References
 [1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th d knowledge management. 2011.
 
