@@ -15,6 +15,7 @@
     - [MING: Mining Informative Entity Relationship Subgraphs [5]](#ming-mining-informative-entity-relationship-subgraphs-5)
       - [key points](#key-points)
       - [Informativeness](#informativeness)
+      - [most informative subgraphs with MING](#most-informative-subgraphs-with-ming)
 - [Graph Simplification](#graph-simplification)
   - [works and related works already done in the group](#works-and-related-works-already-done-in-the-group)
     - [Irène's work](#ir%c3%a8nes-work)
@@ -104,7 +105,15 @@ query nodes?
 **edges are viewed as bidirectional**, *edge weights that are based on cooccurrence statistics for entities and relationships.*
 <br>two
 weights; one for each direction of the edge. <br>
+basically the **informativeness** is how often the entity (destination) appears in relevant triples.
+<br>
+The overall informativeness of a node $u$ is
 
+$p$ * the probability of encountering the entity $u$ in the domain + $(1-p)$ * The probability of reaching u via one of its neighbors 
+
+#### most informative subgraphs with MING
+the most informative subgraph of $C$ is the one that consists of all nodes SvS for
+which $lab(v) = +$.
 
 # Graph Simplification
 ## works and related works already done in the group
