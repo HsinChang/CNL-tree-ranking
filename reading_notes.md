@@ -16,6 +16,9 @@
       - [key points](#key-points)
       - [Informativeness](#informativeness)
       - [most informative subgraphs with MING](#most-informative-subgraphs-with-ming)
+    - [ESPRESSO: Explaining Relationships between Entity Sets [6]](#espresso-explaining-relationships-between-entity-sets-6)
+      - [ESPRESSO knowledge graph](#espresso-knowledge-graph)
+      - [Computational model](#computational-model)
 - [Graph Simplification](#graph-simplification)
   - [works and related works already done in the group](#works-and-related-works-already-done-in-the-group)
     - [Irène's work](#ir%c3%a8nes-work)
@@ -110,11 +113,51 @@ basically the **informativeness** is how often the entity (destination) appears 
 The overall informativeness of a node $u$ is
 
 $p$ * the probability of encountering the entity $u$ in the domain + $(1-p)$ * The probability of reaching u via one of its neighbors 
+ 
 
+random walks
+with restart (**RWR**) 
 #### most informative subgraphs with MING
 the most informative subgraph of $C$ is the one that consists of all nodes SvS for
 which $lab(v) = +$.
 
+### ESPRESSO: Explaining Relationships between Entity Sets [6]
+explaining the relationship between two sets of entities in a
+knowledge graph
+
+#### ESPRESSO knowledge graph
+Enriched by
+- edge weights signifying the relatedness
+between entities
+- semantic types associated with the entities, derived from YAGO2
+(Wikipedia categories, WordNet classes) and Freebase (types). (SVM)
+-  the popularity of individual entities
+over time, reflecting the page view counts of each entity in daily granularity in the time frame 01/01/2012 to 07/31/2014
+
+#### Computational model
+$S_{i}$ the resulting subgraph
+
+*Informativeness*
+1. Critical: The core Si is important, i. e. it describes an important
+event or topic.
+2. Comprehensive: The core Si is self-explanatory, i. e. gives
+insight into the topic without requiring further explanation.
+3. Compact: The core Si does not overload the user with information by satisfying an upper bound on the size, i. e. the number
+of contained vertices.
+4. Coherent: The core Si describes a single event or topic rather
+than a mixture of topics. For this purpose, the entities contained
+in the core should be strongly interrelated, corresponding to
+a subgraph with high pair-wise edge weights or high degrees
+within Si.
+
+<br>*Relevance*<br>
+1. The core is relevant to some or all query entities.
+2. Temporal relevance: The topic was important/the event happened during a user-specified time interval.
+
+The **density** of each $S_{i}$ is measured by the total
+weight of edges in $S_{i}$, and the **relatedness** to Q1 and Q2 is measured
+by the total score of paths that connect vertices in Si with vertices in
+Q1 and Q2, respectively
 # Graph Simplification
 ## works and related works already done in the group
 ### Irène's work
