@@ -12,6 +12,9 @@
     - [Finding Top-k Min-Cost Connected Trees in Databases [4]](#finding-top-k-min-cost-connected-trees-in-databases-4)
       - [Generals:](#generals)
       - [Comments:](#comments)
+    - [MING: Mining Informative Entity Relationship Subgraphs [5]](#ming-mining-informative-entity-relationship-subgraphs-5)
+      - [key points](#key-points)
+      - [Informativeness](#informativeness)
 - [Graph Simplification](#graph-simplification)
   - [works and related works already done in the group](#works-and-related-works-already-done-in-the-group)
     - [Irène's work](#ir%c3%a8nes-work)
@@ -87,6 +90,21 @@ The algorithm proposed by the authors is called DPBF (Dynamic Programming Best F
 2. *The optimal substructure property* does not hold: The case is, for a certain query, we do have different nodes that match exactly the same set of keywords, those nodes have the same $\mathbf{p}$, but they are not even connected by 
 `sameAs` edges. So our settings cannot be simplified to a **Steiner tree problem**, like in this paper.
 3. For directed graphs, the authors have kept only the nodes reachable by following the given direction as *neighbors*. So in our *ConnectionLens* case, it means the answer tree can only have one *inversion* at the root node of the tree.
+
+### MING: Mining Informative Entity Relationship Subgraphs [5]
+#### key points
+Goal: 
+<br>(1)
+what is a good measure for representing the informativeness of relations between entities in ER graphs? <br>
+(2) how
+to determine the most informative subgraph for the given
+query nodes?
+
+#### Informativeness
+**edges are viewed as bidirectional**, *edge weights that are based on cooccurrence statistics for entities and relationships.*
+<br>two
+weights; one for each direction of the edge. <br>
+
 
 # Graph Simplification
 ## works and related works already done in the group
@@ -440,14 +458,8 @@ If necessary, It is feasible to write the code to convert this result to a real 
 ```
 
 It doesn't work with RDF graphs(graphs with loops)
-This is soooo boring, I hate this
 ### [RDFQuotient](https://rdfquotient.inria.fr/)
 
-5 April:
-I am literally wasting my time with this boring project <br>
-The methods in `SyntheticRDFGraphGenerator` are all very badly written! FUCK ALL THIS!
-
-don't really wanna do anything
 # Data Acquisition
 Hmm dsahfiuasdhfiuah sdbffdasbhadf
 # References
@@ -458,3 +470,9 @@ Hmm dsahfiuasdhfiuah sdbffdasbhadf
 [3]Ciampaglia, Giovanni Luca, et al. "Computational fact checking from knowledge networks." PloS one 10.6 (2015).
 
 [4]Ding, Bolin, et al. "Finding top-k min-cost connected trees in databases." 2007 IEEE 23rd International Conference on Data Engineering. IEEE, 2007.
+
+[5]Kasneci, Gjergji, Shady Elbassuoni, and Gerhard Weikum. "Ming: mining informative entity relationship subgraphs." Proceedings of the 18th ACM conference on Information and knowledge management. 2009.
+
+[6]Seufert, Stephan, et al. "Espresso: explaining relationships between entity sets." Proceedings of the 25th ACM International on Conference on Information and Knowledge Management. 2016.
+
+[7]Tong, Hanghang, and Christos Faloutsos. "Center-piece subgraphs: problem definition and fast solutions." Proceedings of the 12th ACM SIGKDD international conference on Knowledge discovery and data mining. 2006.
