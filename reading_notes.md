@@ -19,6 +19,8 @@
     - [ESPRESSO: Explaining Relationships between Entity Sets [6]](#espresso-explaining-relationships-between-entity-sets-6)
       - [ESPRESSO knowledge graph](#espresso-knowledge-graph)
       - [Computational model](#computational-model)
+    - [Center-Piece Subgraphs: Problem Definition and Fast Solutions [7]](#center-piece-subgraphs-problem-definition-and-fast-solutions-7)
+      - [Methodology](#methodology)
 - [Graph Simplification](#graph-simplification)
   - [works and related works already done in the group](#works-and-related-works-already-done-in-the-group)
     - [Irène's work](#ir%c3%a8nes-work)
@@ -157,7 +159,62 @@ within Si.
 The **density** of each $S_{i}$ is measured by the total
 weight of edges in $S_{i}$, and the **relatedness** to Q1 and Q2 is measured
 by the total score of paths that connect vertices in Si with vertices in
-Q1 and Q2, respectively
+Q1 and Q2, respectively.
+
+ the relatedness of a vertex to the query sets $Q_{1}$, $Q_{2}$ as the probability that at least one random walk particle from either set is located
+at vertex $v$. (conduct $|Q|$ random walks, $|Q|$ set of nodes)
+
+--in order to determine the score for one node with only two RWR-->
+
+for each $q \in Q_{1}$ we set the
+starting probability to s[q] = 1/|Q1| and to s[v] = 0 for v ∈ V \Q1.<br>
+As before, with probability $\alpha \hat{M} [v, w]$, we walk from v to w. With
+probability 1 − α, we jump back to a vertex in Q1, chosen uniformly
+at random. To obtain the steady-state probabilities, we likewise iterate Equation 2 until convergence or for a predetermined number of
+iterations.
+
+This procedure is performed for both Q1 and Q2, resulting in scores
+xQ1
+[v] and xQ2
+[v] for each vertex v. The relationship center score
+(RC) of v ∈ V is the product of the two scores multiplied by a
+prior pr(v)
+$$\operatorname{RC}(v)=\mathbf{x}_{Q_{1}}[v] \cdot \mathbf{x}_{Q_{2}}[v] \cdot \operatorname{pr}(v)$$
+
+Key Entity Discovery -> Center Context Entity Generation -> Query Context Generation
+(to be completed)
+
+### Center-Piece Subgraphs: Problem Definition and Fast Solutions [7]
+the *“center-piece subgraph” (CEPS)*
+problem: Given Q query nodes in a social network (e.g.,
+co-authorship network), find the node(s) and the resulting
+subgraph, that have strong connections to all or most of the
+Q query nodes. The discovered nodes could contain a common advisor, or other members of the research group, or
+an influential author in the research area that the Q nodes
+belong to.
+
+Given: an edge-weighted undirected graph W, Q nodes as
+source queries Q = {qi} (i = 1, ..., Q), the softAND
+coefficient k and an integer budget b
+
+Find: a suitably connected subgraph H that 
+- contains all
+query nodes qi 
+- at most b other vertices
+-  it maximizes a “goodness” function g(H).
+
+It divided queries in three types: *AND query*, *K_softAND query* and *OR query*
+
+*K_softAND:* only require the center-piece nodes to have strong connections to $k$-out-of-$Q$ query
+nodes. But the end users still need to specify such a parameter k which is not necessarily an easy task for applications like graph anomaly detection. 
+#### Methodology
+**Goodness** the more
+’good’/important nodes (wrt the source queries) it contains,
+the better H is. 
+
+*penalizing g the famous nodes before row normalization for social
+network.*
+
 # Graph Simplification
 ## works and related works already done in the group
 ### Irène's work
