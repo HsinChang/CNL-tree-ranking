@@ -9,10 +9,10 @@
     - [Computational fact checking from knowledge networks [3]](#computational-fact-checking-from-knowledge-networks-3)
       - [answers:](#answers-2)
       - [ranking:](#ranking-1)
-  - [Related works for sub-graph extraction](#related-works-for-sub-graph-extraction)
     - [Finding Top-k Min-Cost Connected Trees in Databases [4]](#finding-top-k-min-cost-connected-trees-in-databases-4)
       - [Generals:](#generals)
       - [Comments:](#comments)
+  - [Related works for sub-graph extraction](#related-works-for-sub-graph-extraction)
     - [MING: Mining Informative Entity Relationship Subgraphs [5]](#ming-mining-informative-entity-relationship-subgraphs-5)
       - [key points](#key-points)
       - [Informativeness](#informativeness)
@@ -22,6 +22,7 @@
       - [Computational model](#computational-model)
     - [Center-Piece Subgraphs: Problem Definition and Fast Solutions [7]](#center-piece-subgraphs-problem-definition-and-fast-solutions-7)
       - [Methodology](#methodology)
+    - [Summary](#summary)
 - [Graph Simplification](#graph-simplification)
   - [works and related works already done in the group](#works-and-related-works-already-done-in-the-group)
     - [Irène's work](#ir%c3%a8nes-work)
@@ -83,7 +84,7 @@ Graph summarizations[2]?
     $s$ source, $o$ object, a path $P_{s, o}=v_{1}, v_{2} \ldots v_{n}$
 2. *Comments*: Shorter paths are still preferred, here e $k(v)$ is the degree of entity $v$, i.e., the number of WKG statements in which it participates. It is a similar idea to the specificity used in ConnectionLens
 
-## Related works for sub-graph extraction
+
 ### Finding Top-k Min-Cost Connected Trees in Databases [4]
 
 #### Generals:
@@ -98,7 +99,7 @@ The algorithm proposed by the authors is called DPBF (Dynamic Programming Best F
 2. *The optimal substructure property* does not hold: The case is, for a certain query, we do have different nodes that match exactly the same set of keywords, those nodes have the same $\mathbf{p}$, but they are not even connected by 
 `sameAs` edges. So our settings cannot be simplified to a **Steiner tree problem**, like in this paper.
 3. For directed graphs, the authors have kept only the nodes reachable by following the given direction as *neighbors*. So in our *ConnectionLens* case, it means the answer tree can only have one *inversion* at the root node of the tree.
-
+## Related works for sub-graph extraction
 ### MING: Mining Informative Entity Relationship Subgraphs [5]
 #### key points
 Goal: 
@@ -217,6 +218,8 @@ the better H is.
 *penalizing g the famous nodes before row normalization for social
 network.*
 
+### Summary
+all three papers handle more than 2 query nodes, more specifically ESPRESSO handles 
 # Graph Simplification
 ## works and related works already done in the group
 ### Irène's work
