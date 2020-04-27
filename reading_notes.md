@@ -16,8 +16,7 @@
     - [MING: Mining Informative Entity Relationship Subgraphs [5]](#ming-mining-informative-entity-relationship-subgraphs-5)
       - [Problem Statement](#problem-statement)
       - [the algorithm](#the-algorithm)
-      - [Informativeness](#informativeness)
-      - [most informative subgraphs with MING](#most-informative-subgraphs-with-ming)
+      - [Comments](#comments-1)
     - [ESPRESSO: Explaining Relationships between Entity Sets [6]](#espresso-explaining-relationships-between-entity-sets-6)
       - [ESPRESSO knowledge graph](#espresso-knowledge-graph)
       - [Computational model](#computational-model)
@@ -103,27 +102,20 @@ The algorithm proposed by the authors is called DPBF (Dynamic Programming Best F
 ## Related works for sub-graph extraction
 ### MING: Mining Informative Entity Relationship Subgraphs [5]
 #### Problem Statement
-In a Entity-Relation Graph ($G$), from $k$ ** given entities of interest**, extracting the most informative subgraph
+In a Entity-Relation Graph ($G$), from $k$ **given entities of interest**, extracting the most informative subgraph
 #### the algorithm
- 1. extract subgraph $C$ from $G$
-
-#### Informativeness
-**edges are viewed as bidirectional**, *edge weights that are based on cooccurrence statistics for entities and relationships.*
-<br>two
-weights; one for each direction of the edge. <br>
-basically the **informativeness** is how often the entity (destination) appears in relevant triples.
-<br>
-The overall informativeness of a node $u$ is
-
-$p$ * the probability of encountering the entity $u$ in the domain + $(1-p)$ * The probability of reaching u via one of its neighbors 
- 
-
-random walks
-with restart (**RWR**) 
-#### most informative subgraphs with MING
-the most informative subgraph of $C$ is the one that consists of all nodes SvS for
-which $lab(v) = +$.
-
+ 1. extract subgraph $C$ from $G$<br>The graph is extracted with heuristics, the authors haven't specified how, but as indicated they should have used a [Candidate Generation](https://www.mccurley.org/papers/kdd2004.pdf) method similar to the one in the link. Which, to summarize: it picks one node each time that  *(a) close to the source s or the sink t
+(b) with strong connections (c) low
+degree* until the **size** of the graph meets a threshold (this threshold is not clear in the paper, this whole part is not clearly explained)
+2. run the Steiner-Tree Approximation in Relationship graph algorithm to determine a subtree $T$ of $C$
+   for each node, we calculate two probabilities $P_{+}(v)$ and $P_{-}(v)$, if $P_{+}(v)>P_{-}(v)$, this node is informative, else this node is uninformative.<br>
+   Here: it is unclear how the initial +/- nodes are defined in order to start the algorithm.<br>
+   Each $P_{l}(v),l\in {-,+}$ are composed by $P_{l}^{1}(v) \cdot P_{l}^{2}(v)$, <br>$P_{l}^{1}(v)$ is probability that the random walker starts at any $l$-labeled
+node and reaches node $v$, it is explained in an explicate obscure way and not clearly described.<br>$P_{l}^{2}(v)$ is the probability that
+any l-labeled node is reached when the random walker starts
+his walk at v, calculated through a recursive approach.
+#### Comments
+It is either the authors are very irresponsible or the CIKM conference has limited the pages, this paper is definitely not developed in a way to make their method more comprehensible. The abbreviations are fancy, though.
 ### ESPRESSO: Explaining Relationships between Entity Sets [6]
 explaining the relationship between two sets of entities in a
 knowledge graph
