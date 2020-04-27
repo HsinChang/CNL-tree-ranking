@@ -134,8 +134,21 @@ over time, reflecting the page view counts of each entity in daily granularity i
 From a knowledge graph $K=\left(V, E, \ell_{V}, \ell_{E}, T, R\right)$, two sets of entities $Q_{1}$ and $Q_{2}$.<br>
 Output:  $k$ connected subgraphs $S_{1}=\left(V_{1}, E_{1}\right), \ldots, S_{k}=\left(V_{k}, E_{k}\right)$ such that
 $$\sum_{i=1}^{k}\left[\beta \sum_{e \in E_{i}} \omega(e)+(1-\beta) \sum_{v \in V_{i}} \omega(v)\right]$$
-#### Algorithm
 
+Here we have a threshold $B$ who controls the size of each subgraph
+#### Algorithm
+Here $B'=B-k$, all $\mathbf{x}$ are vectors from RWR and a
+prior $pr(v)$, derived from the overall importance or prominence of v
+(e. g., its PageRank score in $\hat{M}$ , popularity determined from external
+sources, et)
+1. first stage: identify a set of **relationship centers**, which are subsequently connected to query nodes.
+   * compute $\operatorname{RC}(v)=\mathbf{x}_{Q_{1}}[v] \cdot \mathbf{x}_{Q_{2}}[v] \cdot \operatorname{pr}(v)$ for each vertex
+   * select $k$ best nodes that **(i) relatively prominent and (ii) of type *event*** with highest $RC$ as centers
+2. second stage: the **relationship centers** obtained in stage 1 are further expended to obtain the desired subgraphs
+   * *key entity discovery*: Start with the center, keep adding nodes by the order of RWR scores until it reaches a size threshold, get node set $V_{c}$, graph size: $k+\left\lceil\gamma B^{\prime} / 2\right\rceil$
+   * *Center Context Entity Generation* Firstly, add all adjacent nodes of node in $V_{c}$ --> $G_{c}$, keep deleting nodes with the smallest weighted degree until the graph reaches size $k+\left\lceil\gamma B^{\prime}\right\rceil$
+   * *Query Context Generation* keeps adding nodes with the highest score calculated by $\mathbf{x}_{Q_{1}}[v] \mathbf{x}_{Q_{2}}[v] \mathbf{x}_{c}[v] \cdot \operatorname{pr}(v)$, <br>
+add nodes until the graph reaches size $B$
 
 ### Center-Piece Subgraphs: Problem Definition and Fast Solutions [7]
 the *“center-piece subgraph” (CEPS)*
