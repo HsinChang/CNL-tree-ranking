@@ -111,7 +111,7 @@ degree* until the **size** of the graph meets a threshold (this threshold is not
    for each node, we calculate two probabilities $P_{+}(v)$ and $P_{-}(v)$, if $P_{+}(v)>P_{-}(v)$, this node is informative, else this node is uninformative.<br>
    Here: it is unclear how the initial +/- nodes are defined in order to start the algorithm.<br>
    Each $P_{l}(v),l\in {-,+}$ are composed by $P_{l}^{1}(v) \cdot P_{l}^{2}(v)$, <br>$P_{l}^{1}(v)$ is probability that the random walker starts at any $l$-labeled
-node and reaches node $v$, it is explained in an explicate obscure way and not clearly described. I suppose as described, it calculated the RWR with the IRanks scores as the weighted adjacent matrix?
+node and reaches node $v$, it is explained in an explicate obscure way and not clearly described. I suppose as described, it calculated the RWR with the IRanks scores as the weighted adjacent matrix?<br>
 ![RWR calculation](https://i.ibb.co/CJMd1YJ/ctmdlw11.png)
 <br>$P_{l}^{2}(v)$ is the probability that
 any l-labeled node is reached when the random walker starts
