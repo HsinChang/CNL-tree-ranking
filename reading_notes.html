@@ -43,19 +43,20 @@
 <li><a href="#ranking-1">ranking:</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li><a href="#related-works-for-sub-graph-extraction">Related works for sub-graph extraction</a>
-<ul>
 <li><a href="#finding-top-k-min-cost-connected-trees-in-databases-4">Finding Top-k Min-Cost Connected Trees in Databases [4]</a>
 <ul>
 <li><a href="#generals">Generals:</a></li>
 <li><a href="#comments">Comments:</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a href="#related-works-for-sub-graph-extraction">Related works for sub-graph extraction</a>
+<ul>
 <li><a href="#ming-mining-informative-entity-relationship-subgraphs-5">MING: Mining Informative Entity Relationship Subgraphs [5]</a>
 <ul>
-<li><a href="#key-points">key points</a></li>
+<li><a href="#problem-statement">Problem Statement</a></li>
+<li><a href="#the-algorithm">the algorithm</a></li>
 <li><a href="#informativeness">Informativeness</a></li>
 <li><a href="#most-informative-subgraphs-with-ming">most informative subgraphs with MING</a></li>
 </ul>
@@ -71,6 +72,7 @@
 <li><a href="#methodology">Methodology</a></li>
 </ul>
 </li>
+<li><a href="#summary">Summary</a></li>
 </ul>
 </li>
 </ul>
@@ -174,13 +176,12 @@ where <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.
 </ol>
 <h2 id="related-works-for-sub-graph-extraction">Related works for sub-graph extraction</h2>
 <h3 id="ming-mining-informative-entity-relationship-subgraphs-5">MING: Mining Informative Entity Relationship Subgraphs [5]</h3>
-<h4 id="key-points">key points</h4>
-<p>Goal:
-<br>(1)
-what is a good measure for representing the informativeness of relations between entities in ER graphs? <br>
-(2) how
-to determine the most informative subgraph for the given
-query nodes?</p>
+<h4 id="problem-statement">Problem Statement</h4>
+<p>In a Entity-Relation Graph (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">G</span></span></span></span>), from <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.03148em;">k</span></span></span></span> ** given entities of interest**, extracting the most informative subgraph</p>
+<h4 id="the-algorithm">the algorithm</h4>
+<ol>
+<li>extract subgraph <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.07153em;">C</span></span></span></span> from <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault">G</span></span></span></span></li>
+</ol>
 <h4 id="informativeness">Informativeness</h4>
 <p><strong>edges are viewed as bidirectional</strong>, <em>edge weights that are based on cooccurrence statistics for entities and relationships.</em>
 <br>two

@@ -14,7 +14,8 @@
       - [Comments:](#comments)
   - [Related works for sub-graph extraction](#related-works-for-sub-graph-extraction)
     - [MING: Mining Informative Entity Relationship Subgraphs [5]](#ming-mining-informative-entity-relationship-subgraphs-5)
-      - [key points](#key-points)
+      - [Problem Statement](#problem-statement)
+      - [the algorithm](#the-algorithm)
       - [Informativeness](#informativeness)
       - [most informative subgraphs with MING](#most-informative-subgraphs-with-ming)
     - [ESPRESSO: Explaining Relationships between Entity Sets [6]](#espresso-explaining-relationships-between-entity-sets-6)
@@ -101,13 +102,10 @@ The algorithm proposed by the authors is called DPBF (Dynamic Programming Best F
 3. For directed graphs, the authors have kept only the nodes reachable by following the given direction as *neighbors*. So in our *ConnectionLens* case, it means the answer tree can only have one *inversion* at the root node of the tree.
 ## Related works for sub-graph extraction
 ### MING: Mining Informative Entity Relationship Subgraphs [5]
-#### key points
-Goal: 
-<br>(1)
-what is a good measure for representing the informativeness of relations between entities in ER graphs? <br>
-(2) how
-to determine the most informative subgraph for the given
-query nodes?
+#### Problem Statement
+In a Entity-Relation Graph ($G$), from $k$ ** given entities of interest**, extracting the most informative subgraph
+#### the algorithm
+ 1. extract subgraph $C$ from $G$
 
 #### Informativeness
 **edges are viewed as bidirectional**, *edge weights that are based on cooccurrence statistics for entities and relationships.*
