@@ -112,7 +112,7 @@ degree* until the **size** of the graph meets a threshold (this threshold is not
    Here: it is unclear how the initial +/- nodes are defined in order to start the algorithm.<br>
    Each $P_{l}(v),l\in {-,+}$ are composed by $P_{l}^{1}(v) \cdot P_{l}^{2}(v)$, <br>$P_{l}^{1}(v)$ is probability that the random walker starts at any $l$-labeled
 node and reaches node $v$, it is explained in an explicate obscure way and not clearly described. I suppose as described, it calculated the RWR with the IRanks scores as the weighted adjacent matrix?
-![RWR calculation](ctmdlw11.png)
+![RWR calculation](https://github.com/HsinChang/CNL-tree-ranking/blob/master/ctmdlw11.png)
 <br>$P_{l}^{2}(v)$ is the probability that
 any l-labeled node is reached when the random walker starts
 his walk at v, calculated through a recursive approach.
