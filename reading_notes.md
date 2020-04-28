@@ -122,6 +122,7 @@ degree* until the **size** of the graph meets a threshold (this threshold is not
 node and reaches node $v$, it is explained in an explicate obscure way and not clearly described. I suppose as described, it calculated the RWR with the IRanks scores as the weighted adjacent matrix?
 
 ![RWR calculation](https://i.ibb.co/CJMd1YJ/ctmdlw11.png)
+
 <br>$P_{l}^{2}(v)$ is the probability that
 any l-labeled node is reached when the random walker starts
 his walk at v, calculated through a recursive approach: $P_{l}^{2}(u)=\sum_{v: l a b(v)=l} P_{i n f o}(v | u) P_{l}^{2}(v)$:<br>
@@ -153,7 +154,7 @@ knowledge graph
 
 #### Objective
 From a knowledge graph $K=\left(V, E, \ell_{V}, \ell_{E}, T, R\right)$, two sets of entities $Q_{1}$ and $Q_{2}$.<br>
-Output:  $k$ connected subgraphs $S_{1}=\left(V_{1}, E_{1}\right), \ldots, S_{k}=\left(V_{k}, E_{k}\right)$ such that
+Output:  $k$ connected subgraphs $S_{1}=\left(V_{1}, E_{1}\right), \ldots, S_{k}=\left(V_{k}, E_{k}\right)$ such that the following formula is **maximized**:
 $$\sum_{i=1}^{k}\left[\beta \sum_{e \in E_{i}} \omega(e)+(1-\beta) \sum_{v \in V_{i}} \omega(v)\right]$$
 
 Here we have a threshold $B$ who controls the size of each subgraph
