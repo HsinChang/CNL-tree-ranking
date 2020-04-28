@@ -124,7 +124,11 @@ node and reaches node $v$, it is explained in an explicate obscure way and not c
 ![RWR calculation](https://i.ibb.co/CJMd1YJ/ctmdlw11.png)
 <br>$P_{l}^{2}(v)$ is the probability that
 any l-labeled node is reached when the random walker starts
-his walk at v, calculated through a recursive approach.
+his walk at v, calculated through a recursive approach: $P_{l}^{2}(u)=\sum_{v: l a b(v)=l} P_{i n f o}(v | u) P_{l}^{2}(v)$:<br>
+  * $P_{l}^{2}(v)$ is initialized as $P_{l}^{2}(v)=\frac{1}{|X|}$, $X:=\{v | \operatorname{lab}(v)=l\}$
+  * $P_{\text {info}}(v | u):=\sum_{r} P_{\text {info}}(v | r, u)$
+   * $P_{\text {info}}\left(\alpha^{\prime} | \beta, \gamma\right)=\frac{P\left(\alpha^{\prime}, \beta, \gamma\right)}{P(\beta, \gamma)} \approx \frac{W\left(\alpha^{\prime}, \beta, \gamma\right)}{W(\beta, \gamma)}$, 
+   * where for edge $\gamma \stackrel{\beta}{\rightarrow} \alpha^{\prime}$, $W\left(\alpha^{\prime}, \beta, \gamma\right)$ denotes the number of domain witnesses, $W(\beta, \gamma)$ stands for the number of witnesses for the pattern $(*, \beta, \gamma)$
 
 #### Comments
 It is either the authors are very irresponsible or the CIKM conference has limited the pages, this paper is definitely not developed in a way to make their method more comprehensible. The abbreviations are fancy, though.
