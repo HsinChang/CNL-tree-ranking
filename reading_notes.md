@@ -130,6 +130,7 @@ his walk at v, calculated through a recursive approach: $P_{l}^{2}(u)=\sum_{v: l
    * $P_{\text {info}}\left(\alpha^{\prime} | \beta, \gamma\right)=\frac{P\left(\alpha^{\prime}, \beta, \gamma\right)}{P(\beta, \gamma)} \approx \frac{W\left(\alpha^{\prime}, \beta, \gamma\right)}{W(\beta, \gamma)}$, 
    * where for edge $\gamma \stackrel{\beta}{\rightarrow} \alpha^{\prime}$, $W\left(\alpha^{\prime}, \beta, \gamma\right)$ denotes the number of domain witnesses, $W(\beta, \gamma)$ stands for the number of witnesses for the pattern $(*, \beta, \gamma)$
 
+Then, it select all nodes labled $+$ or the best few nodes labeled $+$
 #### Comments
 It is either the authors are very irresponsible or the CIKM conference has limited the pages, this paper is definitely not developed in a way to make their method more comprehensible. The abbreviations are fancy, though.
 
