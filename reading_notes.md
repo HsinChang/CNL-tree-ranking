@@ -22,6 +22,9 @@
       - [Objective](#objective)
       - [Algorithm](#algorithm)
     - [Center-Piece Subgraphs: Problem Definition and Fast Solutions [7]](#center-piece-subgraphs-problem-definition-and-fast-solutions-7)
+      - [Problem Statement](#problem-statement-1)
+      - [Algorithm](#algorithm-1)
+      - [Compliments](#compliments)
 - [Graph Simplification](#graph-simplification)
   - [works and related works already done in the group](#works-and-related-works-already-done-in-the-group)
     - [Irène's work](#ir%c3%a8nes-work)
@@ -151,13 +154,8 @@ sources, et)
 add nodes until the graph reaches size $B$
 
 ### Center-Piece Subgraphs: Problem Definition and Fast Solutions [7]
+#### Problem Statement
 the *“center-piece subgraph” (CEPS)*
-problem: Given Q query nodes in a social network (e.g.,
-co-authorship network), find the node(s) and the resulting
-subgraph, that have strong connections to all or most of the
-Q query nodes. The discovered nodes could contain a common advisor, or other members of the research group, or
-an influential author in the research area that the Q nodes
-belong to.
 
 Given: an edge-weighted undirected graph W, Q nodes as
 source queries Q = {qi} (i = 1, ..., Q), the softAND
@@ -167,8 +165,21 @@ Find: a suitably connected subgraph H that
 - contains all
 query nodes qi 
 - at most b other vertices
--  it maximizes a “goodness” function g(H).
-
+-  it maximizes a “goodness” function g($\mathcal{H}$).
+#### Algorithm
+1. the *goodness score* calculation is the same as the photo above, [5] and [6] absorbed the idea of this paper
+2. **the EXTRACTion algorithm**: 
+   * initialize $\mathcal{H}$ as `NULL`
+   * let `len` be the maximum allowable path length
+   * while $\mathcal{H}$ not big enough
+       * pick a destination node $pd$ by $p d=\operatorname{argmax}_{j \notin \mathcal{H}} r(\mathcal{Q}, j)$, basically the node with the highest score that is not in the graph
+       * then for each query node $q$
+           * find the best key path $P(q_{i},pd)$ such that 
+               * it maximize $C_{s}(i, p d) / s$, where $C_{s}(i, p d)$ is the total score along the path and $s$ the length
+          *  add this path $P(q_{i},pd)$ to $\mathcal{H}$
+    * Output the final $\mathcal{H}$
+    
+#### Compliments
 It divided queries in three types: *AND query*, *K_softAND query* and *OR query*
 
 *K_softAND:* only require the center-piece nodes to have strong connections to $k$-out-of-$Q$ query
