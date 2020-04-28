@@ -17,14 +17,20 @@
       - [Problem Statement](#problem-statement)
       - [the algorithm](#the-algorithm)
       - [Comments](#comments-1)
+      - [Dataset: `YAGO`](#dataset-yago)
+      - [Results](#results)
     - [ESPRESSO: Explaining Relationships between Entity Sets [6]](#espresso-explaining-relationships-between-entity-sets-6)
       - [ESPRESSO knowledge graph](#espresso-knowledge-graph)
       - [Objective](#objective)
       - [Algorithm](#algorithm)
+      - [Dataset: `Espresso Knowledge Graph`](#dataset-espresso-knowledge-graph)
+      - [Results](#results-1)
     - [Center-Piece Subgraphs: Problem Definition and Fast Solutions [7]](#center-piece-subgraphs-problem-definition-and-fast-solutions-7)
       - [Problem Statement](#problem-statement-1)
       - [Algorithm](#algorithm-1)
       - [Compliments](#compliments)
+      - [Dataset: `DBLP`](#dataset-dblp)
+      - [Results](#results-2)
 - [Graph Simplification](#graph-simplification)
   - [works and related works already done in the group](#works-and-related-works-already-done-in-the-group)
     - [Irène's work](#ir%c3%a8nes-work)
@@ -119,20 +125,27 @@ node and reaches node $v$, it is explained in an explicate obscure way and not c
 <br>$P_{l}^{2}(v)$ is the probability that
 any l-labeled node is reached when the random walker starts
 his walk at v, calculated through a recursive approach.
+
 #### Comments
 It is either the authors are very irresponsible or the CIKM conference has limited the pages, this paper is definitely not developed in a way to make their method more comprehensible. The abbreviations are fancy, though.
+
+#### Dataset: `YAGO`
+
+#### Results
+
+They queried `famous individuals`, and declared their approach is way better than `CePS`. But their result is not very convincing:
+* They limited the obtained graph to 15 nodes only
+* They only showed the data on how many times the result is preferred by human judgements
+
+To my point of view, the right way to evaluate their algorithm is: 
+still thinking on this if we perform the query on big dataset like `YAGO`
+
 ### ESPRESSO: Explaining Relationships between Entity Sets [6]
 explaining the relationship between two sets of entities in a
 knowledge graph
 
 #### ESPRESSO knowledge graph
-Enriched by
-- edge weights signifying the relatedness
-between entities
-- semantic types associated with the entities, derived from YAGO2
-(Wikipedia categories, WordNet classes) and Freebase (types). (SVM)
--  the popularity of individual entities
-over time, reflecting the page view counts of each entity in daily granularity in the time frame 01/01/2012 to 07/31/2014
+
 #### Objective
 From a knowledge graph $K=\left(V, E, \ell_{V}, \ell_{E}, T, R\right)$, two sets of entities $Q_{1}$ and $Q_{2}$.<br>
 Output:  $k$ connected subgraphs $S_{1}=\left(V_{1}, E_{1}\right), \ldots, S_{k}=\left(V_{k}, E_{k}\right)$ such that
@@ -153,6 +166,17 @@ sources, et)
    * *Query Context Generation* keeps adding nodes with the highest score calculated by $\mathbf{x}_{Q_{1}}[v] \mathbf{x}_{Q_{2}}[v] \mathbf{x}_{c}[v] \cdot \operatorname{pr}(v)$, <br>
 add nodes until the graph reaches size $B$
 
+#### Dataset: `Espresso Knowledge Graph`
+derived from `YAGO2` and `FreeBase`, Enriched by
+- edge weights signifying the relatedness
+between entities
+- semantic types associated with the entities, derived from YAGO2
+(Wikipedia categories, WordNet classes) and Freebase (types). (SVM)
+-  the popularity of individual entities
+over time, reflecting the page view counts of each entity in daily granularity in the time frame 01/01/2012 to 07/31/2014
+
+#### Results
+The result evaluation is also based on the rating of humans, but they did vary the scenarios and parameters, we have a more convincing result than MING[5]
 ### Center-Piece Subgraphs: Problem Definition and Fast Solutions [7]
 
 #### Problem Statement
@@ -176,7 +200,7 @@ query nodes qi
        * pick a destination node $pd$ by $p d=\operatorname{argmax}_{j \notin \mathcal{H}} r(\mathcal{Q}, j)$, basically the node with the highest score that is not in the graph
        * then for each query node $q$
            * find the best key path $P(q_{i},pd)$ such that 
-               * it maximize $C_{s}(i, p d) / s$, where $C_{s}(i, p d)$ is the total score along the path and $s$ the length
+               * it maximize $C_{s}(i, p d) / s$, where $C_{s}(i, p d)$ is the total score along the path and $s$ the length, $s<$ `len`
           *  add this path $P(q_{i},pd)$ to $\mathcal{H}$
     * Output the final $\mathcal{H}$
     
@@ -185,6 +209,20 @@ It divided queries in three types: *AND query*, *K_softAND query* and *OR query*
 
 *K_softAND:* only require the center-piece nodes to have strong connections to $k$-out-of-$Q$ query
 nodes. But the end users still need to specify such a parameter k which is not necessarily an easy task for applications like graph anomaly detection. 
+
+*OR query*: given $Q$
+queries, find the subgraph $\mathcal{H}$ the nodes of which are important wrt at least ONE query
+
+#### Dataset: `DBLP`
+#### Results
+The result is evaluated with `Important Node Ratio (NRatio)`. That is,
+“how many important/good nodes are captured by $g(\mathcal{H})$?”:
+
+and `Important Edge
+Ratio (ERatio)`. That is, “how many important/good edges
+are captured by $g(\mathcal{H})$?”.
+
+Though the important nodes and edges are also picked by humans, it is more convincing that the preference of the results by humans.
 
 # Graph Simplification
 ## works and related works already done in the group
