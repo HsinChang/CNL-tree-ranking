@@ -154,6 +154,7 @@ sources, et)
 add nodes until the graph reaches size $B$
 
 ### Center-Piece Subgraphs: Problem Definition and Fast Solutions [7]
+
 #### Problem Statement
 the *“center-piece subgraph” (CEPS)*
 
