@@ -623,6 +623,106 @@ do
   let "i++"
 done < "$input"
 ```
+with Python and hash set
+```python
+import os
+import re
+
+entity_set = set(line.strip() for line in open('cnmEntitiesUniq',"r", encoding="utf-8"))
+with open('exp_file',"w", encoding="utf-8") as fe:
+    for filename in os.listdir(os.getcwd()):
+        if filename.startswith("yago-wd-"):
+            with open(filename,"r", encoding="utf-8") as fp:
+                line = fp.readline()
+                while line:
+                    m = re.search('(\/resource\/[^>]*)', line)
+                    if m is not None:
+                        p = m.group(1)
+                        if m.group(1) in entity_set:
+                            fe.write(line)
+                    line = fp.readline()
+            fp.close()
+            print("file "+ filename + " finished.")
+fe.close()
+```
+it terminates in 20 mins
+```bash
+[xizhang@cedar006 2020-02-24]$ python3 test.py
+file yago-wd-class.nt finished.
+file yago-wd-facts.nt finished.
+file yago-wd-full-types.nt finished.
+file yago-wd-labels.nt finished.
+file yago-wd-sameAs.nt finished.
+file yago-wd-schema.nt finished.
+file yago-wd-shapes.nt finished.
+file yago-wd-simple-types.nt finished.
+file yago-wd-annotated-facts.ntx finished.
+[xizhang@cedar006 2020-02-24]$ wc -l exp_file
+103647042 exp_file
+```
+Using Postgres
+```sql
+postgres= create table triples (s varchar, p varchar, o varchar, dot varchar);
+CREATE TABLE
+postgres= copy triples from '/data/yago4/2020-02-24/yago-wd-facts.nt';
+
+COPY 63758903
+ostgres= select * from triples limit 20;
+                                               s
+               |                        p                         |
+                       o                                     | dot
+--------------------------------------------------------------------------------
+---------------+--------------------------------------------------+-------------
+-------------------------------------------------------------+-----
+ <http://yago-knowledge.org/resource/EAAT3_Q11856447>
+               | <http://bioschemas.org/isEncodedByBioChemEntity> | <http://yago
+-knowledge.org/resource/Excitatory_amino_acid_transporter_3> | .
+ <http://yago-knowledge.org/resource/Bromo_adjacent_homology_domain_containing_1
+>              | <http://bioschemas.org/isEncodedByBioChemEntity> | <http://yago
+-knowledge.org/resource/BAHD1_Q18036571>                     | .
+ <http://yago-knowledge.org/resource/Nerve_growth_factor_IB>
+               | <http://bioschemas.org/isEncodedByBioChemEntity> | <http://yago
+-knowledge.org/resource/NH41>                                | .
+ <http://yago-knowledge.org/resource/Reelin>
+
+postgres= create table cnmentities (entity varchar);
+ERROR:  relation "cnmentities" already exists
+postgres= copy cnmentities from '/data/yago4/2020-02-24/cnmEntitiesUniq';
+COPY 1785285
+postgres= select * from cnmentities limit 10;
+                   entity
+--------------------------------------------
+ /resource/!!!
+ /resource/!!!_(album)
+ /resource/!Kung_languages
+ /resource/!Mediengruppe_Bitnik_Q48775282
+ /resource/!T.O.O.H.!
+ /resource/!Wowow!
+ /resource/!_(The_Dismemberment_Plan_album)
+ /resource/$100,000_Q19543496
+ /resource/$100,000_infield
+ /resource/$10_Q10843661
+(10 rows)
+postgres= select t.s, t.p, t.o from triples t, cnmentities e where t.s like '%'||e.entity||'%' limit 20;
+                                s                                |               p                |                            o
+
+-----------------------------------------------------------------+--------------------------------+------------------------------
+----------------------------
+ <http://yago-knowledge.org/resource/Laélia_Véron_Q67408572>   | <http://schema.org/birthPlace> | <http://yago-knowledge.org/resour
+ce/Crest,_Drôme>
+ <http://yago-knowledge.org/resource/Laélia_Véron_Q67408572>   | <http://schema.org/birthPlace> | <http://yago-knowledge.org/resour
+ce/Crest,_Drôme>
+ <http://yago-knowledge.org/resource/Laélia_Véron_Q67408572>   | <http://schema.org/birthPlace> | <http://yago-knowledge.org/resour
+ce/Crest,_Drôme>
+ <http://yago-knowledge.org/resource/Laélia_Véron_Q67408572>   | <http://schema.org/birthPlace> | <http://yago-knowledge.org/resour
+ce/Crest,_Drôme>
+ <http://yago-knowledge.org/resource/Edmond_Bapst_Q1285519>      | <http://schema.org/birthPlace> | <http://yago-knowledge.org/re
+source/Paris>
+ <http://yago-knowledge.org/resource/Edmond_Bapst_Q1285519>      | <http://schema.org/birthPlace> | <http://yago-knowledge.org/re
+source/Paris>
+ <http://yago-knowledge.org/resource/Laurent_Marceline_Q3219364> | <http://schema.org/birthPlace> | <http://yago-knowledge.org/re
+source/Paris>
+```
 
 # References
 [1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th d knowledge management. 2011.

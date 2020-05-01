@@ -687,6 +687,103 @@ i=0
   <span class="hljs-built_in">let</span> <span class="hljs-string">"i++"</span>
 <span class="hljs-keyword">done</span> &lt; <span class="hljs-string">"<span class="hljs-variable">$input</span>"</span>
 </div></code></pre>
+<p>with Python and hash set</p>
+<pre><code class="language-python"><div><span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> re
+
+entity_set = set(line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> open(<span class="hljs-string">'cnmEntitiesUniq'</span>,<span class="hljs-string">"r"</span>, encoding=<span class="hljs-string">"utf-8"</span>))
+<span class="hljs-keyword">with</span> open(<span class="hljs-string">'exp_file'</span>,<span class="hljs-string">"w"</span>, encoding=<span class="hljs-string">"utf-8"</span>) <span class="hljs-keyword">as</span> fe:
+    <span class="hljs-keyword">for</span> filename <span class="hljs-keyword">in</span> os.listdir(os.getcwd()):
+        <span class="hljs-keyword">if</span> filename.startswith(<span class="hljs-string">"yago-wd-"</span>):
+            <span class="hljs-keyword">with</span> open(filename,<span class="hljs-string">"r"</span>, encoding=<span class="hljs-string">"utf-8"</span>) <span class="hljs-keyword">as</span> fp:
+                line = fp.readline()
+                <span class="hljs-keyword">while</span> line:
+                    m = re.search(<span class="hljs-string">'(\/resource\/[^&gt;]*)'</span>, line)
+                    <span class="hljs-keyword">if</span> m <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+                        p = m.group(<span class="hljs-number">1</span>)
+                        <span class="hljs-keyword">if</span> m.group(<span class="hljs-number">1</span>) <span class="hljs-keyword">in</span> entity_set:
+                            fe.write(line)
+                    line = fp.readline()
+            fp.close()
+            print(<span class="hljs-string">"file "</span>+ filename + <span class="hljs-string">" finished."</span>)
+fe.close()
+</div></code></pre>
+<p>it terminates in 20 mins</p>
+<pre><code class="language-bash"><div>[xizhang@cedar006 2020-02-24]$ python3 test.py
+file yago-wd-class.nt finished.
+file yago-wd-facts.nt finished.
+file yago-wd-full-types.nt finished.
+file yago-wd-labels.nt finished.
+file yago-wd-sameAs.nt finished.
+file yago-wd-schema.nt finished.
+file yago-wd-shapes.nt finished.
+file yago-wd-simple-types.nt finished.
+file yago-wd-annotated-facts.ntx finished.
+[xizhang@cedar006 2020-02-24]$ wc -l exp_file
+103647042 exp_file
+</div></code></pre>
+<p>Using Postgres</p>
+<pre><code class="language-sql"><div>postgres= <span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> triples (s <span class="hljs-built_in">varchar</span>, p <span class="hljs-built_in">varchar</span>, o <span class="hljs-built_in">varchar</span>, dot <span class="hljs-built_in">varchar</span>);
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span>
+postgres= copy triples <span class="hljs-keyword">from</span> <span class="hljs-string">'/data/yago4/2020-02-24/yago-wd-facts.nt'</span>;
+
+COPY 63758903
+ostgres= <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> triples <span class="hljs-keyword">limit</span> <span class="hljs-number">20</span>;
+                                               s
+               |                        p                         |
+                       o                                     | dot
+<span class="hljs-comment">--------------------------------------------------------------------------------</span>
+<span class="hljs-comment">---------------+--------------------------------------------------+-------------</span>
+<span class="hljs-comment">-------------------------------------------------------------+-----</span>
+ &lt;http://yago-knowledge.org/resource/EAAT3_Q11856447&gt;
+               | &lt;http://bioschemas.org/isEncodedByBioChemEntity&gt; | &lt;http://yago
+-knowledge.org/resource/Excitatory_amino_acid_transporter_3&gt; | .
+ &lt;http://yago-knowledge.org/resource/Bromo_adjacent_homology_domain_containing_1
+&gt;              | &lt;http://bioschemas.org/isEncodedByBioChemEntity&gt; | &lt;http://yago
+-knowledge.org/resource/BAHD1_Q18036571&gt;                     | .
+ &lt;http://yago-knowledge.org/resource/Nerve_growth_factor_IB&gt;
+               | &lt;http://bioschemas.org/isEncodedByBioChemEntity&gt; | &lt;http://yago
+-knowledge.org/resource/NH41&gt;                                | .
+ &lt;http://yago-knowledge.org/resource/Reelin&gt;
+
+postgres= <span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> cnmentities (entity <span class="hljs-built_in">varchar</span>);
+ERROR:  relation "cnmentities" already exists
+postgres= copy cnmentities from '/data/yago4/2020-02-24/cnmEntitiesUniq';
+COPY 1785285
+postgres= <span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> cnmentities <span class="hljs-keyword">limit</span> <span class="hljs-number">10</span>;
+                   entity
+<span class="hljs-comment">--------------------------------------------</span>
+ /resource/!!!
+ /resource/!!!_(album)
+ /resource/!Kung_languages
+ /resource/!Mediengruppe_Bitnik_Q48775282
+ /resource/!T.O.O.H.!
+ /resource/!Wowow!
+ /resource/!_(The_Dismemberment_Plan_album)
+ /resource/$100,000_Q19543496
+ /resource/$100,000_infield
+ /resource/$10_Q10843661
+(10 rows)
+postgres= <span class="hljs-keyword">select</span> t.s, t.p, t.o <span class="hljs-keyword">from</span> triples t, cnmentities e <span class="hljs-keyword">where</span> t.s <span class="hljs-keyword">like</span> <span class="hljs-string">'%'</span>||e.entity||<span class="hljs-string">'%'</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">20</span>;
+                                s                                |               p                |                            o
+
+<span class="hljs-comment">-----------------------------------------------------------------+--------------------------------+------------------------------</span>
+<span class="hljs-comment">----------------------------</span>
+ &lt;http://yago-knowledge.org/resource/Laélia_Véron_Q67408572&gt;   | &lt;http://schema.org/birthPlace&gt; | &lt;http://yago-knowledge.org/resour
+ce/Crest,_Drôme&gt;
+ &lt;http://yago-knowledge.org/resource/Laélia_Véron_Q67408572&gt;   | &lt;http://schema.org/birthPlace&gt; | &lt;http://yago-knowledge.org/resour
+ce/Crest,_Drôme&gt;
+ &lt;http://yago-knowledge.org/resource/Laélia_Véron_Q67408572&gt;   | &lt;http://schema.org/birthPlace&gt; | &lt;http://yago-knowledge.org/resour
+ce/Crest,_Drôme&gt;
+ &lt;http://yago-knowledge.org/resource/Laélia_Véron_Q67408572&gt;   | &lt;http://schema.org/birthPlace&gt; | &lt;http://yago-knowledge.org/resour
+ce/Crest,_Drôme&gt;
+ &lt;http://yago-knowledge.org/resource/Edmond_Bapst_Q1285519&gt;      | &lt;http://schema.org/birthPlace&gt; | &lt;http://yago-knowledge.org/re
+source/Paris&gt;
+ &lt;http://yago-knowledge.org/resource/Edmond_Bapst_Q1285519&gt;      | &lt;http://schema.org/birthPlace&gt; | &lt;http://yago-knowledge.org/re
+source/Paris&gt;
+ &lt;http://yago-knowledge.org/resource/Laurent_Marceline_Q3219364&gt; | &lt;http://schema.org/birthPlace&gt; | &lt;http://yago-knowledge.org/re
+source/Paris&gt;
+</div></code></pre>
 <h1 id="references">References</h1>
 <p>[1] Elbassuoni, Shady, and Roi Blanco. &quot;Keyword search over RDF graphs.&quot; Proceedings of the 20th d knowledge management. 2011.</p>
 <p>[2] Le, Wangchao, et al. &quot;Scalable keyword search on large RDF data.&quot; IEEE Transactions on knowledge and data engineering 26.11 (2014): 2774-2788.</p>
