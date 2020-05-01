@@ -107,7 +107,17 @@
 </li>
 </ul>
 </li>
-<li><a href="#data-acquisition">Data Acquisition</a></li>
+<li><a href="#dataset-construction">Dataset Construction</a>
+<ul>
+<li><a href="#get-data-from-yago4">get data from YAGO4</a>
+<ul>
+<li><a href="#find-all-entities-with-orgwikipediafr">find all entities with <code>org.wikipedia.fr</code></a></li>
+<li><a href="#delete-duplicate-entities">delete duplicate entities</a></li>
+<li><a href="#for-those-entities-find-all-related-informations">for those entities, find all related informations</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a href="#references">References</a></li>
 </ul>
 <h1 id="notes-for-answer-tree-ranking">Notes for answer tree ranking</h1>
@@ -648,8 +658,35 @@ If necessary, It is feasible to write the code to convert this result to a real 
 </div></code></pre>
 <p>It doesn't work with RDF graphs(graphs with loops)</p>
 <h3 id="rdfquotient"><a href="https://rdfquotient.inria.fr/">RDFQuotient</a></h3>
-<h1 id="data-acquisition">Data Acquisition</h1>
-<p>Hmm dsahfiuasdhfiuah sdbffdasbhadf</p>
+<h1 id="dataset-construction">Dataset Construction</h1>
+<h2 id="get-data-from-yago4">get data from YAGO4</h2>
+<h3 id="find-all-entities-with-orgwikipediafr">find all entities with <code>org.wikipedia.fr</code></h3>
+<pre><code class="language-bash"><div>grep <span class="hljs-string">'fr\.[Ww]ikipedia\.org'</span> yago* &gt; cnm
+</div></code></pre>
+<pre><code class="language-bash"><div>grep -o <span class="hljs-string">'\/resource\/([^&gt;]*)'</span> cnm &gt; cnmEntities
+</div></code></pre>
+<h3 id="delete-duplicate-entities">delete duplicate entities</h3>
+<pre><code class="language-bash"><div>sort cnmEntities -o cnmEntitiesUniq | uniq
+</div></code></pre>
+<h3 id="for-those-entities-find-all-related-informations">for those entities, find all related informations</h3>
+<p>We cannot just use <code>grep --file=***</code> here:</p>
+<pre><code class="language-bash"><div>[xizhang@cedar006 2020-02-24]$ grep --file=cnmEntitiesUniq yago* &gt; results
+grep: memory exhausted
+</div></code></pre>
+<p>I have found around 1.7 million distinct entities with &quot;<a href="http://org.wikipedia.fr">org.wikipedia.fr</a>&quot;, if I do &quot;grep --file=distinctEntities yago*&quot; to gather all info, it will cause &quot;memory exhausted&quot;, but if I do &quot;grep&quot; entity by entity, it will take around one year to finish. like the following:</p>
+<pre><code class="language-bash"><div><span class="hljs-meta">#!/bin/bash</span>
+input=<span class="hljs-string">"cnmEntitiesUniq"</span>
+<span class="hljs-built_in">echo</span> -n &gt; input
+mkdir tmp
+i=0
+<span class="hljs-keyword">while</span> IFS= <span class="hljs-built_in">read</span> -r line
+<span class="hljs-keyword">do</span>
+  touch tmp/results<span class="hljs-variable">${i}</span>
+  grep <span class="hljs-string">"<span class="hljs-variable">$line</span>"</span> yago* &gt; tmp/results<span class="hljs-variable">${i}</span>
+  <span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">${line}</span> searched"</span>
+  <span class="hljs-built_in">let</span> <span class="hljs-string">"i++"</span>
+<span class="hljs-keyword">done</span> &lt; <span class="hljs-string">"<span class="hljs-variable">$input</span>"</span>
+</div></code></pre>
 <h1 id="references">References</h1>
 <p>[1] Elbassuoni, Shady, and Roi Blanco. &quot;Keyword search over RDF graphs.&quot; Proceedings of the 20th d knowledge management. 2011.</p>
 <p>[2] Le, Wangchao, et al. &quot;Scalable keyword search on large RDF data.&quot; IEEE Transactions on knowledge and data engineering 26.11 (2014): 2774-2788.</p>

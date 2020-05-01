@@ -42,7 +42,11 @@
       - [Graph obtained with Neo4J](#graph-obtained-with-neo4j)
       - [The Java implementation](#the-java-implementation)
     - [RDFQuotient](#rdfquotient)
-- [Data Acquisition](#data-acquisition)
+- [Dataset Construction](#dataset-construction)
+  - [get data from YAGO4](#get-data-from-yago4)
+    - [find all entities with `org.wikipedia.fr`](#find-all-entities-with-orgwikipediafr)
+    - [delete duplicate entities](#delete-duplicate-entities)
+    - [for those entities, find all related informations](#for-those-entities-find-all-related-informations)
 - [References](#references)
 # Notes for answer tree ranking
 ## Related works for query answering/ranking
@@ -584,8 +588,42 @@ If necessary, It is feasible to write the code to convert this result to a real 
 It doesn't work with RDF graphs(graphs with loops)
 ### [RDFQuotient](https://rdfquotient.inria.fr/)
 
-# Data Acquisition
-Hmm dsahfiuasdhfiuah sdbffdasbhadf
+# Dataset Construction
+## get data from YAGO4
+### find all entities with `org.wikipedia.fr`
+```bash
+grep 'fr\.[Ww]ikipedia\.org' yago* > cnm
+```
+
+```bash
+grep -o '\/resource\/([^>]*)' cnm > cnmEntities
+```
+### delete duplicate entities
+```bash
+sort cnmEntities -o cnmEntitiesUniq | uniq
+```
+### for those entities, find all related informations
+We cannot just use `grep --file=***` here:
+```bash
+[xizhang@cedar006 2020-02-24]$ grep --file=cnmEntitiesUniq yago* > results
+grep: memory exhausted
+```
+I have found around 1.7 million distinct entities with "org.wikipedia.fr", if I do "grep --file=distinctEntities yago*" to gather all info, it will cause "memory exhausted", but if I do "grep" entity by entity, it will take around one year to finish. like the following:
+```bash
+#!/bin/bash
+input="cnmEntitiesUniq"
+echo -n > input
+mkdir tmp
+i=0
+while IFS= read -r line
+do
+  touch tmp/results${i}
+  grep "$line" yago* > tmp/results${i}
+  echo "${line} searched"
+  let "i++"
+done < "$input"
+```
+
 # References
 [1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th d knowledge management. 2011.
 
