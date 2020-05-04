@@ -47,6 +47,7 @@
     - [find all entities with `org.wikipedia.fr`](#find-all-entities-with-orgwikipediafr)
     - [delete duplicate entities](#delete-duplicate-entities)
     - [for those entities, find all related informations](#for-those-entities-find-all-related-informations)
+      - [find most frequent predicates](#find-most-frequent-predicates)
 - [References](#references)
 # Notes for answer tree ranking
 ## Related works for query answering/ranking
@@ -724,7 +725,7 @@ source/Paris>
 source/Paris>
 ```
 
-find most frequent predicates
+#### find most frequent predicates
 ```python
 mport re
 import collections
