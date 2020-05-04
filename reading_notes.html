@@ -784,6 +784,38 @@ source/Paris&gt;
  &lt;http://yago-knowledge.org/resource/Laurent_Marceline_Q3219364&gt; | &lt;http://schema.org/birthPlace&gt; | &lt;http://yago-knowledge.org/re
 source/Paris&gt;
 </div></code></pre>
+<p>find most frequent predicates</p>
+<pre><code class="language-python"><div>mport re
+<span class="hljs-keyword">import</span> collections
+
+cnt = collections.Counter()
+<span class="hljs-keyword">with</span> open(<span class="hljs-string">'exp_file'</span>,<span class="hljs-string">"r"</span>, encoding=<span class="hljs-string">"utf-8"</span>) <span class="hljs-keyword">as</span> fe:
+    line = fe.readline()
+    <span class="hljs-keyword">while</span> line:
+        m = re.search(<span class="hljs-string">'&lt;([^&lt;&gt;]*)&gt;[^&lt;]*&lt;([^&lt;&gt;]*)&gt;'</span>,line)
+        <span class="hljs-keyword">if</span> m <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+            p = m.group(<span class="hljs-number">2</span>)
+            cnt[p] += <span class="hljs-number">1</span>
+        line = fe.readline()
+fe.close()
+<span class="hljs-keyword">with</span> open(<span class="hljs-string">'edge_count'</span>,<span class="hljs-string">'w'</span>,encoding=<span class="hljs-string">"utf-8"</span>) <span class="hljs-keyword">as</span> fr:
+    fr.write(<span class="hljs-string">"Predicate Count\n"</span>)
+    <span class="hljs-keyword">for</span> c,k <span class="hljs-keyword">in</span> cnt.most_common():
+        fr.write(c+<span class="hljs-string">" "</span>+str(k)+<span class="hljs-string">"\n"</span>)
+print(cnt)
+</div></code></pre>
+<pre><code class="language-bash"><div>[xizhang@cedar006 2020-02-24]$ head edge_count
+Predicate Count
+http://www.w3.org/2000/01/rdf-schema<span class="hljs-comment">#label 33547769</span>
+http://www.w3.org/2000/01/rdf-schema<span class="hljs-comment">#comment 23854212</span>
+http://schema.org/sameAs 17479845
+http://schema.org/alternateName 7259041
+http://www.w3.org/1999/02/22-rdf-syntax-ns<span class="hljs-comment">#type 6921180</span>
+http://www.w3.org/2002/07/owl<span class="hljs-comment">#sameAs 3773345</span>
+http://schema.org/memberOf 1179234
+http://schema.org/hasOccupation 840251
+http://schema.org/image 750119
+</div></code></pre>
 <h1 id="references">References</h1>
 <p>[1] Elbassuoni, Shady, and Roi Blanco. &quot;Keyword search over RDF graphs.&quot; Proceedings of the 20th d knowledge management. 2011.</p>
 <p>[2] Le, Wangchao, et al. &quot;Scalable keyword search on large RDF data.&quot; IEEE Transactions on knowledge and data engineering 26.11 (2014): 2774-2788.</p>

@@ -724,6 +724,42 @@ source/Paris>
 source/Paris>
 ```
 
+find most frequent predicates
+```python
+mport re
+import collections
+
+cnt = collections.Counter()
+with open('exp_file',"r", encoding="utf-8") as fe:
+    line = fe.readline()
+    while line:
+        m = re.search('<([^<>]*)>[^<]*<([^<>]*)>',line)
+        if m is not None:
+            p = m.group(2)
+            cnt[p] += 1
+        line = fe.readline()
+fe.close()
+with open('edge_count','w',encoding="utf-8") as fr:
+    fr.write("Predicate Count\n")
+    for c,k in cnt.most_common():
+        fr.write(c+" "+str(k)+"\n")
+print(cnt)
+```
+
+```bash
+[xizhang@cedar006 2020-02-24]$ head edge_count
+Predicate Count
+http://www.w3.org/2000/01/rdf-schema#label 33547769
+http://www.w3.org/2000/01/rdf-schema#comment 23854212
+http://schema.org/sameAs 17479845
+http://schema.org/alternateName 7259041
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type 6921180
+http://www.w3.org/2002/07/owl#sameAs 3773345
+http://schema.org/memberOf 1179234
+http://schema.org/hasOccupation 840251
+http://schema.org/image 750119
+```
+
 # References
 [1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th d knowledge management. 2011.
 
