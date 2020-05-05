@@ -591,9 +591,34 @@ It doesn't work with RDF graphs(graphs with loops)
 
 # Dataset Construction
 ## get data from YAGO4
+P.S.
+YAGO4 has embedded structures like : 
+```
+<<        <http://yago-knowledge.org/resource/Ruth_Milles>        <http://schema.org/deathPlace>        <http://yago-knowledge.org/resource/Rome>        >>        <http://schema.org/startDate>        "1932"^^<http://www.w3.org/2001/XMLSchema#gYear>        .
+<<        <http://yago-knowledge.org/resource/Shadowrun>        <http://schema.org/publisher>        <http://yago-knowledge.org/resource/Catalyst_Game_Labs>        >>        <http://schema.org/startDate>   2007-06"^^<http://www.w3.org/2001/XMLSchema#gYearMonth>.
+```
+and in another file, she dies in another year
+```
+[xizhang@cedar006 2020-02-24]$ grep 'Ruth_Milles' *.nt
+yago-wd-facts.nt:<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/deathPlace>	<http://yago-knowledge.org/resource/Rome>	.
+yago-wd-facts.nt:<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/knowsLanguage>	<http://yago-knowledge.org/resource/Swedish_language>	.
+yago-wd-facts.nt:<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/hasOccupation>	<http://yago-knowledge.org/resource/sculptor_Q1281618>	.
+yago-wd-facts.nt:<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/hasOccupation>	<http://yago-knowledge.org/resource/Writer>	.
+yago-wd-facts.nt:<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/nationality>	<http://yago-knowledge.org/resource/Sweden>	.
+yago-wd-facts.nt:<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/birthPlace>	<http://yago-knowledge.org/resource/Vallentuna_parish_Q7102931>	.
+yago-wd-facts.nt:<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/Académie_Colarossi>.
+yago-wd-facts.nt:<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/École_des_Beaux-Arts>	.
+yago-wd-facts.nt:<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/Konstfack>	.
+yago-wd-facts.nt:<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/Royal_Swedish_Academy_of_Fine_Arts>	.
+yago-wd-facts.nt:<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/givenName>	<http://yago-knowledge.org/resource/Ruth_(given_name)>	.
+yago-wd-facts.nt:<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/familyName>	<http://yago-knowledge.org/resource/Milles>	.
+yago-wd-facts.nt:<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/homeLocation>	<http://yago-knowledge.org/resource/Rome>	.
+yago-wd-facts.nt:<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/deathDate>	"1941-02-11"^^<http://www.w3.org/2001/XMLSchema#date>	.
+yago-wd-facts.nt:<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/birthDate>	"1873-04-19"^^<http://www.w3.org/2001/XMLSchema#date>	.
+```
 ### find all entities with `org.wikipedia.fr`
 ```bash
-grep 'fr\.[Ww]ikipedia\.org' yago* > cnm
+grep 'fr\.[Ww]ikipedia\.org' *.nt > cnm
 ```
 
 ```bash
@@ -606,7 +631,7 @@ sort cnmEntities -o cnmEntitiesUniq | uniq
 ### for those entities, find all related informations
 We cannot just use `grep --file=***` here:
 ```bash
-[xizhang@cedar006 2020-02-24]$ grep --file=cnmEntitiesUniq yago* > results
+[xizhang@cedar006 2020-02-24]$ grep --file=cnmEntitiesUniq *.nt > results
 grep: memory exhausted
 ```
 I have found around 1.7 million distinct entities with "org.wikipedia.fr", if I do "grep --file=distinctEntities yago*" to gather all info, it will cause "memory exhausted", but if I do "grep" entity by entity, it will take around one year to finish. like the following:
@@ -619,7 +644,7 @@ i=0
 while IFS= read -r line
 do
   touch tmp/results${i}
-  grep "$line" yago* > tmp/results${i}
+  grep "$line" *.nt > tmp/results${i}
   echo "${line} searched"
   let "i++"
 done < "$input"
@@ -632,7 +657,7 @@ import re
 entity_set = set(line.strip() for line in open('cnmEntitiesUniq',"r", encoding="utf-8"))
 with open('exp_file',"w", encoding="utf-8") as fe:
     for filename in os.listdir(os.getcwd()):
-        if filename.startswith("yago-wd-"):
+        if filename.endswith("yago-wd-"):
             with open(filename,"r", encoding="utf-8") as fp:
                 line = fp.readline()
                 while line:
@@ -657,7 +682,6 @@ file yago-wd-sameAs.nt finished.
 file yago-wd-schema.nt finished.
 file yago-wd-shapes.nt finished.
 file yago-wd-simple-types.nt finished.
-file yago-wd-annotated-facts.ntx finished.
 [xizhang@cedar006 2020-02-24]$ wc -l exp_file
 103647042 exp_file
 ```
@@ -760,7 +784,59 @@ http://schema.org/memberOf 1179234
 http://schema.org/hasOccupation 840251
 http://schema.org/image 750119
 ```
+find most frequent nodes
+*here, the nodes like labels/comments are not counted, only entities are counted*
+```python
+import re
+import collections
+import codecs
 
+cnt = collections.Counter()
+with open('exp_file',"r", encoding="utf-8") as fe:
+    line = fe.readline()
+    while line:
+        #search the source
+        m = re.search('<([^<>]*)>[^<]*<([^<>]*)>',line)
+        #search the destination
+        n = re.search('<([^<>]*)>[^<]*<([^<>]*)[^<]*\s<([^<>]*)>',line)
+        if m is not None:
+            p = m.group(1)
+            cnt[p] += 1
+        if n is not None:
+            q = n.group(3)
+            cnt[q] += 1
+        line = fe.readline()
+fe.close()
+print("search finished")
+with open('node_count','wb') as fr:
+    fr.write(("Node Count\n").encode('utf-8'))
+    for c,k in cnt.most_common():
+        fr.write(c.encode('utf-8'))
+        fr.write((" "+str(k)+"\n").encode('utf-8'))
+fr.close()
+```
+the result
+```bash
+[xizhang@cedar006 2020-02-24]$ head node_count
+Node Count
+http://schema.org/Thing 1837705
+http://schema.org/Person 592238
+http://yago-knowledge.org/resource/Human 590824
+http://schema.org/Place 566068
+http://yago-knowledge.org/resource/male_Q6581097 483770
+http://schema.org/AdministrativeArea 325072
+http://schema.org/Organization 286579
+http://schema.org/CreativeWork 269489
+http://bioschemas.org/Taxon 255199
+```
+
+By Postgres
+```sql
+postgres= CREATE TABLE yago_output (s varchar, p varchar, o varchar, dot varchar);
+CREATE TABLE
+postgres= COPY yago_output FROM '/data/yago4/2020-02-24/exp_file';
+
+```
 # References
 [1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th d knowledge management. 2011.
 
