@@ -592,7 +592,7 @@ It doesn't work with RDF graphs(graphs with loops)
 
 # Dataset Construction
 ## get data from YAGO4
-Here we want to extract all entities in `YAGO4` that has a `org.wikipedia.fr`, then we gather all their appearances in the `YAGO4` to construct a dataset.
+Here we want to extract all entities in `YAGO4` that has a `org.wikipedia.fr` link, then we gather all their appearances in the `YAGO4` to construct a dataset.
 
 Note:
 YAGO4 has embedded structures like : 
