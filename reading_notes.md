@@ -592,13 +592,17 @@ It doesn't work with RDF graphs(graphs with loops)
 
 # Dataset Construction
 ## get data from YAGO4
-P.S.
+Here we want to extract all entities in `YAGO4` that has a `org.wikipedia.fr`, then we gather all their appearances in the `YAGO4` to construct a dataset.
+
+Note:
 YAGO4 has embedded structures like : 
 ```
 <<        <http://yago-knowledge.org/resource/Ruth_Milles>        <http://schema.org/deathPlace>        <http://yago-knowledge.org/resource/Rome>        >>        <http://schema.org/startDate>        "1932"^^<http://www.w3.org/2001/XMLSchema#gYear>        .
 <<        <http://yago-knowledge.org/resource/Shadowrun>        <http://schema.org/publisher>        <http://yago-knowledge.org/resource/Catalyst_Game_Labs>        >>        <http://schema.org/startDate>   2007-06"^^<http://www.w3.org/2001/XMLSchema#gYearMonth>.
 ```
-and in another file, she dies in another year
+"The .ntx file is Extended RDF which goes beyond the simple N-triple format.
+
+*Interestingly*, in another file, she dies in another year
 ```
 [xizhang@cedar006 2020-02-24]$ grep 'Ruth_Milles' *.nt
 yago-wd-facts.nt:<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/deathPlace>	<http://yago-knowledge.org/resource/Rome>	.

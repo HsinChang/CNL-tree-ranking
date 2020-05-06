@@ -665,12 +665,14 @@ If necessary, It is feasible to write the code to convert this result to a real 
 <h3 id="rdfquotient"><a href="https://rdfquotient.inria.fr/">RDFQuotient</a></h3>
 <h1 id="dataset-construction">Dataset Construction</h1>
 <h2 id="get-data-from-yago4">get data from YAGO4</h2>
-<p>P.S.
+<p>Here we want to extract all entities in <code>YAGO4</code> that has a <code>org.wikipedia.fr</code>, then we gather all their appearances in the <code>YAGO4</code> to construct a dataset.</p>
+<p>Note:
 YAGO4 has embedded structures like :</p>
 <pre><code><code><div>&lt;&lt;        &lt;http://yago-knowledge.org/resource/Ruth_Milles&gt;        &lt;http://schema.org/deathPlace&gt;        &lt;http://yago-knowledge.org/resource/Rome&gt;        &gt;&gt;        &lt;http://schema.org/startDate&gt;        &quot;1932&quot;^^&lt;http://www.w3.org/2001/XMLSchema#gYear&gt;        .
 &lt;&lt;        &lt;http://yago-knowledge.org/resource/Shadowrun&gt;        &lt;http://schema.org/publisher&gt;        &lt;http://yago-knowledge.org/resource/Catalyst_Game_Labs&gt;        &gt;&gt;        &lt;http://schema.org/startDate&gt;   2007-06&quot;^^&lt;http://www.w3.org/2001/XMLSchema#gYearMonth&gt;.
 </div></code></code></pre>
-<p>and in another file, she dies in another year</p>
+<p>&quot;The .ntx file is Extended RDF which goes beyond the simple N-triple format.</p>
+<p><em>Interestingly</em>, in another file, she dies in another year</p>
 <pre><code><code><div>[xizhang@cedar006 2020-02-24]$ grep 'Ruth_Milles' *.nt
 yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Ruth_Milles&gt;	&lt;http://schema.org/deathPlace&gt;	&lt;http://yago-knowledge.org/resource/Rome&gt;	.
 yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Ruth_Milles&gt;	&lt;http://schema.org/knowsLanguage&gt;	&lt;http://yago-knowledge.org/resource/Swedish_language&gt;	.
