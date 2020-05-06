@@ -48,6 +48,7 @@
     - [delete duplicate entities](#delete-duplicate-entities)
     - [for those entities, find all related informations](#for-those-entities-find-all-related-informations)
       - [find most frequent predicates](#find-most-frequent-predicates)
+      - [find most frequent nodes](#find-most-frequent-nodes)
 - [References](#references)
 # Notes for answer tree ranking
 ## Related works for query answering/ranking
@@ -784,7 +785,7 @@ http://schema.org/memberOf 1179234
 http://schema.org/hasOccupation 840251
 http://schema.org/image 750119
 ```
-find most frequent nodes
+#### find most frequent nodes
 *here, the nodes like labels/comments are not counted, only entities are counted*
 ```python
 import re
