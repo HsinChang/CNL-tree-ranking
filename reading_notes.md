@@ -664,7 +664,7 @@ import re
 entity_set = set(line.strip() for line in open('cnmEntitiesUniq',"r", encoding="utf-8"))
 with open('exp_file',"w", encoding="utf-8") as fe:
     for filename in os.listdir(os.getcwd()):
-        if filename.endswith("yago-wd-"):
+        if filename.endswith(".nt"):
             with open(filename,"r", encoding="utf-8") as fp:
                 line = fp.readline()
                 while line:
@@ -875,7 +875,79 @@ postgres= select p, count(*) as cnt from yago_output group by p order by cnt des
  <http://schema.org/containsPlace>                      |   204286
 ```
 ### explore a path
-
+first search 
+```
+[xizhang@cedar006 2020-02-24]$ grep Ruth_Milles exp_file
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/deathPlace>	<http://yago-knowledge.org/resource/Rome>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/knowsLanguage>	<http://yago-knowledge.org/resource/Swedish_language>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/hasOccupation>	<http://yago-knowledge.org/resource/sculptor_Q1281618>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/hasOccupation>	<http://yago-knowledge.org/resource/Writer>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/nationality>	<http://yago-knowledge.org/resource/Sweden>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/birthPlace>	<http://yago-knowledge.org/resource/Vallentuna_parish_Q7102931>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/Académie_Colarossi>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/École_des_Beaux-Arts>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/Konstfack>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/Royal_Swedish_Academy_of_Fine_Arts>.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/givenName>	<http://yago-knowledge.org/resource/Ruth_(given_name)>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/familyName>	<http://yago-knowledge.org/resource/Milles>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/homeLocation>	<http://yago-knowledge.org/resource/Rome>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/deathDate>	"1941-02-11"^^<http://www.w3.org/2001/XMLSchema#date>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/birthDate>	"1873-04-19"^^<http://www.w3.org/2001/XMLSchema#date>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/image>	<http://commons.wikimedia.org/wiki/Special:FilePath/Ruth%20Milles%201890.jpg>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://yago-knowledge.org/resource/Human>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/alternateName>	"Ruth Anna Maria Milles"@de	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/alternateName>	"Ruth Anna Maria Milles"@sv	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#label>	"Ruth Milles"@ast	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#label>	"Ruth Milles"@ca	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#label>	"Ruth Milles"@da	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#label>	"Ruth Milles"@de	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#label>	"Ruth Milles"@en	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#label>	"Ruth Milles"@es	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#label>	"Ruth Milles"@fi	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#label>	"Ruth Milles"@fr	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#label>	"Ruth Milles"@ga	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#label>	"Ruth Milles"@it	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#label>	"Ruth Milles"@nb	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#label>	"Ruth Milles"@nl	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#label>	"Ruth Milles"@nn	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#label>	"Ruth Milles"@pt	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#label>	"Ruth Milles"@sl	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#label>	"Ruth Milles"@sq	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#label>	"Ruth Milles"@sv	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#label>	"Ռութ Միլլես"@hy	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#comment>	"Swedish sculptor and writer (1873-1941)"@en	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#comment>	"Zweeds schrijfster (1873-1941)"@nl	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#comment>	"schwedische Bildhauerin und Autorin"@de	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#comment>	"svensk författare och skulptör"@sv	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#comment>	"svensk skribent"@da	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#comment>	"svensk skribent"@nb	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#comment>	"svensk skribent"@nn	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2000/01/rdf-schema#comment>	"نویسنده سوئدی"@fa	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2002/07/owl#sameAs>	<http://www.wikidata.org/entity/Q4967393>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/2002/07/owl#sameAs>	<http://dbpedia.org/resource/Ruth_Milles>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/sameAs>	"https://da.wikipedia.org/wiki/Ruth_Milles"^^<http://www.w3.org/2001/XMLSchema#anyURI>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/sameAs>	"https://en.wikipedia.org/wiki/Ruth_Milles"^^<http://www.w3.org/2001/XMLSchema#anyURI>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/sameAs>	"https://fr.wikipedia.org/wiki/Ruth_Milles"^^<http://www.w3.org/2001/XMLSchema#anyURI>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/sameAs>	"https://hy.wikipedia.org/wiki/%D5%8C%D5%B8%D6%82%D5%A9_%D5%84%D5%AB%D5%AC%D5%AC%D5%A5%D5%BD"^^<http://www.w3.org/2001/XMLSchema#anyURI>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://schema.org/sameAs>	"https://sv.wikipedia.org/wiki/Ruth_Milles"^^<http://www.w3.org/2001/XMLSchema#anyURI>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://schema.org/Person>	.
+<http://yago-knowledge.org/resource/Ruth_Milles>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://schema.org/Thing>	.
+```
+I think from the results, `alumniOf École_des_Beaux-Arts` is quite interesting. So,
+```
+[xizhang@cedar006 2020-02-24]$ grep École_des_Beaux-Arts exp_file
+<http://yago-knowledge.org/resource/Life_Class_at_the_École_des_Beaux-Arts_Q47263482>	<http://schema.org/creator>	<http://yago-knowledge.org/resource/Albert_Marquet>	.
+<http://yago-knowledge.org/resource/Ödön_Márffy>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/École_des_Beaux-Arts>	.
+<http://yago-knowledge.org/resource/Dwight_William_Tryon>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/École_des_Beaux-Arts>	.
+<http://yago-knowledge.org/resource/Jean_Dewasne_Q127266>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/École_des_Beaux-Arts>	.
+<http://yago-knowledge.org/resource/Chaim_Soutine>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/École_des_Beaux-Arts>	.
+<http://yago-knowledge.org/resource/Henry_Hudson_Kitson>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/École_des_Beaux-Arts>	.
+<http://yago-knowledge.org/resource/Jo_Davidson>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/École_des_Beaux-Arts>	.
+<http://yago-knowledge.org/resource/Marc_Moallic_Q19629475>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/École_des_Beaux-Arts>	.
+<http://yago-knowledge.org/resource/Charles_Gill_(artist)>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/École_des_Beaux-Arts>	.
+<http://yago-knowledge.org/resource/Charles_Mewès>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/École_des_Beaux-Arts>	.
+<http://yago-knowledge.org/resource/Pierre_Chapo>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/École_des_Beaux-Arts>
+```
 
 # References
 [1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th d knowledge management. 2011.
