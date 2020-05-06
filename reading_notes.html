@@ -117,6 +117,7 @@
 <ul>
 <li><a href="#find-most-frequent-predicates">find most frequent predicates</a></li>
 <li><a href="#find-most-frequent-nodes">find most frequent nodes</a></li>
+<li><a href="#by-postgres">By Postgres</a></li>
 </ul>
 </li>
 </ul>
@@ -888,12 +889,41 @@ http://schema.org/Organization 286579
 http://schema.org/CreativeWork 269489
 http://bioschemas.org/Taxon 255199
 </div></code></pre>
-<p>By Postgres</p>
+<h4 id="by-postgres">By Postgres</h4>
+<p><strong>load the data</strong></p>
 <pre><code class="language-sql"><div>postgres= <span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> yago_output (s <span class="hljs-built_in">varchar</span>, p <span class="hljs-built_in">varchar</span>, o <span class="hljs-built_in">varchar</span>, dot <span class="hljs-built_in">varchar</span>);
 <span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span>
 postgres= COPY yago_output <span class="hljs-keyword">FROM</span> <span class="hljs-string">'/data/yago4/2020-02-24/exp_file'</span>;
-
 </div></code></pre>
+<p><strong>count predicates</strong></p>
+<pre><code class="language-sql"><div>postgres= <span class="hljs-keyword">select</span> p, <span class="hljs-keyword">count</span>(*) <span class="hljs-keyword">as</span> cnt <span class="hljs-keyword">from</span> yago_output <span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> p <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> cnt <span class="hljs-keyword">desc</span>;
+</div></code></pre>
+<pre><code><code><div>                           p                            |   cnt
+--------------------------------------------------------+----------
+ &lt;http://www.w3.org/2000/01/rdf-schema#label&gt;           | 33547769
+ &lt;http://www.w3.org/2000/01/rdf-schema#comment&gt;         | 23854212
+ &lt;http://schema.org/sameAs&gt;                             | 17479845
+ &lt;http://schema.org/alternateName&gt;                      |  7259041
+ &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;      |  6921180
+ &lt;http://www.w3.org/2002/07/owl#sameAs&gt;                 |  3773345
+ &lt;http://schema.org/hasOccupation&gt;                      |   829065
+ &lt;http://schema.org/image&gt;                              |   750065
+ &lt;http://schema.org/nationality&gt;                        |   582650
+ &lt;http://schema.org/containedInPlace&gt;                   |   575822
+ &lt;http://schema.org/memberOf&gt;                           |   556325
+ &lt;http://schema.org/actor&gt;                              |   530058
+ &lt;http://schema.org/birthDate&gt;                          |   524214
+ &lt;http://schema.org/birthPlace&gt;                         |   491674
+ &lt;http://schema.org/givenName&gt;                          |   485594
+ &lt;http://schema.org/gender&gt;                             |   484089
+ &lt;http://schema.org/geo&gt;                                |   397398
+ &lt;http://schema.org/location&gt;                           |   279999
+ &lt;http://schema.org/url&gt;                                |   277453
+ &lt;http://schema.org/deathDate&gt;                          |   253830
+ &lt;http://schema.org/deathPlace&gt;                         |   218008
+ &lt;http://schema.org/containsPlace&gt;                      |   204286
+</div></code></code></pre>
+<h3 id="explore-a-path">explore a path</h3>
 <h1 id="references">References</h1>
 <p>[1] Elbassuoni, Shady, and Roi Blanco. &quot;Keyword search over RDF graphs.&quot; Proceedings of the 20th d knowledge management. 2011.</p>
 <p>[2] Le, Wangchao, et al. &quot;Scalable keyword search on large RDF data.&quot; IEEE Transactions on knowledge and data engineering 26.11 (2014): 2774-2788.</p>

@@ -49,6 +49,8 @@
     - [for those entities, find all related informations](#for-those-entities-find-all-related-informations)
       - [find most frequent predicates](#find-most-frequent-predicates)
       - [find most frequent nodes](#find-most-frequent-nodes)
+      - [By Postgres](#by-postgres)
+    - [explore a path](#explore-a-path)
 - [References](#references)
 # Notes for answer tree ranking
 ## Related works for query answering/ranking
@@ -835,13 +837,46 @@ http://schema.org/CreativeWork 269489
 http://bioschemas.org/Taxon 255199
 ```
 
-By Postgres
+#### By Postgres
+**load the data**
 ```sql
 postgres= CREATE TABLE yago_output (s varchar, p varchar, o varchar, dot varchar);
 CREATE TABLE
 postgres= COPY yago_output FROM '/data/yago4/2020-02-24/exp_file';
-
 ```
+**count predicates**
+```sql
+postgres= select p, count(*) as cnt from yago_output group by p order by cnt desc;
+```
+```
+                           p                            |   cnt
+--------------------------------------------------------+----------
+ <http://www.w3.org/2000/01/rdf-schema#label>           | 33547769
+ <http://www.w3.org/2000/01/rdf-schema#comment>         | 23854212
+ <http://schema.org/sameAs>                             | 17479845
+ <http://schema.org/alternateName>                      |  7259041
+ <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>      |  6921180
+ <http://www.w3.org/2002/07/owl#sameAs>                 |  3773345
+ <http://schema.org/hasOccupation>                      |   829065
+ <http://schema.org/image>                              |   750065
+ <http://schema.org/nationality>                        |   582650
+ <http://schema.org/containedInPlace>                   |   575822
+ <http://schema.org/memberOf>                           |   556325
+ <http://schema.org/actor>                              |   530058
+ <http://schema.org/birthDate>                          |   524214
+ <http://schema.org/birthPlace>                         |   491674
+ <http://schema.org/givenName>                          |   485594
+ <http://schema.org/gender>                             |   484089
+ <http://schema.org/geo>                                |   397398
+ <http://schema.org/location>                           |   279999
+ <http://schema.org/url>                                |   277453
+ <http://schema.org/deathDate>                          |   253830
+ <http://schema.org/deathPlace>                         |   218008
+ <http://schema.org/containsPlace>                      |   204286
+```
+### explore a path
+
+
 # References
 [1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th d knowledge management. 2011.
 
