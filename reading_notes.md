@@ -51,6 +51,7 @@
       - [find most frequent nodes](#find-most-frequent-nodes)
       - [By Postgres](#by-postgres)
     - [explore a path](#explore-a-path)
+    - [load the data with `RDF-DB`](#load-the-data-with-rdf-db)
 - [References](#references)
 # Notes for answer tree ranking
 ## Related works for query answering/ranking
@@ -848,6 +849,7 @@ postgres= COPY yago_output FROM '/data/yago4/2020-02-24/exp_file';
 ```sql
 postgres= select p, count(*) as cnt from yago_output group by p order by cnt desc;
 ```
+
 ```
                            p                            |   cnt
 --------------------------------------------------------+----------
@@ -947,6 +949,50 @@ I think from the results, `alumniOf École_des_Beaux-Arts` is quite interesting.
 <http://yago-knowledge.org/resource/Charles_Gill_(artist)>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/École_des_Beaux-Arts>	.
 <http://yago-knowledge.org/resource/Charles_Mewès>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/École_des_Beaux-Arts>	.
 <http://yago-knowledge.org/resource/Pierre_Chapo>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/École_des_Beaux-Arts>
+```
+```sql
+select y1.s, y1.p, y1.o, y2.p y2.o from yago_output y1, yago_output y2 where y1.o = y2.s
+```
+### load the data with `RDF-DB`
+It took around 7 hours for `RDF-DB` to load the dataset, the whole log is as follows:
+```
+$ java -jar ontosql-rdfdb-1.0.11.jar -input "/data/yago4/2020-02-24/exp_file" -pf "conf/DataLoading.properties"
+16:52:37,459  INFO DataLoading:244 - Loading configuration...
+16:52:37,464  INFO DataLoading:186 - Creating database testrdfdb and loading triples...
+16:52:37,552  INFO LoadTriplesToDatabase:118 - Creating (or dropping and re-creating) database
+16:52:37,555  INFO LoadTriplesToDatabase:155 - Database testrdfdb exists...
+16:52:42,226  INFO LoadTriplesToDatabase:122 - Database testrdfdb dropped
+16:52:42,527  INFO LoadTriplesToDatabase:124 - Database testrdfdb created
+17:03:19,800  INFO DataLoading:189 - Data loaded
+17:03:19,800  INFO DataLoading:191 - Encoding dictionary and encoded triples...
+17:03:19,884  INFO Runner:207 - 	Creating dictionary table...
+17:03:19,889  INFO Runner:213 - 	Dictionary table created OK.
+17:03:19,889  INFO Runner:215 - 	Populating dictionary table...
+17:08:58,108  INFO Runner:226 - 	Dictionary table populated OK.
+17:08:58,108  INFO Runner:228 - 	Creating dictionary indexes...
+17:10:22,511  INFO Runner:234 - 	Dictionary indexes created OK.
+17:10:22,514  INFO Runner:177 - 	Encoded triples table created OK.
+17:10:22,514  INFO Runner:179 - 	Populating encoded triples table...
+17:26:33,016  INFO Runner:190 - 	Encoded triples table populated OK.
+17:26:33,017  INFO Runner:192 - 	Creating encoded triples indexes...
+17:36:50,429  INFO Runner:198 - 	Encoded triples indexes created OK.
+17:36:50,430  INFO DataLoading:193 - Dictionary encoded and encoded triples created.
+17:36:50,430  INFO DataLoading:194 - Encoding constraint into dictionary...
+17:38:51,073  INFO DataLoading:199 - Saturating graph with type RDFS_SAT...
+17:38:51,074  INFO DataLoading:85 - Fetching RDF type dictionary-encode value...
+23:02:41,430  INFO DataLoading:108 - RDF graph saturation took 18810508 ms
+23:02:41,430  INFO DataLoading:201 - Graph saturation finished
+23:02:41,430  INFO DataLoading:206 - Conversing graph schema...
+23:06:25,085  INFO Runner:40 - 	Processing roles...
+23:12:31,206  INFO Runner:114 - Loaded 130 role entries in 366120 ms.
+23:12:31,207  INFO Runner:47 - 	Roles processed OK.
+23:13:05,996  INFO Runner:114 - Loaded 7889 concept entries in 34789 ms.
+23:13:05,997  INFO DataLoading:208 - Conversing finished
+23:13:05,997  INFO DataLoading:212 - Generating statistic tables...
+23:29:25,485  INFO DataLoading:214 - Statistic tables generated
+23:29:25,489  INFO DataLoading:220 - Running ANALYZE
+23:30:06,458  INFO DataLoading:222 - ANALYZE finished
+23:30:06,459  INFO DataLoading:224 - Everything done
 ```
 
 # References
