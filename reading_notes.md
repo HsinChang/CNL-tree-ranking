@@ -1063,6 +1063,108 @@ JOIN with_reverse v3
 WHERE v1.s = 46133435 /*Macron*/
   AND v3.o = 45329413 /*BNP_Paribas*/;
 ```
+better visualization:
+```sql
+SELECT v1.s, v1.p, v1.o, v2.p, v3.s, v3.p, v3.o
+FROM with_reverse v1
+JOIN with_reverse v2
+  ON v2.s = v1.o
+JOIN with_reverse v3
+  ON v3.s = v2.o
+WHERE v1.s = 46133435 /*Macron*/
+  AND v3.o = 45329413 /*BNP_Paribas*/;
+```
+
+```sql
+\copy (SELECT v1.s, v1.p, v1.o, v2.p, v3.s, v3.p, v3.o FROM with_reverse v1 JOIN with_reverse v2 ON v2.s = v1.o JOIN with_reverse v3 ON v3.s = v2.o WHERE v1.s = 46133435 /*Macron*/ AND v3.o = 45329413 /*BNP_Paribas*/) to '/data/yago4/tmp.csv' CSV HEADER;
+```
+Visualize the results
+```
+<http://yago-knowledge.org/resource/Emmanuel_Macron>
+ <http://schema.org/alumniOf>
+ <http://yago-knowledge.org/resource/Sciences_Po>
+ <http://www.w3.org/2000/01/rdf-schema#label>
+ """������������������""@zh"
+ <http://www.w3.org/2000/01/rdf-schema#label>
+ <http://yago-knowledge.org/resource/BNP_Paribas>
+ .
+<http://yago-knowledge.org/resource/Emmanuel_Macron>
+ <http://schema.org/alumniOf>
+ <http://yago-knowledge.org/resource/Sciences_Po>
+ <http://www.w3.org/2000/01/rdf-schema#label>
+ """������������������""@ja"
+ <http://schema.org/alternateName>
+ <http://yago-knowledge.org/resource/BNP_Paribas>
+ .
+ <http://yago-knowledge.org/resource/Emmanuel_Macron>
+ <http://schema.org/alumniOf>
+ <http://yago-knowledge.org/resource/Sciences_Po>
+ <http://schema.org/alternateName>
+ """���������������������""@zh"
+ <http://schema.org/alternateName>
+ <http://yago-knowledge.org/resource/BNP_Paribas>
+ .
+ <http://yago-knowledge.org/resource/Emmanuel_Macron>
+ <http://schema.org/nationality>
+ <http://yago-knowledge.org/resource/France>
+ <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
+ <http://schema.org/Place>
+ <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
+ <http://yago-knowledge.org/resource/BNP_Paribas>
+ .
+```
+We Can see that `RDF_DB` has a serious encoding problem
+```sql
+
+```
+But here let us just ignore all `#type` and `#lable`
+
+```
+   key    |                          value
+----------+----------------------------------------------------------
+ 15756171 | <http://www.w3.org/2000/01/rdf-schema#label>
+ 41834368 | <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
+ 26431485 | <http://schema.org/alternateName>
+```
+so we modify the `SQL`:
+```sql
+SELECT v1.s, v1.p, v1.o, v2.p, v3.s, v3.p, v3.o
+FROM with_reverse v1
+JOIN with_reverse v2
+  ON v2.s = v1.o
+JOIN with_reverse v3
+  ON v3.s = v2.o
+WHERE v1.s = 46133435 /*Macron*/
+  AND v3.o = 45329413 /*BNP_Paribas*/
+  AND NOT (v1.p = 15756171 OR v1.p = 41834368 OR v1.p= 26431485 OR v2.p = 15756171 OR v2.p = 41834368 OR v2.p=26431485 OR v3.p = 15756171 OR v3.p = 41834368 OR v3.p=26431485);
+```
+results
+There is no results
+visualize
+```sql
+\copy (SELECT v1.s, v1.p, v1.o, v2.p, v3.s, v3.p, v3.o FROM with_reverse v1 JOIN with_reverse v2 ON v2.s = v1.o JOIN with_reverse v3 ON v3.s = v2.o WHERE v1.s = 46133435 /*Macron*/ AND v3.o = 45329413 /*BNP_Paribas*/ AND NOT (v1.p = 15756171 OR v1.p = 41834368 OR v1.p= 26431485 OR v2.p = 15756171 OR v2.p = 41834368 OR v2.p=26431485 OR v3.p = 15756171 OR v3.p = 41834368 OR v3.p=26431485)) to '/data/yago4/tmp1.csv' CSV HEADER;
+COPY 0
+```
+Try length 2
+```sql
+\copy (SELECT v1.s, v1.p, v1.o, v2.p, v2.o FROM with_reverse v1 JOIN with_reverse v2 ON v2.s = v1.o WHERE v1.s = 46133435 /*Macron*/ AND v2.o = 45329413 /*BNP_Paribas*/ AND NOT (v1.p = 15756171 OR v1.p = 41834368 OR v1.p= 26431485 OR v2.p = 15756171 OR v2.p = 41834368 OR v2.p=26431485)) to '/data/yago4/tmp1.csv' CSV HEADER;
+COPY 0
+```
+length 4
+```sql
+\copy (SELECT v1.s, v1.p, v1.o, v2.p, v3.s, v3.p, v3.o, v4.p, v4.o FROM with_reverse v1 JOIN with_reverse v2 ON v2.s = v1.o JOIN with_reverse v3 ON v3.s = v2.o JOIN with_reverse v4 ON v3.o = v4.s WHERE v1.s = 46133435 /*Macron*/ AND v4.o = 45329413 /*BNP_Paribas*/ AND NOT (v1.p = 15756171 OR v1.p = 41834368 OR v1.p= 26431485 OR v2.p = 15756171 OR v2.p = 41834368 OR v2.p=26431485 OR v3.p = 15756171 OR v3.p = 41834368 OR v3.p=26431485 OR v4.p = 15756171 OR v4.p = 41834368 OR v4.p=26431485)) to '/data/yago4/tmp1.csv' CSV HEADER;
+```
+All paths with length 3
+```sql
+SELECT v1.s, v1.p, v1.o, v2.p, v3.s, v3.p, v3.o
+FROM with_reverse v1
+JOIN with_reverse v2
+  ON v2.s = v1.o
+JOIN with_reverse v3
+  ON v3.s = v2.o
+WHERE NOT (v1.p = 15756171 OR v1.p = 41834368 OR v1.p= 26431485 OR v2.p = 15756171 OR v2.p = 41834368 OR v2.p=26431485 OR v3.p = 15756171 OR v3.p = 41834368 OR v3.p=26431485);
+```
+
 ### problems loading YAGO4 with `rdflib`
 
 #### `.` right in the third column instead of being the fourth one
