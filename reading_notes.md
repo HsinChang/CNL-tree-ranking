@@ -1230,6 +1230,7 @@ JOIN with_reverse v2
 JOIN with_reverse v3
   ON v3.s = v2.o
 WHERE NOT (v1.p = 15756171 OR v1.p = 41834368 OR v1.p= 26431485 OR v2.p = 15756171 OR v2.p = 41834368 OR v2.p=26431485 OR v3.p = 15756171 OR v3.p = 41834368 OR v3.p=26431485);
+Processus arrêté
 ```
 
 ### problems loading YAGO4 with `rdflib`
