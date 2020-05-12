@@ -1185,6 +1185,71 @@ COPY 0
 <p>length 4</p>
 <pre><code class="language-sql"><div>\copy (<span class="hljs-keyword">SELECT</span> v1.s, v1.p, v1.o, v2.p, v3.s, v3.p, v3.o, v4.p, v4.o <span class="hljs-keyword">FROM</span> with_reverse v1 <span class="hljs-keyword">JOIN</span> with_reverse v2 <span class="hljs-keyword">ON</span> v2.s = v1.o <span class="hljs-keyword">JOIN</span> with_reverse v3 <span class="hljs-keyword">ON</span> v3.s = v2.o <span class="hljs-keyword">JOIN</span> with_reverse v4 <span class="hljs-keyword">ON</span> v3.o = v4.s <span class="hljs-keyword">WHERE</span> v1.s = <span class="hljs-number">46133435</span> <span class="hljs-comment">/*Macron*/</span> <span class="hljs-keyword">AND</span> v4.o = <span class="hljs-number">45329413</span> <span class="hljs-comment">/*BNP_Paribas*/</span> <span class="hljs-keyword">AND</span> <span class="hljs-keyword">NOT</span> (v1.p = <span class="hljs-number">15756171</span> <span class="hljs-keyword">OR</span> v1.p = <span class="hljs-number">41834368</span> <span class="hljs-keyword">OR</span> v1.p= <span class="hljs-number">26431485</span> <span class="hljs-keyword">OR</span> v2.p = <span class="hljs-number">15756171</span> <span class="hljs-keyword">OR</span> v2.p = <span class="hljs-number">41834368</span> <span class="hljs-keyword">OR</span> v2.p=<span class="hljs-number">26431485</span> <span class="hljs-keyword">OR</span> v3.p = <span class="hljs-number">15756171</span> <span class="hljs-keyword">OR</span> v3.p = <span class="hljs-number">41834368</span> <span class="hljs-keyword">OR</span> v3.p=<span class="hljs-number">26431485</span> <span class="hljs-keyword">OR</span> v4.p = <span class="hljs-number">15756171</span> <span class="hljs-keyword">OR</span> v4.p = <span class="hljs-number">41834368</span> <span class="hljs-keyword">OR</span> v4.p=<span class="hljs-number">26431485</span>)) <span class="hljs-keyword">to</span> <span class="hljs-string">'/data/yago4/tmp1.csv'</span> CSV HEADER;
 </div></code></pre>
+<pre><code class="language-sql"><div>\copy (<span class="hljs-keyword">SELECT</span> v1.s, v1.p, v1.o, v2.p, v3.s, v3.p, v3.o, v4.p, v4.o <span class="hljs-keyword">FROM</span> with_reverse v1 <span class="hljs-keyword">JOIN</span> with_reverse v2 <span class="hljs-keyword">ON</span> v2.s = v1.o <span class="hljs-keyword">JOIN</span> with_reverse v3 <span class="hljs-keyword">ON</span> v3.s = v2.o <span class="hljs-keyword">JOIN</span> with_reverse v4 <span class="hljs-keyword">ON</span> v3.o = v4.s <span class="hljs-keyword">WHERE</span> v1.s = <span class="hljs-number">46133435</span> <span class="hljs-comment">/*Macron*/</span> <span class="hljs-keyword">AND</span> v4.o = <span class="hljs-number">45329413</span> <span class="hljs-comment">/*BNP_Paribas*/</span> <span class="hljs-keyword">AND</span> <span class="hljs-keyword">NOT</span> (v1.p = <span class="hljs-number">15756171</span> <span class="hljs-keyword">OR</span> v1.p = <span class="hljs-number">41834368</span> <span class="hljs-keyword">OR</span> v1.p= <span class="hljs-number">26431485</span> <span class="hljs-keyword">OR</span> v2.p = <span class="hljs-number">15756171</span> <span class="hljs-keyword">OR</span> v2.p = <span class="hljs-number">41834368</span> <span class="hljs-keyword">OR</span> v2.p=<span class="hljs-number">26431485</span> <span class="hljs-keyword">OR</span> v3.p = <span class="hljs-number">15756171</span> <span class="hljs-keyword">OR</span> v3.p = <span class="hljs-number">41834368</span> <span class="hljs-keyword">OR</span> v3.p=<span class="hljs-number">26431485</span> <span class="hljs-keyword">OR</span> v4.p = <span class="hljs-number">15756171</span> <span class="hljs-keyword">OR</span> v4.p = <span class="hljs-number">41834368</span> <span class="hljs-keyword">OR</span> v4.p=<span class="hljs-number">26431485</span>)) <span class="hljs-keyword">to</span> <span class="hljs-string">'/data/yago4/tmp1.csv'</span> CSV HEADER;
+COPY 97
+</div></code></pre>
+<p>finally something meaningful</p>
+<pre><code><code><div>&lt;http://yago-knowledge.org/resource/Emmanuel_Macron&gt;
+ &lt;http://schema.org/alumniOf&gt;
+ &lt;http://yago-knowledge.org/resource/Sciences_Po&gt;
+ &lt;http://schema.org/alumniOf&gt;
+ &lt;http://yago-knowledge.org/resource/Jacques_de_Fouchier_Q11985034&gt;
+ &lt;http://schema.org/founder&gt;
+ &lt;http://yago-knowledge.org/resource/Cetelem&gt;
+ &lt;http://schema.org/parentOrganization&gt;
+ &lt;http://yago-knowledge.org/resource/BNP_Paribas&gt;
+ .
+ &lt;http://yago-knowledge.org/resource/Emmanuel_Macron&gt;
+ &lt;http://schema.org/alumniOf&gt;
+ &lt;http://yago-knowledge.org/resource/Sciences_Po&gt;
+ &lt;http://schema.org/alumniOf&gt;
+ &lt;http://yago-knowledge.org/resource/Jacques_de_Larosi��re&gt;
+ &lt;http://schema.org/memberOf&gt;
+ &lt;http://yago-knowledge.org/resource/Group_of_Thirty&gt;
+ &lt;http://schema.org/sponsor&gt;
+ &lt;http://yago-knowledge.org/resource/BNP_Paribas&gt;
+ .
+ &lt;http://yago-knowledge.org/resource/Emmanuel_Macron&gt;
+ &lt;http://schema.org/award&gt;
+ &lt;http://yago-knowledge.org/resource/Charlemagne_Prize&gt;
+ &lt;http://schema.org/award&gt;
+ &lt;http://yago-knowledge.org/resource/Jean-Claude_Trichet&gt;
+ &lt;http://schema.org/memberOf&gt;
+ &lt;http://yago-knowledge.org/resource/Group_of_Thirty&gt;
+ &lt;http://schema.org/sponsor&gt;
+ &lt;http://yago-knowledge.org/resource/BNP_Paribas&gt;
+ .
+ &lt;http://yago-knowledge.org/resource/Emmanuel_Macron&gt;
+ &lt;http://schema.org/alumniOf&gt;
+ &lt;http://yago-knowledge.org/resource/Sciences_Po&gt;
+ &lt;http://schema.org/alumniOf&gt;
+ &lt;http://yago-knowledge.org/resource/Jean-Claude_Trichet&gt;
+ &lt;http://schema.org/memberOf&gt;
+ &lt;http://yago-knowledge.org/resource/Group_of_Thirty&gt;
+ &lt;http://schema.org/sponsor&gt;
+ &lt;http://yago-knowledge.org/resource/BNP_Paribas&gt;
+ .
+ &lt;http://yago-knowledge.org/resource/Emmanuel_Macron&gt;
+ &lt;http://schema.org/alumniOf&gt;
+ &lt;http://yago-knowledge.org/resource/Lyc��e_Henri-IV&gt;
+ &lt;http://schema.org/location&gt;
+ &lt;http://yago-knowledge.org/resource/Abbey_of_Saint_Genevieve&gt;
+ &lt;http://www.w3.org/2000/01/rdf-schema#comment&gt;
+ &quot;&quot;&quot;���������� ���� ����������&quot;&quot;@ar&quot;
+ &lt;http://www.w3.org/2000/01/rdf-schema#comment&gt;
+ &lt;http://yago-knowledge.org/resource/BNP_Paribas&gt;
+ .
+ &lt;http://yago-knowledge.org/resource/Emmanuel_Macron&gt;
+ &lt;http://schema.org/alumniOf&gt;
+ &lt;http://yago-knowledge.org/resource/Sciences_Po&gt;
+ &lt;http://schema.org/alumniOf&gt;
+ &lt;http://yago-knowledge.org/resource/Christian_Noyer&gt;
+ &lt;http://schema.org/memberOf&gt;
+ &lt;http://yago-knowledge.org/resource/Group_of_Thirty&gt;
+ &lt;http://schema.org/sponsor&gt;
+ &lt;http://yago-knowledge.org/resource/BNP_Paribas&gt;
+ .
+</div></code></code></pre>
 <p>All paths with length 3</p>
 <pre><code class="language-sql"><div><span class="hljs-keyword">SELECT</span> v1.s, v1.p, v1.o, v2.p, v3.s, v3.p, v3.o
 <span class="hljs-keyword">FROM</span> with_reverse v1
