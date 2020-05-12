@@ -1079,6 +1079,80 @@ postgres= COPY yago_output <span class="hljs-keyword">FROM</span> <span class="h
 23:30:06,458  INFO DataLoading:222 - ANALYZE finished
 23:30:06,459  INFO DataLoading:224 - Everything done
 </div></code></code></pre>
+<h3 id="problems-loading-yago4-with-rdflib">problems loading YAGO4 with <code>rdflib</code></h3>
+<h4 id="right-in-the-third-column-instead-of-being-the-fourth-one"><code>.</code> right in the third column instead of being the fourth one</h4>
+<p>yago-wd-full-types.nt:<a href="http://yago-knowledge.org/resource/_Q17628927">http://yago-knowledge.org/resource/_Q17628927</a>	<a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#type">http://www.w3.org/1999/02/22-rdf-syntax-ns#type</a>	<a href="http://schema.org/CreativeWork">http://schema.org/CreativeWork</a>.
+yago-wd-full-types.nt:<a href="http://yago-knowledge.org/resource/Santa_Muerte">http://yago-knowledge.org/resource/Santa_Muerte</a>	<a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#type">http://www.w3.org/1999/02/22-rdf-syntax-ns#type</a>	<a href="http://schema.org/CreativeWork">http://schema.org/CreativeWork</a>.
+yago-wd-full-types.nt:<a href="http://yago-knowledge.org/resource/_Q3211007">http://yago-knowledge.org/resource/_Q3211007</a>	<a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#type">http://www.w3.org/1999/02/22-rdf-syntax-ns#type</a>	<a href="http://schema.org/CreativeWork">http://schema.org/CreativeWork</a>.
+yago-wd-full-types.nt:<a href="http://yago-knowledge.org/resource/_Q12975871">http://yago-knowledge.org/resource/_Q12975871</a>	<a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#type">http://www.w3.org/1999/02/22-rdf-syntax-ns#type</a>	<a href="http://schema.org/CreativeWork">http://schema.org/CreativeWork</a>.
+yago-wd-full-types.nt:<a href="http://yago-knowledge.org/resource/_Q2097151">http://yago-knowledge.org/resource/_Q2097151</a>	<a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#type">http://www.w3.org/1999/02/22-rdf-syntax-ns#type</a>	<a href="http://schema.org/CreativeWork">http://schema.org/CreativeWork</a>.
+yago-wd-full-types.nt:<a href="http://yago-knowledge.org/resource/_Q3211263">http://yago-knowledge.org/resource/_Q3211263</a>	<a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#type">http://www.w3.org/1999/02/22-rdf-syntax-ns#type</a>	<a href="http://schema.org/CreativeWork">http://schema.org/CreativeWork</a>.</p>
+<h4 id="mixed-usage-of-t-and-s">Mixed usage of <code>\t</code> and <code>\s</code></h4>
+<pre><code class="language-python"><div>[xizhang@cedar006 <span class="hljs-number">2020</span><span class="hljs-number">-02</span><span class="hljs-number">-24</span>]$ python3 pathSPARQL.py
+Traceback (most recent call last):
+  File <span class="hljs-string">"/home/cedar/xizhang/.local/lib/python3.6/site-packages/rdflib/plugins/parsers/ntriples.py"</span>, line <span class="hljs-number">154</span>, <span class="hljs-keyword">in</span> parse
+    self.parseline()
+  File <span class="hljs-string">"/home/cedar/xizhang/.local/lib/python3.6/site-packages/rdflib/plugins/parsers/ntriples.py"</span>, line <span class="hljs-number">197</span>, <span class="hljs-keyword">in</span> parseline
+    subject = self.subject()
+  File <span class="hljs-string">"/home/cedar/xizhang/.local/lib/python3.6/site-packages/rdflib/plugins/parsers/ntriples.py"</span>, line <span class="hljs-number">224</span>, <span class="hljs-keyword">in</span> subject
+    subj = self.uriref() <span class="hljs-keyword">or</span> self.nodeid()
+  File <span class="hljs-string">"/home/cedar/xizhang/.local/lib/python3.6/site-packages/rdflib/plugins/parsers/ntriples.py"</span>, line <span class="hljs-number">243</span>, <span class="hljs-keyword">in</span> uriref
+    uri = self.eat(r_uriref).group(<span class="hljs-number">1</span>)
+  File <span class="hljs-string">"/home/cedar/xizhang/.local/lib/python3.6/site-packages/rdflib/plugins/parsers/ntriples.py"</span>, line <span class="hljs-number">218</span>, <span class="hljs-keyword">in</span> eat
+    <span class="hljs-keyword">raise</span> ParseError(<span class="hljs-string">"Failed to eat %s at %s"</span> % (pattern.pattern, self.line))
+rdflib.plugins.parsers.ntriples.ParseError: Failed to eat &lt;([^:]+:[^\s<span class="hljs-string">"&lt;&gt;]*)&gt; at &lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm\xa0-_2:00_pm_Q52263123&gt;	&lt;http://schema.org/director&gt;	&lt;http://yago-knowledge.org/resource/Brad_Turner_(director)&gt;	.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "</span>pathSPARQL.py<span class="hljs-string">", line 5, in &lt;module&gt;
+    result = g.parse("</span>exp_file<span class="hljs-string">", format="</span>nt<span class="hljs-string">")
+  File "</span>/home/cedar/xizhang/.local/lib/python3<span class="hljs-number">.6</span>/site-packages/rdflib/graph.py<span class="hljs-string">", line 1078, in parse
+    parser.parse(source, self, **args)
+  File "</span>/home/cedar/xizhang/.local/lib/python3<span class="hljs-number">.6</span>/site-packages/rdflib/plugins/parsers/nt.py<span class="hljs-string">", line 26, in parse
+    parser.parse(f)
+  File "</span>/home/cedar/xizhang/.local/lib/python3<span class="hljs-number">.6</span>/site-packages/rdflib/plugins/parsers/ntriples.py<span class="hljs-string">", line 156, in parse
+    raise ParseError("</span>Invalid line: %<span class="hljs-string">r" % self.line)
+rdflib.plugins.parsers.ntriples.ParseError: Invalid line: '&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm\xa0-_2:00_pm_Q52263123&gt;\t&lt;http://schema.org/director&gt;\t&lt;http://yago-knowledge.org/resource/Brad_Turner_(director)&gt;\t.'
+</span></div></code></pre>
+<h4 id="space-inside-certain-entities">Space inside certain entities:</h4>
+<pre><code><code><div>yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/director&gt;	&lt;http://yago-knowledge.org/resource/Brad_Turner_(director)&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/actor&gt;	&lt;http://yago-knowledge.org/resource/Mark_Sheppard&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/actor&gt;	&lt;http://yago-knowledge.org/resource/Sean_Astin&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/actor&gt;	&lt;http://yago-knowledge.org/resource/James_Morrison_(actor)&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/actor&gt;	&lt;http://yago-knowledge.org/resource/John_Allen_Nelson&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/actor&gt;	&lt;http://yago-knowledge.org/resource/Kim_Raver&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/actor&gt;	&lt;http://yago-knowledge.org/resource/Channon_Roe&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/actor&gt;	&lt;http://yago-knowledge.org/resource/Jean_Smart&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/actor&gt;	&lt;http://yago-knowledge.org/resource/Angela_Sarafyan&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/actor&gt;	&lt;http://yago-knowledge.org/resource/Kiefer_Sutherland&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/actor&gt;	&lt;http://yago-knowledge.org/resource/Jude_Ciccolella&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/actor&gt;	&lt;http://yago-knowledge.org/resource/Glenn_Morshower&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/actor&gt;	&lt;http://yago-knowledge.org/resource/Penny_Balfour&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/actor&gt;	&lt;http://yago-knowledge.org/resource/Roger_Cross&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/actor&gt;	&lt;http://yago-knowledge.org/resource/Mary_Lynn_Rajskub&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/actor&gt;	&lt;http://yago-knowledge.org/resource/Gregory_Itzin&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/actor&gt;	&lt;http://yago-knowledge.org/resource/Patrick_Bauchau&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/24_(season_5)&gt;	&lt;http://schema.org/hasPart&gt;	&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/partOfSeason&gt;	&lt;http://yago-knowledge.org/resource/24_(season_5)&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/partOfSeries&gt;	&lt;http://yago-knowledge.org/resource/24_(TV_series)&gt;	.
+yago-wd-facts.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/inLanguage&gt;	&lt;http://yago-knowledge.org/resource/English_language&gt;	.
+yago-wd-full-types.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/TVEpisode&gt;	.
+yago-wd-labels.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;	&quot;13h00 - 14h00&quot;@fr	.
+yago-wd-labels.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;	&quot;Dalle 13:00 alle 14:00&quot;@it	.
+yago-wd-labels.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;	&quot;Day 5: 1:00 pm - 2:00 pm&quot;@en	.
+yago-wd-labels.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;	&quot;Tag 5: 13:00 Uhr – 14:00 Uhr&quot;@de	.
+yago-wd-labels.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/2000/01/rdf-schema#comment&gt;	&quot;Folge von 24&quot;@de	.
+yago-wd-labels.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/2000/01/rdf-schema#comment&gt;	&quot;aflevering van 24&quot;@nl	.
+yago-wd-labels.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/2000/01/rdf-schema#comment&gt;	&quot;episode of 24 (S5 E7)&quot;@en	.
+yago-wd-labels.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/2000/01/rdf-schema#comment&gt;	&quot;episodio della quinta stagione di 24&quot;@it	.
+yago-wd-sameAs.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/2002/07/owl#sameAs&gt;	&lt;http://www.wikidata.org/entity/Q52263123&gt;	.
+yago-wd-sameAs.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://schema.org/sameAs&gt;	&quot;https://fr.wikipedia.org/wiki/13h00_-_14h00_(%C3%A9pisode_de_24_Heures_chrono,_saison_5)&quot;^^&lt;http://www.w3.org/2001/XMLSchema#anyURI&gt;	.
+yago-wd-simple-types.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/Thing&gt;	.
+yago-wd-simple-types.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/CreativeWork&gt;	.
+yago-wd-simple-types.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/TVEpisode&gt;	.
+yago-wd-simple-types.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/Episode&gt;	.
+</div></code></code></pre>
 <h1 id="references">References</h1>
 <p>[1] Elbassuoni, Shady, and Roi Blanco. &quot;Keyword search over RDF graphs.&quot; Proceedings of the 20th d knowledge management. 2011.</p>
 <p>[2] Le, Wangchao, et al. &quot;Scalable keyword search on large RDF data.&quot; IEEE Transactions on knowledge and data engineering 26.11 (2014): 2774-2788.</p>
