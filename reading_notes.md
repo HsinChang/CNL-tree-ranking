@@ -1039,6 +1039,30 @@ $ java -jar ontosql-rdfdb-1.0.11.jar -input "/data/yago4/2020-02-24/exp_file" -p
 23:30:06,458  INFO DataLoading:222 - ANALYZE finished
 23:30:06,459  INFO DataLoading:224 - Everything done
 ```
+```
+postgres=# \c testrdfdb
+```
+```sql
+CREATE with_reverse with_reverse AS 
+SELECT s, p, o 
+FROM encoded_triples 
+UNION 
+SELECT o AS s, p, s AS o 
+FROM encoded_triples;
+```
+
+find paths with length 3 with dataset:
+
+```sql
+SELECT *
+FROM with_reverse v1
+JOIN with_reverse v2
+  ON v2.s = v1.o
+JOIN with_reverse v3
+  ON v3.s = v2.o
+WHERE v1.s = 46133435 /*Macron*/
+  AND v3.o = 45329413 /*BNP_Paribas*/;
+```
 ### problems loading YAGO4 with `rdflib`
 
 #### `.` right in the third column instead of being the fourth one
