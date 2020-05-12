@@ -117,10 +117,12 @@
 <ul>
 <li><a href="#find-most-frequent-predicates">find most frequent predicates</a></li>
 <li><a href="#find-most-frequent-nodes">find most frequent nodes</a></li>
+<li><a href="#find-most-frequent-types">find most frequent types</a></li>
 <li><a href="#by-postgres">By Postgres</a></li>
 </ul>
 </li>
 <li><a href="#explore-a-path">explore a path</a></li>
+<li><a href="#load-the-data-with-rdf-db">load the data with <code>RDF-DB</code></a></li>
 </ul>
 </li>
 </ul>
@@ -890,6 +892,45 @@ http://schema.org/Organization 286579
 http://schema.org/CreativeWork 269489
 http://bioschemas.org/Taxon 255199
 </div></code></pre>
+<h4 id="find-most-frequent-types">find most frequent types</h4>
+<pre><code class="language-python"><div><span class="hljs-keyword">import</span> re
+<span class="hljs-keyword">import</span> collections
+
+cnt = collections.Counter()
+<span class="hljs-keyword">with</span> open(<span class="hljs-string">'exp_file'</span>,<span class="hljs-string">"r"</span>, encoding=<span class="hljs-string">"utf-8"</span>) <span class="hljs-keyword">as</span> fe:
+    line = fe.readline()
+    <span class="hljs-keyword">while</span> line:
+        <span class="hljs-comment">#search the source</span>
+        m = re.search(<span class="hljs-string">'#type'</span>,line)
+        <span class="hljs-comment">#search the destination</span>
+        n = re.search(<span class="hljs-string">'&lt;([^&lt;&gt;]*)&gt;[^&lt;]*&lt;([^&lt;&gt;]*)[^&lt;]*\s&lt;([^&lt;&gt;]*)&gt;'</span>,line)
+        <span class="hljs-keyword">if</span> m <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-keyword">if</span> n <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+                q = n.group(<span class="hljs-number">3</span>)
+                cnt[q] += <span class="hljs-number">1</span>
+        line = fe.readline()
+fe.close()
+print(<span class="hljs-string">"search finished"</span>)
+<span class="hljs-keyword">with</span> open(<span class="hljs-string">'type_count'</span>,<span class="hljs-string">'wb'</span>) <span class="hljs-keyword">as</span> fr:
+    fr.write((<span class="hljs-string">"Type Count\n"</span>).encode(<span class="hljs-string">'utf-8'</span>))
+    <span class="hljs-keyword">for</span> c,k <span class="hljs-keyword">in</span> cnt.most_common():
+        fr.write(c.encode(<span class="hljs-string">'utf-8'</span>))
+        fr.write((<span class="hljs-string">" "</span>+str(k)+<span class="hljs-string">"\n"</span>).encode(<span class="hljs-string">'utf-8'</span>))
+fr.close()
+</div></code></pre>
+<p>result</p>
+<pre><code><code><div>[xizhang@cedar006 2020-02-24]$ head type_count
+Type Count
+http://schema.org/Thing 1837705
+http://schema.org/Person 592238
+http://yago-knowledge.org/resource/Human 590824
+http://schema.org/Place 566068
+http://schema.org/AdministrativeArea 325072
+http://schema.org/Organization 286579
+http://schema.org/CreativeWork 269489
+http://bioschemas.org/Taxon 255199
+http://schema.org/Corporation 167227
+</div></code></code></pre>
 <h4 id="by-postgres">By Postgres</h4>
 <p><strong>load the data</strong></p>
 <pre><code class="language-sql"><div>postgres= <span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> yago_output (s <span class="hljs-built_in">varchar</span>, p <span class="hljs-built_in">varchar</span>, o <span class="hljs-built_in">varchar</span>, dot <span class="hljs-built_in">varchar</span>);

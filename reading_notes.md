@@ -49,6 +49,7 @@
     - [for those entities, find all related informations](#for-those-entities-find-all-related-informations)
       - [find most frequent predicates](#find-most-frequent-predicates)
       - [find most frequent nodes](#find-most-frequent-nodes)
+      - [find most frequent types](#find-most-frequent-types)
       - [By Postgres](#by-postgres)
     - [explore a path](#explore-a-path)
     - [load the data with `RDF-DB`](#load-the-data-with-rdf-db)
@@ -837,7 +838,47 @@ http://schema.org/Organization 286579
 http://schema.org/CreativeWork 269489
 http://bioschemas.org/Taxon 255199
 ```
+#### find most frequent types
+```python
+import re
+import collections
 
+cnt = collections.Counter()
+with open('exp_file',"r", encoding="utf-8") as fe:
+    line = fe.readline()
+    while line:
+        #search the source
+        m = re.search('#type',line)
+        #search the destination
+        n = re.search('<([^<>]*)>[^<]*<([^<>]*)[^<]*\s<([^<>]*)>',line)
+        if m is not None:
+            if n is not None:
+                q = n.group(3)
+                cnt[q] += 1
+        line = fe.readline()
+fe.close()
+print("search finished")
+with open('type_count','wb') as fr:
+    fr.write(("Type Count\n").encode('utf-8'))
+    for c,k in cnt.most_common():
+        fr.write(c.encode('utf-8'))
+        fr.write((" "+str(k)+"\n").encode('utf-8'))
+fr.close()
+```
+result
+```
+[xizhang@cedar006 2020-02-24]$ head type_count
+Type Count
+http://schema.org/Thing 1837705
+http://schema.org/Person 592238
+http://yago-knowledge.org/resource/Human 590824
+http://schema.org/Place 566068
+http://schema.org/AdministrativeArea 325072
+http://schema.org/Organization 286579
+http://schema.org/CreativeWork 269489
+http://bioschemas.org/Taxon 255199
+http://schema.org/Corporation 167227
+```
 #### By Postgres
 **load the data**
 ```sql
