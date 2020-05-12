@@ -1235,13 +1235,14 @@ WHERE NOT (v1.p = 15756171 OR v1.p = 41834368 OR v1.p= 26431485 OR v2.p = 157561
 ### problems loading YAGO4 with `rdflib`
 
 #### `.` right in the third column instead of being the fourth one
+```
 yago-wd-full-types.nt:<http://yago-knowledge.org/resource/_Q17628927>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://schema.org/CreativeWork>.
 yago-wd-full-types.nt:<http://yago-knowledge.org/resource/Santa_Muerte>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://schema.org/CreativeWork>.
 yago-wd-full-types.nt:<http://yago-knowledge.org/resource/_Q3211007>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://schema.org/CreativeWork>.
 yago-wd-full-types.nt:<http://yago-knowledge.org/resource/_Q12975871>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://schema.org/CreativeWork>.
 yago-wd-full-types.nt:<http://yago-knowledge.org/resource/_Q2097151>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://schema.org/CreativeWork>.
 yago-wd-full-types.nt:<http://yago-knowledge.org/resource/_Q3211263>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://schema.org/CreativeWork>.
-
+```
 
 
 

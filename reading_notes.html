@@ -1261,12 +1261,13 @@ COPY 97
 </div></code></pre>
 <h3 id="problems-loading-yago4-with-rdflib">problems loading YAGO4 with <code>rdflib</code></h3>
 <h4 id="right-in-the-third-column-instead-of-being-the-fourth-one"><code>.</code> right in the third column instead of being the fourth one</h4>
-<p>yago-wd-full-types.nt:<a href="http://yago-knowledge.org/resource/_Q17628927">http://yago-knowledge.org/resource/_Q17628927</a>	<a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#type">http://www.w3.org/1999/02/22-rdf-syntax-ns#type</a>	<a href="http://schema.org/CreativeWork">http://schema.org/CreativeWork</a>.
-yago-wd-full-types.nt:<a href="http://yago-knowledge.org/resource/Santa_Muerte">http://yago-knowledge.org/resource/Santa_Muerte</a>	<a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#type">http://www.w3.org/1999/02/22-rdf-syntax-ns#type</a>	<a href="http://schema.org/CreativeWork">http://schema.org/CreativeWork</a>.
-yago-wd-full-types.nt:<a href="http://yago-knowledge.org/resource/_Q3211007">http://yago-knowledge.org/resource/_Q3211007</a>	<a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#type">http://www.w3.org/1999/02/22-rdf-syntax-ns#type</a>	<a href="http://schema.org/CreativeWork">http://schema.org/CreativeWork</a>.
-yago-wd-full-types.nt:<a href="http://yago-knowledge.org/resource/_Q12975871">http://yago-knowledge.org/resource/_Q12975871</a>	<a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#type">http://www.w3.org/1999/02/22-rdf-syntax-ns#type</a>	<a href="http://schema.org/CreativeWork">http://schema.org/CreativeWork</a>.
-yago-wd-full-types.nt:<a href="http://yago-knowledge.org/resource/_Q2097151">http://yago-knowledge.org/resource/_Q2097151</a>	<a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#type">http://www.w3.org/1999/02/22-rdf-syntax-ns#type</a>	<a href="http://schema.org/CreativeWork">http://schema.org/CreativeWork</a>.
-yago-wd-full-types.nt:<a href="http://yago-knowledge.org/resource/_Q3211263">http://yago-knowledge.org/resource/_Q3211263</a>	<a href="http://www.w3.org/1999/02/22-rdf-syntax-ns#type">http://www.w3.org/1999/02/22-rdf-syntax-ns#type</a>	<a href="http://schema.org/CreativeWork">http://schema.org/CreativeWork</a>.</p>
+<pre><code><code><div>yago-wd-full-types.nt:&lt;http://yago-knowledge.org/resource/_Q17628927&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/CreativeWork&gt;.
+yago-wd-full-types.nt:&lt;http://yago-knowledge.org/resource/Santa_Muerte&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/CreativeWork&gt;.
+yago-wd-full-types.nt:&lt;http://yago-knowledge.org/resource/_Q3211007&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/CreativeWork&gt;.
+yago-wd-full-types.nt:&lt;http://yago-knowledge.org/resource/_Q12975871&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/CreativeWork&gt;.
+yago-wd-full-types.nt:&lt;http://yago-knowledge.org/resource/_Q2097151&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/CreativeWork&gt;.
+yago-wd-full-types.nt:&lt;http://yago-knowledge.org/resource/_Q3211263&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/CreativeWork&gt;.
+</div></code></code></pre>
 <h4 id="mixed-usage-of-t-and-s">Mixed usage of <code>\t</code> and <code>\s</code></h4>
 <pre><code class="language-python"><div>[xizhang@cedar006 <span class="hljs-number">2020</span><span class="hljs-number">-02</span><span class="hljs-number">-24</span>]$ python3 pathSPARQL.py
 Traceback (most recent call last):
