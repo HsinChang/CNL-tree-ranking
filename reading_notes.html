@@ -1088,7 +1088,7 @@ postgres= COPY yago_output <span class="hljs-keyword">FROM</span> <span class="h
 </div></code></code></pre>
 <pre><code><code><div>postgres=# \c testrdfdb
 </div></code></code></pre>
-<pre><code class="language-sql"><div><span class="hljs-keyword">CREATE</span> with_reverse with_reverse <span class="hljs-keyword">AS</span> 
+<pre><code class="language-sql"><div><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> with_reverse <span class="hljs-keyword">AS</span> 
 <span class="hljs-keyword">SELECT</span> s, p, o 
 <span class="hljs-keyword">FROM</span> encoded_triples 
 <span class="hljs-keyword">UNION</span> 
@@ -1335,6 +1335,7 @@ yago-wd-simple-types.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -
 yago-wd-simple-types.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/TVEpisode&gt;	.
 yago-wd-simple-types.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/Episode&gt;	.
 </div></code></code></pre>
+<p>cnm</p>
 <h1 id="references">References</h1>
 <p>[1] Elbassuoni, Shady, and Roi Blanco. &quot;Keyword search over RDF graphs.&quot; Proceedings of the 20th d knowledge management. 2011.</p>
 <p>[2] Le, Wangchao, et al. &quot;Scalable keyword search on large RDF data.&quot; IEEE Transactions on knowledge and data engineering 26.11 (2014): 2774-2788.</p>

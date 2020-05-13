@@ -1043,7 +1043,7 @@ $ java -jar ontosql-rdfdb-1.0.11.jar -input "/data/yago4/2020-02-24/exp_file" -p
 postgres=# \c testrdfdb
 ```
 ```sql
-CREATE with_reverse with_reverse AS 
+CREATE VIEW with_reverse AS 
 SELECT s, p, o 
 FROM encoded_triples 
 UNION 
@@ -1318,7 +1318,7 @@ yago-wd-simple-types.nt:<http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:
 yago-wd-simple-types.nt:<http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://schema.org/Episode>	.
 ```
 
-
+cnm
 # References
 [1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th d knowledge management. 2011.
 
