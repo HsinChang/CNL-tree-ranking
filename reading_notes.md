@@ -59,6 +59,10 @@
       - [Space inside certain entities:](#space-inside-certain-entities)
 - [References](#references)
 # Notes for answer tree ranking
+use git
+```
+find . -name \*.java | xargs git add 
+```
 ## Related works for query answering/ranking
 Graph summarizations[2]?
 
@@ -1122,9 +1126,11 @@ But here let us just ignore all `#type` and `#lable`
 ```
    key    |                          value
 ----------+----------------------------------------------------------
- 15756171 | <http://www.w3.org/2000/01/rdf-schema#label>
- 41834368 | <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
- 26431485 | <http://schema.org/alternateName>
+ 39806236 | <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>
+ 16098780 | <http://schema.org/gender>
+ 55189694 | <http://schema.org/knowsLanguage>
+ 42429573 | <http://schema.org/nationality>
+ 66171377 | <http://www.w3.org/2000/01/rdf-schema#comment>
 ```
 so we modify the `SQL`:
 ```sql
