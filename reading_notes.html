@@ -1397,7 +1397,56 @@ con.close()
 164	./Jacques_Chirac_Renault
 159400	.
 </div></code></code></pre>
-<p>We can see that we still have a lot of results for certain pairs.</p>
+<p>We can see that we still have a lot of results for certain pairs.
+From observations, we can see that those pairs all have the same cause, <strong>Engie</strong> and <strong>Electricité de France</strong> all have <code>foundingLocation</code> which is <code>Paris</code>. And those two presidents all have <code>birthPlace</code> <code>Paris</code>. So I will filter out those results.</p>
+<pre><code class="language-python"><div>
+</div></code></pre>
+<p>results</p>
+<pre><code><code><div>du -a
+80      ./Emmanuel_Macron_Renault
+72      ./Jacques_Chirac_Credit_Agricole
+8       ./Emmanuel_Macron_Credit_Agricole
+8       ./Emmanuel_Macron_BNP_Paribas
+16      ./Emmanuel_Macron_Electricite_de_France
+16      ./Emmanuel_Macron_Carrefour
+16      ./Jacques_Chirac_Peugeot
+264     ./Nicolas_Sarkozy_Renault
+264     ./Jacques_Chirac_Electricite_de_France
+80      ./Jacques_Chirac_Societe_Generale
+32      ./Jacques_Chirac_BNP_Paribas
+112     ./Francois_Hollande_Renault
+8       ./Francois_Hollande_Credit_Agricole
+8       ./Brigitte_Macron_Credit_Agricole
+16      ./Brigitte_Macron_Renault
+48      ./Nicolas_Sarkozy_Credit_Agricole
+24      ./Francois_Hollande_Carrefour
+8       ./Emmanuel_Macron_Societe_Generale
+112     ./Jacques_Chirac_Carrefour
+8       ./Emmanuel_Macron_Engie
+64      ./Jacques_Chirac_Engie
+8       ./filter_path.py
+8       ./Emmanuel_Macron_Peugeot
+80      ./Nicolas_Sarkozy_Societe_Generale
+8       ./Brigitte_Macron_Electricite_de_France
+8       ./Brigitte_Macron_Carrefour
+32      ./Nicolas_Sarkozy_Engie
+8       ./Francois_Hollande_Engie
+24      ./Francois_Hollande_Electricite_de_France
+8       ./Francois_Hollande_Peugeot
+8       ./Brigitte_Macron_Engie
+8       ./Brigitte_Macron_Societe_Generale
+88      ./Nicolas_Sarkozy_Carrefour
+16      ./Francois_Hollande_Societe_Generale
+8       ./Brigitte_Macron_BNP_Paribas
+112     ./Nicolas_Sarkozy_Electricite_de_France
+40      ./Nicolas_Sarkozy_BNP_Paribas
+16      ./Nicolas_Sarkozy_Peugeot
+392     ./Jacques_Chirac_Renault
+16      ./Francois_Hollande_BNP_Paribas
+8       ./Brigitte_Macron_Peugeot
+2160    .
+</div></code></code></pre>
+<p>This result seems good enough.</p>
 <h3 id="problems-loading-yago4-with-rdflib">problems loading YAGO4 with <code>rdflib</code></h3>
 <h4 id="right-in-the-third-column-instead-of-being-the-fourth-one"><code>.</code> right in the third column instead of being the fourth one</h4>
 <pre><code><code><div>yago-wd-full-types.nt:&lt;http://yago-knowledge.org/resource/_Q17628927&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/CreativeWork&gt;.

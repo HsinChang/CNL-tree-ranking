@@ -1374,6 +1374,57 @@ du -a
 159400	.
 ```
 We can see that we still have a lot of results for certain pairs.
+From observations, we can see that those pairs all have the same cause, **Engie** and **Electricité de France** all have `foundingLocation` which is `Paris`. And those two presidents all have `birthPlace` `Paris`. So I will filter out those results.
+```python
+
+```
+results
+```
+du -a
+80      ./Emmanuel_Macron_Renault
+72      ./Jacques_Chirac_Credit_Agricole
+8       ./Emmanuel_Macron_Credit_Agricole
+8       ./Emmanuel_Macron_BNP_Paribas
+16      ./Emmanuel_Macron_Electricite_de_France
+16      ./Emmanuel_Macron_Carrefour
+16      ./Jacques_Chirac_Peugeot
+264     ./Nicolas_Sarkozy_Renault
+264     ./Jacques_Chirac_Electricite_de_France
+80      ./Jacques_Chirac_Societe_Generale
+32      ./Jacques_Chirac_BNP_Paribas
+112     ./Francois_Hollande_Renault
+8       ./Francois_Hollande_Credit_Agricole
+8       ./Brigitte_Macron_Credit_Agricole
+16      ./Brigitte_Macron_Renault
+48      ./Nicolas_Sarkozy_Credit_Agricole
+24      ./Francois_Hollande_Carrefour
+8       ./Emmanuel_Macron_Societe_Generale
+112     ./Jacques_Chirac_Carrefour
+8       ./Emmanuel_Macron_Engie
+64      ./Jacques_Chirac_Engie
+8       ./filter_path.py
+8       ./Emmanuel_Macron_Peugeot
+80      ./Nicolas_Sarkozy_Societe_Generale
+8       ./Brigitte_Macron_Electricite_de_France
+8       ./Brigitte_Macron_Carrefour
+32      ./Nicolas_Sarkozy_Engie
+8       ./Francois_Hollande_Engie
+24      ./Francois_Hollande_Electricite_de_France
+8       ./Francois_Hollande_Peugeot
+8       ./Brigitte_Macron_Engie
+8       ./Brigitte_Macron_Societe_Generale
+88      ./Nicolas_Sarkozy_Carrefour
+16      ./Francois_Hollande_Societe_Generale
+8       ./Brigitte_Macron_BNP_Paribas
+112     ./Nicolas_Sarkozy_Electricite_de_France
+40      ./Nicolas_Sarkozy_BNP_Paribas
+16      ./Nicolas_Sarkozy_Peugeot
+392     ./Jacques_Chirac_Renault
+16      ./Francois_Hollande_BNP_Paribas
+8       ./Brigitte_Macron_Peugeot
+2160    .
+```
+This result seems good enough.
 ### problems loading YAGO4 with `rdflib`
 
 #### `.` right in the third column instead of being the fourth one
