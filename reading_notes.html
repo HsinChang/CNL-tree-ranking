@@ -1265,6 +1265,139 @@ COPY 97
 <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">NOT</span> (v1.p = <span class="hljs-number">15756171</span> <span class="hljs-keyword">OR</span> v1.p = <span class="hljs-number">41834368</span> <span class="hljs-keyword">OR</span> v1.p= <span class="hljs-number">26431485</span> <span class="hljs-keyword">OR</span> v2.p = <span class="hljs-number">15756171</span> <span class="hljs-keyword">OR</span> v2.p = <span class="hljs-number">41834368</span> <span class="hljs-keyword">OR</span> v2.p=<span class="hljs-number">26431485</span> <span class="hljs-keyword">OR</span> v3.p = <span class="hljs-number">15756171</span> <span class="hljs-keyword">OR</span> v3.p = <span class="hljs-number">41834368</span> <span class="hljs-keyword">OR</span> v3.p=<span class="hljs-number">26431485</span>);
 Processus arrêté
 </div></code></pre>
+<p>Find all paths from length 1 to length 4 with filtering:</p>
+<pre><code class="language-python"><div><span class="hljs-keyword">import</span> psycopg2
+<span class="hljs-keyword">import</span> unidecode
+con = psycopg2.connect(database=<span class="hljs-string">"yago"</span>, user=<span class="hljs-string">"postgres"</span>, password=<span class="hljs-string">""</span>, host=<span class="hljs-string">"127.0.0.1"</span>, port=<span class="hljs-string">"5432"</span>)
+con.set_client_encoding(<span class="hljs-string">'UTF8'</span>)
+cur = con.cursor()
+presidents = [<span class="hljs-comment">#</span>
+<span class="hljs-string">"&lt;http://yago-knowledge.org/resource/Brigitte_Macron&gt;"</span>,
+<span class="hljs-string">"&lt;http://yago-knowledge.org/resource/François_Hollande&gt;"</span>,
+<span class="hljs-string">"&lt;http://yago-knowledge.org/resource/Nicolas_Sarkozy&gt;"</span>,
+<span class="hljs-string">"&lt;http://yago-knowledge.org/resource/Jacques_Chirac&gt;"</span>]
+companies = [<span class="hljs-string">"&lt;http://yago-knowledge.org/resource/BNP_Paribas&gt;"</span>,
+<span class="hljs-string">"&lt;http://yago-knowledge.org/resource/Carrefour&gt;"</span>,
+<span class="hljs-string">"&lt;http://yago-knowledge.org/resource/Crédit_Agricole&gt;"</span>,
+<span class="hljs-string">"&lt;http://yago-knowledge.org/resource/Électricité_de_France&gt;"</span>,
+<span class="hljs-string">"&lt;http://yago-knowledge.org/resource/Engie&gt;"</span>,
+<span class="hljs-string">"&lt;http://yago-knowledge.org/resource/Peugeot&gt;"</span>,
+<span class="hljs-string">"&lt;http://yago-knowledge.org/resource/Société_Générale&gt;"</span>,
+<span class="hljs-string">"&lt;http://yago-knowledge.org/resource/Renault&gt;"</span>]
+
+filter_out = [<span class="hljs-string">"&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;"</span>,
+ <span class="hljs-string">"&lt;http://schema.org/gender&gt;"</span>,
+ <span class="hljs-string">"&lt;http://schema.org/nationality&gt;"</span>,
+ <span class="hljs-string">"&lt;http://schema.org/knowsLanguage&gt;"</span>,
+ <span class="hljs-string">"&lt;http://www.w3.org/2000/01/rdf-schema#comment&gt;"</span>]
+
+
+<span class="hljs-keyword">for</span> president <span class="hljs-keyword">in</span> presidents:
+    cur.execute(<span class="hljs-string">"SELECT key FROM dictionary WHERE value = '"</span> + president + <span class="hljs-string">"';"</span>)
+    key_president = cur.fetchone()[<span class="hljs-number">0</span>]
+    <span class="hljs-keyword">for</span> company <span class="hljs-keyword">in</span> companies:
+        filename = <span class="hljs-string">"paths/"</span>+unidecode.unidecode(president.rsplit(<span class="hljs-string">'/'</span>,<span class="hljs-number">1</span>)[<span class="hljs-number">-1</span>][:<span class="hljs-number">-1</span>])+<span class="hljs-string">'_'</span>+unidecode.unidecode(company.rsplit(<span class="hljs-string">'/'</span>,<span class="hljs-number">1</span>)[<span class="hljs-number">-1</span>][:<span class="hljs-number">-1</span>])
+        <span class="hljs-keyword">if</span> filename <span class="hljs-keyword">in</span> [<span class="hljs-string">"paths/Emmanuel_Macron_BNP_Paribas"</span>,<span class="hljs-string">"paths/Emmanuel_Macron_Carrefour"</span>]:
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-keyword">with</span> open(filename, mode=<span class="hljs-string">"wb"</span>) <span class="hljs-keyword">as</span> file:
+            print(<span class="hljs-string">"file "</span>+ filename+<span class="hljs-string">" created."</span>)
+            cur.execute(<span class="hljs-string">"SELECT key FROM dictionary WHERE value = '"</span> + company + <span class="hljs-string">"';"</span>)
+            key_company = cur.fetchone()[<span class="hljs-number">0</span>]
+            file.write((president+<span class="hljs-string">" + "</span>+company+ <span class="hljs-string">" length 1"</span> +<span class="hljs-string">"\n"</span>).encode(<span class="hljs-string">'utf-8'</span>))
+            print(str(key_president) + <span class="hljs-string">" "</span> + str(key_company))
+            cur.execute(<span class="hljs-string">"SELECT s, p, o FROM with_reverse v1  WHERE v1.s = "</span>+str(key_president)+<span class="hljs-string">" AND v1.o ="</span>+str(key_company)+<span class="hljs-string">";"</span>)
+            rows = cur.fetchall()
+            <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> rows:
+                <span class="hljs-keyword">if</span> all(s <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> row <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> filter_out):
+                    <span class="hljs-keyword">for</span> member <span class="hljs-keyword">in</span> row:
+                        cur.execute(<span class="hljs-string">"SELECT value FROM dictionary WHERE key = '"</span> + str(member) + <span class="hljs-string">"';"</span>)
+                        file.write((cur.fetchone()[<span class="hljs-number">0</span>] + <span class="hljs-string">" "</span>).encode(<span class="hljs-string">'utf-8'</span>))
+                    file.write((<span class="hljs-string">".\n"</span>).encode(<span class="hljs-string">'utf-8'</span>))
+            print(<span class="hljs-string">"length 1 finished"</span>)
+
+            file.write((president + <span class="hljs-string">" + "</span> + company + <span class="hljs-string">" length 2"</span> + <span class="hljs-string">"\n"</span>).encode(<span class="hljs-string">'utf-8'</span>))
+            cur.execute(<span class="hljs-string">"SELECT v1.s, v1.p, v1.o, v2.p, v2.o FROM with_reverse v1 JOIN with_reverse v2 ON v2.s = v1.o WHERE v1.s ="</span> + str(key_president) + <span class="hljs-string">" AND v2.o ="</span> + str(key_company) + <span class="hljs-string">";"</span>)
+            rows = cur.fetchall()
+            <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> rows:
+                <span class="hljs-keyword">if</span> all(s <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> row <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> filter_out):
+                    <span class="hljs-keyword">for</span> member <span class="hljs-keyword">in</span> row:
+                        cur.execute(<span class="hljs-string">"SELECT value FROM dictionary WHERE key = '"</span> + str(member) + <span class="hljs-string">"';"</span>)
+                        file.write((cur.fetchone()[<span class="hljs-number">0</span>] + <span class="hljs-string">" "</span>).encode(<span class="hljs-string">'utf-8'</span>))
+                    file.write((<span class="hljs-string">".\n"</span>).encode(<span class="hljs-string">'utf-8'</span>))
+            print(<span class="hljs-string">"length 2 finished"</span>)
+
+            file.write((president + <span class="hljs-string">" + "</span> + company + <span class="hljs-string">" length 3"</span> + <span class="hljs-string">"\n"</span>).encode(<span class="hljs-string">'utf-8'</span>))
+            cur.execute(<span class="hljs-string">"SELECT v1.s, v1.p, v1.o, v2.p, v3.s, v3.p, v3.o FROM with_reverse v1 JOIN with_reverse v2 ON v2.s = v1.o JOIN with_reverse v3 ON v3.s = v2.o WHERE v1.s = "</span>+str(key_president)+<span class="hljs-string">" AND v3.o ="</span>+str(key_company)+<span class="hljs-string">" AND NOT (v1.p = 39806236 OR v1.p = 16098780 OR v1.p= 55189694 OR v1.p = 42429573 OR v1.p=66171377 OR v2.p = 39806236 OR v2.p = 16098780 OR v2.p= 55189694 OR v2.p = 42429573 OR v2.p=66171377 OR v3.p = 39806236 OR v3.p = 16098780 OR v3.p= 55189694 OR v3.p = 42429573 OR v3.p=66171377) ;"</span>)
+            rows = cur.fetchall()
+            <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> rows:
+                <span class="hljs-keyword">if</span> all(s <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> row <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> filter_out):
+                    <span class="hljs-keyword">for</span> member <span class="hljs-keyword">in</span> row:
+                        cur.execute(<span class="hljs-string">"SELECT value FROM dictionary WHERE key = '"</span> + str(member) + <span class="hljs-string">"';"</span>)
+                        file.write((cur.fetchone()[<span class="hljs-number">0</span>] + <span class="hljs-string">" "</span>).encode(<span class="hljs-string">'utf-8'</span>))
+                    file.write((<span class="hljs-string">".\n"</span>).encode(<span class="hljs-string">'utf-8'</span>))
+            print(<span class="hljs-string">"length 3 finished"</span>)
+
+            file.write((president + <span class="hljs-string">" + "</span> + company + <span class="hljs-string">" length 4"</span> + <span class="hljs-string">"\n"</span>).encode(<span class="hljs-string">'utf-8'</span>))
+            cur.execute(<span class="hljs-string">"SELECT v1.s, v1.p, v1.o, v2.p, v3.s, v3.p, v3.o, v4.p, v4.o FROM with_reverse v1 JOIN with_reverse v2 ON v2.s = v1.o JOIN with_reverse v3 ON v3.s = v2.o JOIN with_reverse v4 ON v3.o = v4.s WHERE v1.s ="</span> + str(key_president) + <span class="hljs-string">" AND v4.o ="</span> + str(key_company) + <span class="hljs-string">" AND NOT (v1.p = 39806236 OR v1.p = 16098780 OR v1.p= 55189694 OR v1.p = 42429573 OR v1.p=66171377 OR v2.p = 39806236 OR v2.p = 16098780 OR v2.p= 55189694 OR v2.p = 42429573 OR v2.p=66171377 OR v3.p = 39806236 OR v3.p = 16098780 OR v3.p= 55189694 OR v3.p = 42429573 OR v3.p=66171377 OR v4.p = 39806236 OR v4.p = 16098780 OR v4.p= 55189694 OR v4.p = 42429573 OR v4.p=66171377);"</span>)
+            rows = cur.fetchall()
+            <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> rows:
+                <span class="hljs-keyword">if</span> all(s <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> row <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> filter_out):
+                    <span class="hljs-keyword">for</span> member <span class="hljs-keyword">in</span> row:
+                        cur.execute(<span class="hljs-string">"SELECT value FROM dictionary WHERE key = '"</span> + str(member) + <span class="hljs-string">"';"</span>)
+                        file.write((cur.fetchone()[<span class="hljs-number">0</span>] + <span class="hljs-string">" "</span>).encode(<span class="hljs-string">'utf-8'</span>))
+                    file.write((<span class="hljs-string">".\n"</span>).encode(<span class="hljs-string">'utf-8'</span>))
+            print(<span class="hljs-string">"length 4 finished"</span>)
+        file.close()
+        print(<span class="hljs-string">"file "</span> + filename + <span class="hljs-string">" finished."</span>)
+    print(unidecode.unidecode(president) + <span class="hljs-string">"finished"</span>)
+print(<span class="hljs-string">"All finished"</span>)
+con.close()
+</div></code></pre>
+<p>results:</p>
+<pre><code><code><div>du -a
+4	./Emmanuel_Macron_BNP_Paribas
+8	./Emmanuel_Macron_Carrefour
+4	./Brigitte_Macron_BNP_Paribas
+4	./Emmanuel_Macron_Credit_Agricole
+512	./Emmanuel_Macron_Electricite_de_France
+488	./Emmanuel_Macron_Engie
+4	./Emmanuel_Macron_Peugeot
+4	./Emmanuel_Macron_Societe_Generale
+40	./Emmanuel_Macron_Renault
+4	./Brigitte_Macron_Carrefour
+4	./Brigitte_Macron_Credit_Agricole
+128	./Brigitte_Macron_Electricite_de_France
+124	./Brigitte_Macron_Engie
+4	./Brigitte_Macron_Peugeot
+4	./Brigitte_Macron_Societe_Generale
+8	./Brigitte_Macron_Renault
+8	./Francois_Hollande_BNP_Paribas
+12	./Francois_Hollande_Carrefour
+4	./Francois_Hollande_Credit_Agricole
+808	./Francois_Hollande_Electricite_de_France
+768	./Francois_Hollande_Engie
+8	./Francois_Hollande_Peugeot
+8	./Francois_Hollande_Societe_Generale
+56	./Francois_Hollande_Renault
+20	./Nicolas_Sarkozy_BNP_Paribas
+44	./Nicolas_Sarkozy_Carrefour
+24	./Nicolas_Sarkozy_Credit_Agricole
+28056	./Nicolas_Sarkozy_Electricite_de_France
+26728	./Nicolas_Sarkozy_Engie
+12	./Nicolas_Sarkozy_Peugeot
+40	./Nicolas_Sarkozy_Societe_Generale
+124	./Nicolas_Sarkozy_Renault
+16	./Jacques_Chirac_BNP_Paribas
+56	./Jacques_Chirac_Carrefour
+40	./Jacques_Chirac_Credit_Agricole
+51720	./Jacques_Chirac_Electricite_de_France
+49284	./Jacques_Chirac_Engie
+12	./Jacques_Chirac_Peugeot
+40	./Jacques_Chirac_Societe_Generale
+164	./Jacques_Chirac_Renault
+159400	.
+</div></code></code></pre>
+<p>We can see that we still have a lot of results for certain pairs.</p>
 <h3 id="problems-loading-yago4-with-rdflib">problems loading YAGO4 with <code>rdflib</code></h3>
 <h4 id="right-in-the-third-column-instead-of-being-the-fourth-one"><code>.</code> right in the third column instead of being the fourth one</h4>
 <pre><code><code><div>yago-wd-full-types.nt:&lt;http://yago-knowledge.org/resource/_Q17628927&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/CreativeWork&gt;.

@@ -1239,6 +1239,141 @@ WHERE NOT (v1.p = 15756171 OR v1.p = 41834368 OR v1.p= 26431485 OR v2.p = 157561
 Processus arrêté
 ```
 
+Find all paths from length 1 to length 4 with filtering:
+```python
+import psycopg2
+import unidecode
+con = psycopg2.connect(database="yago", user="postgres", password="", host="127.0.0.1", port="5432")
+con.set_client_encoding('UTF8')
+cur = con.cursor()
+presidents = [#
+"<http://yago-knowledge.org/resource/Brigitte_Macron>",
+"<http://yago-knowledge.org/resource/François_Hollande>",
+"<http://yago-knowledge.org/resource/Nicolas_Sarkozy>",
+"<http://yago-knowledge.org/resource/Jacques_Chirac>"]
+companies = ["<http://yago-knowledge.org/resource/BNP_Paribas>",
+"<http://yago-knowledge.org/resource/Carrefour>",
+"<http://yago-knowledge.org/resource/Crédit_Agricole>",
+"<http://yago-knowledge.org/resource/Électricité_de_France>",
+"<http://yago-knowledge.org/resource/Engie>",
+"<http://yago-knowledge.org/resource/Peugeot>",
+"<http://yago-knowledge.org/resource/Société_Générale>",
+"<http://yago-knowledge.org/resource/Renault>"]
+
+filter_out = ["<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>",
+ "<http://schema.org/gender>",
+ "<http://schema.org/nationality>",
+ "<http://schema.org/knowsLanguage>",
+ "<http://www.w3.org/2000/01/rdf-schema#comment>"]
+
+
+for president in presidents:
+    cur.execute("SELECT key FROM dictionary WHERE value = '" + president + "';")
+    key_president = cur.fetchone()[0]
+    for company in companies:
+        filename = "paths/"+unidecode.unidecode(president.rsplit('/',1)[-1][:-1])+'_'+unidecode.unidecode(company.rsplit('/',1)[-1][:-1])
+        if filename in ["paths/Emmanuel_Macron_BNP_Paribas","paths/Emmanuel_Macron_Carrefour"]:
+            continue
+        with open(filename, mode="wb") as file:
+            print("file "+ filename+" created.")
+            cur.execute("SELECT key FROM dictionary WHERE value = '" + company + "';")
+            key_company = cur.fetchone()[0]
+            file.write((president+" + "+company+ " length 1" +"\n").encode('utf-8'))
+            print(str(key_president) + " " + str(key_company))
+            cur.execute("SELECT s, p, o FROM with_reverse v1  WHERE v1.s = "+str(key_president)+" AND v1.o ="+str(key_company)+";")
+            rows = cur.fetchall()
+            for row in rows:
+                if all(s not in row for s in filter_out):
+                    for member in row:
+                        cur.execute("SELECT value FROM dictionary WHERE key = '" + str(member) + "';")
+                        file.write((cur.fetchone()[0] + " ").encode('utf-8'))
+                    file.write((".\n").encode('utf-8'))
+            print("length 1 finished")
+
+            file.write((president + " + " + company + " length 2" + "\n").encode('utf-8'))
+            cur.execute("SELECT v1.s, v1.p, v1.o, v2.p, v2.o FROM with_reverse v1 JOIN with_reverse v2 ON v2.s = v1.o WHERE v1.s =" + str(key_president) + " AND v2.o =" + str(key_company) + ";")
+            rows = cur.fetchall()
+            for row in rows:
+                if all(s not in row for s in filter_out):
+                    for member in row:
+                        cur.execute("SELECT value FROM dictionary WHERE key = '" + str(member) + "';")
+                        file.write((cur.fetchone()[0] + " ").encode('utf-8'))
+                    file.write((".\n").encode('utf-8'))
+            print("length 2 finished")
+
+            file.write((president + " + " + company + " length 3" + "\n").encode('utf-8'))
+            cur.execute("SELECT v1.s, v1.p, v1.o, v2.p, v3.s, v3.p, v3.o FROM with_reverse v1 JOIN with_reverse v2 ON v2.s = v1.o JOIN with_reverse v3 ON v3.s = v2.o WHERE v1.s = "+str(key_president)+" AND v3.o ="+str(key_company)+" AND NOT (v1.p = 39806236 OR v1.p = 16098780 OR v1.p= 55189694 OR v1.p = 42429573 OR v1.p=66171377 OR v2.p = 39806236 OR v2.p = 16098780 OR v2.p= 55189694 OR v2.p = 42429573 OR v2.p=66171377 OR v3.p = 39806236 OR v3.p = 16098780 OR v3.p= 55189694 OR v3.p = 42429573 OR v3.p=66171377) ;")
+            rows = cur.fetchall()
+            for row in rows:
+                if all(s not in row for s in filter_out):
+                    for member in row:
+                        cur.execute("SELECT value FROM dictionary WHERE key = '" + str(member) + "';")
+                        file.write((cur.fetchone()[0] + " ").encode('utf-8'))
+                    file.write((".\n").encode('utf-8'))
+            print("length 3 finished")
+
+            file.write((president + " + " + company + " length 4" + "\n").encode('utf-8'))
+            cur.execute("SELECT v1.s, v1.p, v1.o, v2.p, v3.s, v3.p, v3.o, v4.p, v4.o FROM with_reverse v1 JOIN with_reverse v2 ON v2.s = v1.o JOIN with_reverse v3 ON v3.s = v2.o JOIN with_reverse v4 ON v3.o = v4.s WHERE v1.s =" + str(key_president) + " AND v4.o =" + str(key_company) + " AND NOT (v1.p = 39806236 OR v1.p = 16098780 OR v1.p= 55189694 OR v1.p = 42429573 OR v1.p=66171377 OR v2.p = 39806236 OR v2.p = 16098780 OR v2.p= 55189694 OR v2.p = 42429573 OR v2.p=66171377 OR v3.p = 39806236 OR v3.p = 16098780 OR v3.p= 55189694 OR v3.p = 42429573 OR v3.p=66171377 OR v4.p = 39806236 OR v4.p = 16098780 OR v4.p= 55189694 OR v4.p = 42429573 OR v4.p=66171377);")
+            rows = cur.fetchall()
+            for row in rows:
+                if all(s not in row for s in filter_out):
+                    for member in row:
+                        cur.execute("SELECT value FROM dictionary WHERE key = '" + str(member) + "';")
+                        file.write((cur.fetchone()[0] + " ").encode('utf-8'))
+                    file.write((".\n").encode('utf-8'))
+            print("length 4 finished")
+        file.close()
+        print("file " + filename + " finished.")
+    print(unidecode.unidecode(president) + "finished")
+print("All finished")
+con.close()
+```
+results:
+```
+du -a
+4	./Emmanuel_Macron_BNP_Paribas
+8	./Emmanuel_Macron_Carrefour
+4	./Brigitte_Macron_BNP_Paribas
+4	./Emmanuel_Macron_Credit_Agricole
+512	./Emmanuel_Macron_Electricite_de_France
+488	./Emmanuel_Macron_Engie
+4	./Emmanuel_Macron_Peugeot
+4	./Emmanuel_Macron_Societe_Generale
+40	./Emmanuel_Macron_Renault
+4	./Brigitte_Macron_Carrefour
+4	./Brigitte_Macron_Credit_Agricole
+128	./Brigitte_Macron_Electricite_de_France
+124	./Brigitte_Macron_Engie
+4	./Brigitte_Macron_Peugeot
+4	./Brigitte_Macron_Societe_Generale
+8	./Brigitte_Macron_Renault
+8	./Francois_Hollande_BNP_Paribas
+12	./Francois_Hollande_Carrefour
+4	./Francois_Hollande_Credit_Agricole
+808	./Francois_Hollande_Electricite_de_France
+768	./Francois_Hollande_Engie
+8	./Francois_Hollande_Peugeot
+8	./Francois_Hollande_Societe_Generale
+56	./Francois_Hollande_Renault
+20	./Nicolas_Sarkozy_BNP_Paribas
+44	./Nicolas_Sarkozy_Carrefour
+24	./Nicolas_Sarkozy_Credit_Agricole
+28056	./Nicolas_Sarkozy_Electricite_de_France
+26728	./Nicolas_Sarkozy_Engie
+12	./Nicolas_Sarkozy_Peugeot
+40	./Nicolas_Sarkozy_Societe_Generale
+124	./Nicolas_Sarkozy_Renault
+16	./Jacques_Chirac_BNP_Paribas
+56	./Jacques_Chirac_Carrefour
+40	./Jacques_Chirac_Credit_Agricole
+51720	./Jacques_Chirac_Electricite_de_France
+49284	./Jacques_Chirac_Engie
+12	./Jacques_Chirac_Peugeot
+40	./Jacques_Chirac_Societe_Generale
+164	./Jacques_Chirac_Renault
+159400	.
+```
+We can see that we still have a lot of results for certain pairs.
 ### problems loading YAGO4 with `rdflib`
 
 #### `.` right in the third column instead of being the fourth one
