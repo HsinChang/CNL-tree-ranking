@@ -53,6 +53,7 @@
       - [By Postgres](#by-postgres)
     - [explore a path](#explore-a-path)
     - [load the data with `RDF-DB`](#load-the-data-with-rdf-db)
+      - [Find all paths from length 1 to length 4 with filtering:](#find-all-paths-from-length-1-to-length-4-with-filtering)
     - [Link with HAVTP](#link-with-havtp)
       - [Find common entities](#find-common-entities)
     - [problems loading YAGO4 with `rdflib`](#problems-loading-yago4-with-rdflib)
@@ -1241,7 +1242,7 @@ WHERE NOT (v1.p = 15756171 OR v1.p = 41834368 OR v1.p= 26431485 OR v2.p = 157561
 Processus arrêté
 ```
 
-Find all paths from length 1 to length 4 with filtering:
+#### Find all paths from length 1 to length 4 with filtering:
 ```python
 import psycopg2
 import unidecode
@@ -1438,7 +1439,9 @@ du -a
 This result seems good enough.
 
 ### Link with HAVTP
+
 #### Find common entities
+
 ```python
 from csv import DictReader
 

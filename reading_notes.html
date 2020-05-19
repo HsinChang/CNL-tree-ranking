@@ -122,7 +122,11 @@
 </ul>
 </li>
 <li><a href="#explore-a-path">explore a path</a></li>
-<li><a href="#load-the-data-with-rdf-db">load the data with <code>RDF-DB</code></a></li>
+<li><a href="#load-the-data-with-rdf-db">load the data with <code>RDF-DB</code></a>
+<ul>
+<li><a href="#find-all-paths-from-length-1-to-length-4-with-filtering">Find all paths from length 1 to length 4 with filtering:</a></li>
+</ul>
+</li>
 <li><a href="#link-with-havtp">Link with HAVTP</a>
 <ul>
 <li><a href="#find-common-entities">Find common entities</a></li>
@@ -1270,7 +1274,7 @@ COPY 97
 <span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">NOT</span> (v1.p = <span class="hljs-number">15756171</span> <span class="hljs-keyword">OR</span> v1.p = <span class="hljs-number">41834368</span> <span class="hljs-keyword">OR</span> v1.p= <span class="hljs-number">26431485</span> <span class="hljs-keyword">OR</span> v2.p = <span class="hljs-number">15756171</span> <span class="hljs-keyword">OR</span> v2.p = <span class="hljs-number">41834368</span> <span class="hljs-keyword">OR</span> v2.p=<span class="hljs-number">26431485</span> <span class="hljs-keyword">OR</span> v3.p = <span class="hljs-number">15756171</span> <span class="hljs-keyword">OR</span> v3.p = <span class="hljs-number">41834368</span> <span class="hljs-keyword">OR</span> v3.p=<span class="hljs-number">26431485</span>);
 Processus arrêté
 </div></code></pre>
-<p>Find all paths from length 1 to length 4 with filtering:</p>
+<h4 id="find-all-paths-from-length-1-to-length-4-with-filtering">Find all paths from length 1 to length 4 with filtering:</h4>
 <pre><code class="language-python"><div><span class="hljs-keyword">import</span> psycopg2
 <span class="hljs-keyword">import</span> unidecode
 con = psycopg2.connect(database=<span class="hljs-string">"yago"</span>, user=<span class="hljs-string">"postgres"</span>, password=<span class="hljs-string">""</span>, host=<span class="hljs-string">"127.0.0.1"</span>, port=<span class="hljs-string">"5432"</span>)
