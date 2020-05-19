@@ -123,6 +123,11 @@
 </li>
 <li><a href="#explore-a-path">explore a path</a></li>
 <li><a href="#load-the-data-with-rdf-db">load the data with <code>RDF-DB</code></a></li>
+<li><a href="#link-with-havtp">Link with HAVTP</a>
+<ul>
+<li><a href="#find-common-entities">Find common entities</a></li>
+</ul>
+</li>
 <li><a href="#problems-loading-yago4-with-rdflib">problems loading YAGO4 with <code>rdflib</code></a>
 <ul>
 <li><a href="#right-in-the-third-column-instead-of-being-the-fourth-one"><code>.</code> right in the third column instead of being the fourth one</a></li>
@@ -1399,7 +1404,16 @@ con.close()
 </div></code></code></pre>
 <p>We can see that we still have a lot of results for certain pairs.
 From observations, we can see that those pairs all have the same cause, <strong>Engie</strong> and <strong>Electricité de France</strong> all have <code>foundingLocation</code> which is <code>Paris</code>. And those two presidents all have <code>birthPlace</code> <code>Paris</code>. So I will filter out those results.</p>
-<pre><code class="language-python"><div>
+<pre><code class="language-python"><div><span class="hljs-keyword">with</span> open(<span class="hljs-string">"results"</span>, mode=<span class="hljs-string">"r"</span>, encoding=<span class="hljs-string">"utf-8"</span>) <span class="hljs-keyword">as</span> file:
+    line = file.readline()
+    filter_out = [<span class="hljs-string">"&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;"</span>,<span class="hljs-string">"&lt;http://schema.org/gender&gt;"</span>,<span class="hljs-string">"&lt;http://schema.org/nationality&gt;"</span>,<span class="hljs-string">"&lt;http://schema.org/knowsLanguage&gt;"</span>,<span class="hljs-string">"&lt;http://www.w3.org/2000/01/rdf-schema#comment&gt;"</span>]
+    <span class="hljs-keyword">with</span> open(<span class="hljs-string">'results_filtered'</span>, <span class="hljs-string">'wb'</span>) <span class="hljs-keyword">as</span> fr:
+        <span class="hljs-keyword">while</span> line:
+            <span class="hljs-keyword">if</span> all(s <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> line <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> filter_out):
+                fr.write(line.encode(<span class="hljs-string">'utf-8'</span>))
+            line = file.readline()
+    fr.close()
+file.close()
 </div></code></pre>
 <p>results</p>
 <pre><code><code><div>du -a
@@ -1505,6 +1519,7 @@ fe.close()
 &lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/Person&gt;	.
 &lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/Thing&gt;	.
 </div></code></code></pre>
+<p>Considering put HAVTP and YAGO4 in the same graph,</p>
 <h3 id="problems-loading-yago4-with-rdflib">problems loading YAGO4 with <code>rdflib</code></h3>
 <h4 id="right-in-the-third-column-instead-of-being-the-fourth-one"><code>.</code> right in the third column instead of being the fourth one</h4>
 <pre><code><code><div>yago-wd-full-types.nt:&lt;http://yago-knowledge.org/resource/_Q17628927&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/CreativeWork&gt;.

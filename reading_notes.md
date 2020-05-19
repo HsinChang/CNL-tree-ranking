@@ -1378,7 +1378,16 @@ du -a
 We can see that we still have a lot of results for certain pairs.
 From observations, we can see that those pairs all have the same cause, **Engie** and **Electricité de France** all have `foundingLocation` which is `Paris`. And those two presidents all have `birthPlace` `Paris`. So I will filter out those results.
 ```python
-
+with open("results", mode="r", encoding="utf-8") as file:
+    line = file.readline()
+    filter_out = ["<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>","<http://schema.org/gender>","<http://schema.org/nationality>","<http://schema.org/knowsLanguage>","<http://www.w3.org/2000/01/rdf-schema#comment>"]
+    with open('results_filtered', 'wb') as fr:
+        while line:
+            if all(s not in line for s in filter_out):
+                fr.write(line.encode('utf-8'))
+            line = file.readline()
+    fr.close()
+file.close()
 ```
 results
 ```
