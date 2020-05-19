@@ -53,6 +53,8 @@
       - [By Postgres](#by-postgres)
     - [explore a path](#explore-a-path)
     - [load the data with `RDF-DB`](#load-the-data-with-rdf-db)
+    - [Link with HAVTP](#link-with-havtp)
+      - [Find common entities](#find-common-entities)
     - [problems loading YAGO4 with `rdflib`](#problems-loading-yago4-with-rdflib)
       - [`.` right in the third column instead of being the fourth one](#right-in-the-third-column-instead-of-being-the-fourth-one)
       - [Mixed usage of `\t` and `\s`](#mixed-usage-of-t-and-s)
@@ -1425,6 +1427,69 @@ du -a
 2160    .
 ```
 This result seems good enough.
+
+### Link with HAVTP
+#### Find common entities
+```python
+from csv import DictReader
+
+entity_set = set(line.strip() for line in open('cnmEntitiesUniq',"r", encoding="utf-8"))
+with open('liste-hatvp.csv','r', encoding="utf-8") as fe:
+    with open('shared_entities', 'wb') as fo:
+        csv_dict_reader = DictReader(fe, delimiter=';')
+        for row in csv_dict_reader:
+            search1 = "/resource/"+row['prenom']+"_"+row['nom'].title()
+            # search2 = "/resource/"+row['prenom']+"_"+row['nom'].title()+"_(politician)"
+            # if search1 in entity_set:
+            #     fo.write((search1+"\n").encode("utf-8"))
+            #     entity_set.remove(search1)
+            # elif search2 in entity_set:
+            #     fo.write((search2+"\n").encode("utf-8"))
+            #     entity_set.remove(search2)
+            for s in entity_set.copy():
+                if search1 in s and s in entity_set:
+                    fo.write((s+"\n").encode("utf-8"))
+                    entity_set.remove(s)
+    fo.close()
+fe.close()
+```
+result
+```
+[xizhang@cedar007 2020-02-24]$ wc -l shared_entities
+2041 shared_entities
+[xizhang@cedar007 2020-02-24]$ head -10 shared_entities
+/resource/Abdallah_Hassani_Q41023061
+/resource/Adrien_Morenas
+/resource/Adrien_Quatennens
+/resource/Adrien_Taquet
+/resource/Agnès_Buzyn
+/resource/Agnès_Canayer_Q18202568
+/resource/Agnès_Evren
+/resource/Agnès_Pannier-Runacher
+/resource/Agnès_Thill
+/resource/Aina_Kuric
+```
+Here we take an example `Adrien Taquet`
+```
+<http://yago-knowledge.org/resource/Adrien_Taquet>	<http://schema.org/knowsLanguage>	<http://yago-knowledge.org/resource/French_language>	.
+<http://yago-knowledge.org/resource/Adrien_Taquet>	<http://schema.org/hasOccupation>	<http://yago-knowledge.org/resource/Politician>	.
+<http://yago-knowledge.org/resource/Adrien_Taquet>	<http://schema.org/nationality>	<http://yago-knowledge.org/resource/France>	.
+<http://yago-knowledge.org/resource/Adrien_Taquet>	<http://schema.org/birthPlace>	<http://yago-knowledge.org/resource/16th_arrondissement_of_Paris>	.
+<http://yago-knowledge.org/resource/Adrien_Taquet>	<http://schema.org/alumniOf>	<http://yago-knowledge.org/resource/Sciences_Po>	.
+<http://yago-knowledge.org/resource/Adrien_Taquet>	<http://schema.org/familyName>	<http://yago-knowledge.org/resource/Taquet>	.
+<http://yago-knowledge.org/resource/Adrien_Taquet>	<http://schema.org/memberOf>	<http://yago-knowledge.org/resource/La_République_En_Marche!>	.
+<http://yago-knowledge.org/resource/Adrien_Taquet>	<http://schema.org/birthDate>	"1977-01-03"^^<http://www.w3.org/2001/XMLSchema#date>	.
+<http://yago-knowledge.org/resource/Adrien_Taquet>	<http://schema.org/image>	<http://commons.wikimedia.org/wiki/Special:FilePath/Adrien%20taquet%2016467.jpg>	.
+<http://yago-knowledge.org/resource/Adrien_Taquet>	<http://schema.org/gender>	<http://yago-knowledge.org/resource/male_Q6581097>	.
+<http://yago-knowledge.org/resource/Adrien_Taquet>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://yago-knowledge.org/resource/Human>	.
+<http://yago-knowledge.org/resource/Adrien_Taquet>	<http://www.w3.org/2002/07/owl#sameAs>	<http://www.wikidata.org/entity/Q30344625>	.
+<http://yago-knowledge.org/resource/Adrien_Taquet>	<http://www.w3.org/2002/07/owl#sameAs>	<http://dbpedia.org/resource/Adrien_Taquet>	.
+<http://yago-knowledge.org/resource/Adrien_Taquet>	<http://schema.org/sameAs>	"https://en.wikipedia.org/wiki/Adrien_Taquet"^^<http://www.w3.org/2001/XMLSchema#anyURI>	.
+<http://yago-knowledge.org/resource/Adrien_Taquet>	<http://schema.org/sameAs>	"https://fr.wikipedia.org/wiki/Adrien_Taquet"^^<http://www.w3.org/2001/XMLSchema#anyURI>	.
+<http://yago-knowledge.org/resource/Adrien_Taquet>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://schema.org/Person>	.
+<http://yago-knowledge.org/resource/Adrien_Taquet>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://schema.org/Thing>	.
+```
+
 ### problems loading YAGO4 with `rdflib`
 
 #### `.` right in the third column instead of being the fourth one
@@ -1525,5 +1590,3 @@ cnm
 [6]Seufert, Stephan, et al. "Espresso: explaining relationships between entity sets." Proceedings of the 25th ACM International on Conference on Information and Knowledge Management. 2016.
 
 [7]Tong, Hanghang, and Christos Faloutsos. "Center-piece subgraphs: problem definition and fast solutions." Proceedings of the 12th ACM SIGKDD international conference on Knowledge discovery and data mining. 2006.
-
-to update tomorrow

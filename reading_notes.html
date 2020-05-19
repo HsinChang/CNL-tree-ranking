@@ -1447,6 +1447,64 @@ From observations, we can see that those pairs all have the same cause, <strong>
 2160    .
 </div></code></code></pre>
 <p>This result seems good enough.</p>
+<h3 id="link-with-havtp">Link with HAVTP</h3>
+<h4 id="find-common-entities">Find common entities</h4>
+<pre><code class="language-python"><div><span class="hljs-keyword">from</span> csv <span class="hljs-keyword">import</span> DictReader
+
+entity_set = set(line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> open(<span class="hljs-string">'cnmEntitiesUniq'</span>,<span class="hljs-string">"r"</span>, encoding=<span class="hljs-string">"utf-8"</span>))
+<span class="hljs-keyword">with</span> open(<span class="hljs-string">'liste-hatvp.csv'</span>,<span class="hljs-string">'r'</span>, encoding=<span class="hljs-string">"utf-8"</span>) <span class="hljs-keyword">as</span> fe:
+    <span class="hljs-keyword">with</span> open(<span class="hljs-string">'shared_entities'</span>, <span class="hljs-string">'wb'</span>) <span class="hljs-keyword">as</span> fo:
+        csv_dict_reader = DictReader(fe, delimiter=<span class="hljs-string">';'</span>)
+        <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> csv_dict_reader:
+            search1 = <span class="hljs-string">"/resource/"</span>+row[<span class="hljs-string">'prenom'</span>]+<span class="hljs-string">"_"</span>+row[<span class="hljs-string">'nom'</span>].title()
+            <span class="hljs-comment"># search2 = "/resource/"+row['prenom']+"_"+row['nom'].title()+"_(politician)"</span>
+            <span class="hljs-comment"># if search1 in entity_set:</span>
+            <span class="hljs-comment">#     fo.write((search1+"\n").encode("utf-8"))</span>
+            <span class="hljs-comment">#     entity_set.remove(search1)</span>
+            <span class="hljs-comment"># elif search2 in entity_set:</span>
+            <span class="hljs-comment">#     fo.write((search2+"\n").encode("utf-8"))</span>
+            <span class="hljs-comment">#     entity_set.remove(search2)</span>
+            <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> entity_set.copy():
+                <span class="hljs-keyword">if</span> search1 <span class="hljs-keyword">in</span> s <span class="hljs-keyword">and</span> s <span class="hljs-keyword">in</span> entity_set:
+                    fo.write((s+<span class="hljs-string">"\n"</span>).encode(<span class="hljs-string">"utf-8"</span>))
+                    entity_set.remove(s)
+    fo.close()
+fe.close()
+</div></code></pre>
+<p>result</p>
+<pre><code><code><div>[xizhang@cedar007 2020-02-24]$ wc -l shared_entities
+2041 shared_entities
+[xizhang@cedar007 2020-02-24]$ head -10 shared_entities
+/resource/Abdallah_Hassani_Q41023061
+/resource/Adrien_Morenas
+/resource/Adrien_Quatennens
+/resource/Adrien_Taquet
+/resource/Agnès_Buzyn
+/resource/Agnès_Canayer_Q18202568
+/resource/Agnès_Evren
+/resource/Agnès_Pannier-Runacher
+/resource/Agnès_Thill
+/resource/Aina_Kuric
+</div></code></code></pre>
+<p>Here we take an example <code>Adrien Taquet</code></p>
+<pre><code><code><div>&lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://schema.org/knowsLanguage&gt;	&lt;http://yago-knowledge.org/resource/French_language&gt;	.
+&lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://schema.org/hasOccupation&gt;	&lt;http://yago-knowledge.org/resource/Politician&gt;	.
+&lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://schema.org/nationality&gt;	&lt;http://yago-knowledge.org/resource/France&gt;	.
+&lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://schema.org/birthPlace&gt;	&lt;http://yago-knowledge.org/resource/16th_arrondissement_of_Paris&gt;	.
+&lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://schema.org/alumniOf&gt;	&lt;http://yago-knowledge.org/resource/Sciences_Po&gt;	.
+&lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://schema.org/familyName&gt;	&lt;http://yago-knowledge.org/resource/Taquet&gt;	.
+&lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://schema.org/memberOf&gt;	&lt;http://yago-knowledge.org/resource/La_République_En_Marche!&gt;	.
+&lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://schema.org/birthDate&gt;	&quot;1977-01-03&quot;^^&lt;http://www.w3.org/2001/XMLSchema#date&gt;	.
+&lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://schema.org/image&gt;	&lt;http://commons.wikimedia.org/wiki/Special:FilePath/Adrien%20taquet%2016467.jpg&gt;	.
+&lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://schema.org/gender&gt;	&lt;http://yago-knowledge.org/resource/male_Q6581097&gt;	.
+&lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://yago-knowledge.org/resource/Human&gt;	.
+&lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://www.w3.org/2002/07/owl#sameAs&gt;	&lt;http://www.wikidata.org/entity/Q30344625&gt;	.
+&lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://www.w3.org/2002/07/owl#sameAs&gt;	&lt;http://dbpedia.org/resource/Adrien_Taquet&gt;	.
+&lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://schema.org/sameAs&gt;	&quot;https://en.wikipedia.org/wiki/Adrien_Taquet&quot;^^&lt;http://www.w3.org/2001/XMLSchema#anyURI&gt;	.
+&lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://schema.org/sameAs&gt;	&quot;https://fr.wikipedia.org/wiki/Adrien_Taquet&quot;^^&lt;http://www.w3.org/2001/XMLSchema#anyURI&gt;	.
+&lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/Person&gt;	.
+&lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/Thing&gt;	.
+</div></code></code></pre>
 <h3 id="problems-loading-yago4-with-rdflib">problems loading YAGO4 with <code>rdflib</code></h3>
 <h4 id="right-in-the-third-column-instead-of-being-the-fourth-one"><code>.</code> right in the third column instead of being the fourth one</h4>
 <pre><code><code><div>yago-wd-full-types.nt:&lt;http://yago-knowledge.org/resource/_Q17628927&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/CreativeWork&gt;.
@@ -1531,7 +1589,6 @@ yago-wd-simple-types.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -
 <p>[5]Kasneci, Gjergji, Shady Elbassuoni, and Gerhard Weikum. &quot;Ming: mining informative entity relationship subgraphs.&quot; Proceedings of the 18th ACM conference on Information and knowledge management. 2009.</p>
 <p>[6]Seufert, Stephan, et al. &quot;Espresso: explaining relationships between entity sets.&quot; Proceedings of the 25th ACM International on Conference on Information and Knowledge Management. 2016.</p>
 <p>[7]Tong, Hanghang, and Christos Faloutsos. &quot;Center-piece subgraphs: problem definition and fast solutions.&quot; Proceedings of the 12th ACM SIGKDD international conference on Knowledge discovery and data mining. 2006.</p>
-<p>to update tomorrow</p>
 
     </body>
     </html>
