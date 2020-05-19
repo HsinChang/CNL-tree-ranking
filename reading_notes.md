@@ -1587,7 +1587,6 @@ yago-wd-simple-types.nt:<http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:
 yago-wd-simple-types.nt:<http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://schema.org/Episode>	.
 ```
 
-cnm
 # References
 [1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th d knowledge management. 2011.
 
