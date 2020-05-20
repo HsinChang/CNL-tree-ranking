@@ -1523,7 +1523,8 @@ fe.close()
 &lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/Person&gt;	.
 &lt;http://yago-knowledge.org/resource/Adrien_Taquet&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/Thing&gt;	.
 </div></code></code></pre>
-<p>Considering put HAVTP and YAGO4 in the same graph,</p>
+<p>And one of the
+Considering put HAVTP and YAGO4 in the same graph, I am considering for each declaration in HAVTP, we extract some information that correspond to entities in YAGO, make triples out of them and put them in the <code>exp_file</code>.</p>
 <h3 id="problems-loading-yago4-with-rdflib">problems loading YAGO4 with <code>rdflib</code></h3>
 <h4 id="right-in-the-third-column-instead-of-being-the-fourth-one"><code>.</code> right in the third column instead of being the fourth one</h4>
 <pre><code><code><div>yago-wd-full-types.nt:&lt;http://yago-knowledge.org/resource/_Q17628927&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/CreativeWork&gt;.

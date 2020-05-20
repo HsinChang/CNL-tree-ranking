@@ -1501,7 +1501,10 @@ Here we take an example `Adrien Taquet`
 <http://yago-knowledge.org/resource/Adrien_Taquet>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://schema.org/Person>	.
 <http://yago-knowledge.org/resource/Adrien_Taquet>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://schema.org/Thing>	.
 ```
-Considering put HAVTP and YAGO4 in the same graph, 
+And one of the 
+Considering put HAVTP and YAGO4 in the same graph, I am considering for each declaration in HAVTP, we extract some information that correspond to entities in YAGO, make triples out of them and put them in the `exp_file`.
+
+
 ### problems loading YAGO4 with `rdflib`
 
 #### `.` right in the third column instead of being the fourth one
