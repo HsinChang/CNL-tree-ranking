@@ -1549,7 +1549,7 @@ Traceback (most recent call last):
 rdflib.plugins.parsers.ntriples.ParseError: Invalid line: '<http://yago-knowledge.org/resource/Day_5:_1:00_pm\xa0-_2:00_pm_Q52263123>\t<http://schema.org/director>\t<http://yago-knowledge.org/resource/Brad_Turner_(director)>\t.'
 ```
 
-
+ca
 #### Space inside certain entities:
 ```
 yago-wd-facts.nt:<http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123>	<http://schema.org/director>	<http://yago-knowledge.org/resource/Brad_Turner_(director)>	.
