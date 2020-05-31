@@ -141,6 +141,7 @@
 </li>
 </ul>
 </li>
+<li><a href="#load-with-connectionlens">load with <code>ConnectionLens</code></a></li>
 </ul>
 </li>
 <li><a href="#references">References</a></li>
@@ -1601,7 +1602,42 @@ yago-wd-simple-types.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -
 yago-wd-simple-types.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/TVEpisode&gt;	.
 yago-wd-simple-types.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/Episode&gt;	.
 </div></code></code></pre>
-<p>just in case</p>
+<h2 id="load-with-connectionlens">load with <code>ConnectionLens</code></h2>
+<p>The first 1 M</p>
+<pre><code><code><div>
+</div></code></code></pre>
+<pre><code><code><div>[xizhang@cedar008 connection-lens]$ java -jar core/target/connection-lens-core-full-0.6-SNAPSHOT-develop-0506173-20200530-1234.jar -i /data/yago4/2020-02-24/exp_file_fix.nt -DRDBMSDBName=cnl_yago -v -E
+SLF4J: Failed to load class &quot;org.slf4j.impl.StaticLoggerBinder&quot;.
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+PER_INSTANCE registration of: file:/data/yago4/2020-02-24/exp_file_fix.nt
+Total time: 88300169 ms.
+Exception in thread &quot;main&quot; java.lang.OutOfMemoryError: GC overhead limit exceeded
+	at java.lang.StringCoding.encode(StringCoding.java:350)
+	at java.lang.String.getBytes(String.java:941)
+	at org.postgresql.core.Utils.encodeUTF8(Utils.java:56)
+	at org.postgresql.core.v3.SimpleParameterList.getV3Length(SimpleParameterList.java:318)
+	at org.postgresql.core.v3.QueryExecutorImpl.sendBind(QueryExecutorImpl.java:1367)
+	at org.postgresql.core.v3.QueryExecutorImpl.sendOneQuery(QueryExecutorImpl.java:1667)
+	at org.postgresql.core.v3.QueryExecutorImpl.sendQuery(QueryExecutorImpl.java:1216)
+	at org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:351)
+	at org.postgresql.jdbc.PgStatement.executeBatch(PgStatement.java:1019)
+	at fr.inria.cedar.connectionlens.sql.RelationalStructure.executeUpdate(RelationalStructure.java:205)
+	at fr.inria.cedar.connectionlens.sql.schema2.RelationalGraphSession$BatchSession.spillEdges(RelationalGraphSession.java:794)
+	at fr.inria.cedar.connectionlens.sql.schema2.RelationalGraphSession$BufferedSession.addEdge(RelationalGraphSession.java:995)
+	at fr.inria.cedar.connectionlens.ConnectionLens.lambda$register$3(ConnectionLens.java:354)
+	at fr.inria.cedar.connectionlens.ConnectionLens$$Lambda$19/508198356.accept(Unknown Source)
+	at fr.inria.cedar.connectionlens.source.RDFDataSource$TripleHandler.handleStatement(RDFDataSource.java:350)
+	at org.openrdf.rio.ntriples.NTriplesParser.parseTriple(NTriplesParser.java:338)
+	at org.openrdf.rio.ntriples.NTriplesParser.parse(NTriplesParser.java:192)
+	at org.openrdf.rio.ntriples.NTriplesParser.parse(NTriplesParser.java:131)
+	at fr.inria.cedar.connectionlens.source.RDFDataSource.traverseEdges(RDFDataSource.java:212)
+	at fr.inria.cedar.connectionlens.ConnectionLens.register(ConnectionLens.java:366)
+	at fr.inria.cedar.connectionlens.ConnectionLens.register(ConnectionLens.java:298)
+	at fr.inria.cedar.connectionlens.Experiment.registrationTest(Experiment.java:339)
+	at fr.inria.cedar.connectionlens.Experiment.&lt;init&gt;(Experiment.java:262)
+	at fr.inria.cedar.connectionlens.Experiment.main(Experiment.java:788)
+</div></code></code></pre>
 <h1 id="references">References</h1>
 <p>[1] Elbassuoni, Shady, and Roi Blanco. &quot;Keyword search over RDF graphs.&quot; Proceedings of the 20th d knowledge management. 2011.</p>
 <p>[2] Le, Wangchao, et al. &quot;Scalable keyword search on large RDF data.&quot; IEEE Transactions on knowledge and data engineering 26.11 (2014): 2774-2788.</p>
