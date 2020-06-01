@@ -1610,8 +1610,63 @@ do
 done
 ```
 The first 1 M
-```
-
+```bash
+[xizhang@cedar008 ~]$ ./tt.sh
+split_exp00.nt
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+PER_INSTANCE registration of: file:/data/yago4/2020-02-24/split/split_exp00.nt
+Edge spill
+Node spill
+Same-as edge spill
+Balking out of drawing the graph (too many nodes).
+Edge cache: CacheStats{hitCount=0, missCount=1616, loadSuccessCount=1616, loadExceptionCount=0, totalLoadTime=298675600, evictionCount=0}
+Node cache: CacheStats{hitCount=4094498, missCount=3550, loadSuccessCount=3550, loadExceptionCount=0, totalLoadTime=259561477, evictionCount=0}
+Incoming edge cache: CacheStats{hitCount=0, missCount=0, loadSuccessCount=0, loadExceptionCount=0, totalLoadTime=0, evictionCount=0}
+Outgoing edge cache: CacheStats{hitCount=0, missCount=0, loadSuccessCount=0, loadExceptionCount=0, totalLoadTime=0, evictionCount=0}
+In-degree cache: CacheStats{hitCount=0, missCount=0, loadSuccessCount=0, loadExceptionCount=0, totalLoadTime=0, evictionCount=0}
+Out-degree cache: CacheStats{hitCount=0, missCount=0, loadSuccessCount=0, loadExceptionCount=0, totalLoadTime=0, evictionCount=0}
+Total time: 363100 ms.
+split_exp01.nt
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+PER_INSTANCE registration of: file:/data/yago4/2020-02-24/split/split_exp01.nt
+Edge spill
+Node spill
+Edge spill
+Same-as edge spill
+Specificity spill
+Balking out of drawing the graph (too many nodes).
+Edge cache: CacheStats{hitCount=30625, missCount=1400331, loadSuccessCount=1400331, loadExceptionCount=0, totalLoadTime=112432819669, evictionCount=1346418}
+Node cache: CacheStats{hitCount=8276620, missCount=1461134, loadSuccessCount=1461134, loadExceptionCount=0, totalLoadTime=76537720956, evictionCount=1411134}
+Incoming edge cache: CacheStats{hitCount=0, missCount=654314, loadSuccessCount=654314, loadExceptionCount=0, totalLoadTime=88485944546, evictionCount=604314}
+Outgoing edge cache: CacheStats{hitCount=0, missCount=654314, loadSuccessCount=654314, loadExceptionCount=0, totalLoadTime=131997949387, evictionCount=604314}
+In-degree cache: CacheStats{hitCount=118878, missCount=71831, loadSuccessCount=71831, loadExceptionCount=0, totalLoadTime=3555131320, evictionCount=66831}
+Out-degree cache: CacheStats{hitCount=381804, missCount=850617, loadSuccessCount=850617, loadExceptionCount=0, totalLoadTime=40677545690, evictionCount=845617}
+Total time: 1161131 ms.
+split_exp02.nt
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+PER_INSTANCE registration of: file:/data/yago4/2020-02-24/split/split_exp02.nt
+Edge spill
+Node spill
+Specificity spill
+Same-as edge spill
+Edge spill
+Edge spill
+Same-as edge spill
+Specificity spill
+Balking out of drawing the graph (too many nodes).
+Edge cache: CacheStats{hitCount=68587, missCount=3914436, loadSuccessCount=3914436, loadExceptionCount=0, totalLoadTime=372615522215, evictionCount=3860450}
+Node cache: CacheStats{hitCount=14022880, missCount=4121525, loadSuccessCount=4121525, loadExceptionCount=0, totalLoadTime=216942437138, evictionCount=4071525}
+Incoming edge cache: CacheStats{hitCount=3, missCount=1146777, loadSuccessCount=1146777, loadExceptionCount=0, totalLoadTime=358419303565, evictionCount=1096777}
+Outgoing edge cache: CacheStats{hitCount=3, missCount=1146777, loadSuccessCount=1146777, loadExceptionCount=0, totalLoadTime=268514405843, evictionCount=1096777}
+In-degree cache: CacheStats{hitCount=1747790, missCount=424033, loadSuccessCount=424033, loadExceptionCount=0, totalLoadTime=24312187775, evictionCount=414386}
+Out-degree cache: CacheStats{hitCount=257005, missCount=1542240, loadSuccessCount=1542240, loadExceptionCount=0, totalLoadTime=80573403785, evictionCount=1534532}
+Total time: 2499139 ms.
 ```
 
 ```
