@@ -1591,6 +1591,24 @@ yago-wd-simple-types.nt:<http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:
 yago-wd-simple-types.nt:<http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://schema.org/Episode>	.
 ```
 ## load with `ConnectionLens`
+1M by 1M
+```bash
+a=0
+b=0
+filenames=$(ls /data/yago4/2020-02-24/split/ | grep 'split')
+for filename in $filenames
+do
+        echo "$filename"
+        if [ $a == $b ]
+        then
+                java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-develop-e79ae4a-20200601-1813.jar -i "/data/yago4/2020-02-24/split/$filename" -DRDBMSDBName=mx_test61 -v -E
+                a=1
+        else
+                java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-develop-e79ae4a-20200601-1813.jar -i "/data/yago4/2020-02-24/split/$filename" -DRDBMSDBName=mx_test61 -v -E -n
+        fi
+        sleep 1
+done
+```
 The first 1 M
 ```
 

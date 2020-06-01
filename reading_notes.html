@@ -1603,6 +1603,23 @@ yago-wd-simple-types.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -
 yago-wd-simple-types.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/Episode&gt;	.
 </div></code></code></pre>
 <h2 id="load-with-connectionlens">load with <code>ConnectionLens</code></h2>
+<p>1M by 1M</p>
+<pre><code class="language-bash"><div>a=0
+b=0
+filenames=$(ls /data/yago4/2020-02-24/split/ | grep <span class="hljs-string">'split'</span>)
+<span class="hljs-keyword">for</span> filename <span class="hljs-keyword">in</span> <span class="hljs-variable">$filenames</span>
+<span class="hljs-keyword">do</span>
+        <span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">$filename</span>"</span>
+        <span class="hljs-keyword">if</span> [ <span class="hljs-variable">$a</span> == <span class="hljs-variable">$b</span> ]
+        <span class="hljs-keyword">then</span>
+                java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-develop-e79ae4a-20200601-1813.jar -i <span class="hljs-string">"/data/yago4/2020-02-24/split/<span class="hljs-variable">$filename</span>"</span> -DRDBMSDBName=mx_test61 -v -E
+                a=1
+        <span class="hljs-keyword">else</span>
+                java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-develop-e79ae4a-20200601-1813.jar -i <span class="hljs-string">"/data/yago4/2020-02-24/split/<span class="hljs-variable">$filename</span>"</span> -DRDBMSDBName=mx_test61 -v -E -n
+        <span class="hljs-keyword">fi</span>
+        sleep 1
+<span class="hljs-keyword">done</span>
+</div></code></pre>
 <p>The first 1 M</p>
 <pre><code><code><div>
 </div></code></code></pre>
