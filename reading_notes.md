@@ -1,7 +1,7 @@
 
 - [Notes for answer tree ranking](#notes-for-answer-tree-ranking)
   - [Related works for query answering/ranking](#related-works-for-query-answeringranking)
-    - [Keyword search over RDF graphs [1] :](#keyword-search-over-rdf-graphs-1)
+    - [Keyword search over RDF graphs [1] :](#keyword-search-over-rdf-graphs-1-)
       - [answers:](#answers)
       - [ranking](#ranking)
     - [Scalable keyword search on large RDF data. [2]](#scalable-keyword-search-on-large-rdf-data-2)
@@ -33,12 +33,12 @@
       - [Results](#results-2)
 - [Graph Simplification](#graph-simplification)
   - [works and related works already done in the group](#works-and-related-works-already-done-in-the-group)
-    - [Irène's work](#ir%c3%a8nes-work)
+    - [Irène's work](#irènes-work)
       - [Basic ideas](#basic-ideas)
       - [Tests](#tests)
         - [with Wikidata Gauthier](#with-wikidata-gauthier)
         - [with `cl-decodex.json`](#with-cl-decodexjson)
-        - [with `nosdeputes.fr_deputes_en_mandat_2020-03-03.json`](#with-nosdeputesfrdeputesenmandat2020-03-03json)
+        - [with `nosdeputes.fr_deputes_en_mandat_2020-03-03.json`](#with-nosdeputesfr_deputes_en_mandat_2020-03-03json)
       - [Graph obtained with Neo4J](#graph-obtained-with-neo4j)
       - [The Java implementation](#the-java-implementation)
     - [RDFQuotient](#rdfquotient)
@@ -57,7 +57,7 @@
     - [Link with HAVTP](#link-with-havtp)
       - [Find common entities](#find-common-entities)
     - [problems loading YAGO4 with `rdflib`](#problems-loading-yago4-with-rdflib)
-      - [`.` right in the third column instead of being the fourth one](#right-in-the-third-column-instead-of-being-the-fourth-one)
+      - [`.` right in the third column instead of being the fourth one](#-right-in-the-third-column-instead-of-being-the-fourth-one)
       - [Mixed usage of `\t` and `\s`](#mixed-usage-of-t-and-s)
       - [Space inside certain entities:](#space-inside-certain-entities)
   - [load with `ConnectionLens`](#load-with-connectionlens)
@@ -1702,6 +1702,7 @@ Exception in thread "main" java.lang.OutOfMemoryError: GC overhead limit exceede
 	at fr.inria.cedar.connectionlens.Experiment.<init>(Experiment.java:262)
 	at fr.inria.cedar.connectionlens.Experiment.main(Experiment.java:788)
 ```
+HMMMM
 # References
 [1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th d knowledge management. 2011.
 
