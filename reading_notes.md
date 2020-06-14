@@ -1702,7 +1702,7 @@ Exception in thread "main" java.lang.OutOfMemoryError: GC overhead limit exceede
 	at fr.inria.cedar.connectionlens.Experiment.<init>(Experiment.java:262)
 	at fr.inria.cedar.connectionlens.Experiment.main(Experiment.java:788)
 ```
-HMMMM
+HMMMM whatever
 # References
 [1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th d knowledge management. 2011.
 
