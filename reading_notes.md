@@ -61,6 +61,7 @@
       - [Mixed usage of `\t` and `\s`](#mixed-usage-of-t-and-s)
       - [Space inside certain entities:](#space-inside-certain-entities)
   - [load with `ConnectionLens`](#load-with-connectionlens)
+    - [divide the dataset](#divide-the-dataset)
 - [References](#references)
 # Notes for answer tree ranking
 use git
@@ -1591,6 +1592,10 @@ yago-wd-simple-types.nt:<http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:
 yago-wd-simple-types.nt:<http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123>	<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>	<http://schema.org/Episode>	.
 ```
 ## load with `ConnectionLens`
+### divide the dataset
+```bash
+split -dl 1000000 --additional-suffix=.nt exp_file_dd.nt split/split_exp
+```
 1M by 1M
 ```bash
 a=0

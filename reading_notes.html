@@ -1606,6 +1606,9 @@ yago-wd-simple-types.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -
 yago-wd-simple-types.nt:&lt;http://yago-knowledge.org/resource/Day_5:_1:00_pm -_2:00_pm_Q52263123&gt;	&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;	&lt;http://schema.org/Episode&gt;	.
 </div></code></code></pre>
 <h2 id="load-with-connectionlens">load with <code>ConnectionLens</code></h2>
+<h3 id="divide-the-dataset">divide the dataset</h3>
+<pre><code class="language-bash"><div>split -dl 1000000 --additional-suffix=.nt exp_file_dd.nt split/split_exp
+</div></code></pre>
 <p>1M by 1M</p>
 <pre><code class="language-bash"><div>a=0
 b=0
