@@ -6,19 +6,19 @@
         <style>
 </style>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
-        <link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
-        <style>
-.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
-</style>
-        <style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
             body {
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
                 font-size: 14px;
                 line-height: 1.6;
             }
         </style>
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
         
         <script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
         
@@ -144,7 +144,11 @@
 </li>
 </ul>
 </li>
-<li><a href="#load-with-connectionlens">load with <code>ConnectionLens</code></a></li>
+<li><a href="#load-with-connectionlens">load with <code>ConnectionLens</code></a>
+<ul>
+<li><a href="#divide-the-dataset">divide the dataset</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#references">References</a></li>
@@ -1717,6 +1721,21 @@ Exception in thread &quot;main&quot; java.lang.OutOfMemoryError: GC overhead lim
 	at fr.inria.cedar.connectionlens.Experiment.main(Experiment.java:788)
 </div></code></code></pre>
 <p>HMMMM whatever</p>
+<h4 id=""></h4>
+<p>/Users/cedar/Documents/Xin/cnl/connection-lens/core/data/rdf/small-macron-royal-hollande.nt</p>
+<p>GFORGE/kwd-search-het/trunk/construction-paper/EXPERIMENTS/YAGO</p>
+<p>GFORGE/kwd-search-het/trunk/construction-paper/EXPERIMENTS/YAGO/cluster-experiments_18062020</p>
+<p>java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -lateIdx -i /data/yago4/2020-02-24/split/split_exp00.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v &gt; yago-00.txt
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp01.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v &gt; yago-01.txt
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp02.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v &gt; yago-02.txt
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp03.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v &gt; yago-03.txt
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp04.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v &gt; yago-04.txt
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp05.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v &gt; yago-05.txt
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp02.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v &gt; yago-06.txt
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp03.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v &gt; yago-07.txt
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp04.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v &gt; yago-08.txt
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -last -i /data/yago4/2020-02-24/split/split_exp05.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v &gt; yago-09.txt</p>
+<p><a href="http://commande.sh">commande.sh</a></p>
 <h1 id="references">References</h1>
 <p>[1] Elbassuoni, Shady, and Roi Blanco. &quot;Keyword search over RDF graphs.&quot; Proceedings of the 20th d knowledge management. 2011.</p>
 <p>[2] Le, Wangchao, et al. &quot;Scalable keyword search on large RDF data.&quot; IEEE Transactions on knowledge and data engineering 26.11 (2014): 2774-2788.</p>

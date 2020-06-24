@@ -1708,6 +1708,25 @@ Exception in thread "main" java.lang.OutOfMemoryError: GC overhead limit exceede
 	at fr.inria.cedar.connectionlens.Experiment.main(Experiment.java:788)
 ```
 HMMMM whatever
+####
+/Users/cedar/Documents/Xin/cnl/connection-lens/core/data/rdf/small-macron-royal-hollande.nt
+
+GFORGE/kwd-search-het/trunk/construction-paper/EXPERIMENTS/YAGO
+
+GFORGE/kwd-search-het/trunk/construction-paper/EXPERIMENTS/YAGO/cluster-experiments_18062020
+
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -lateIdx -i /data/yago4/2020-02-24/split/split_exp00.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-00.txt
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp01.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-01.txt
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp02.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-02.txt 
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp03.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-03.txt 
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp04.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-04.txt 
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp05.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-05.txt 
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp02.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-06.txt 
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp03.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-07.txt 
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp04.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-08.txt 
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -last -i /data/yago4/2020-02-24/split/split_exp05.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-09.txt
+
+commande.sh
 # References
 [1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th d knowledge management. 2011.
 
