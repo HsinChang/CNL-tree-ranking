@@ -1721,12 +1721,44 @@ java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin
 java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp03.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-03.txt 
 java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp04.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-04.txt 
 java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp05.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-05.txt 
-java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp02.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-06.txt 
-java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp03.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-07.txt 
-java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp04.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-08.txt 
-java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -last -i /data/yago4/2020-02-24/split/split_exp05.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-09.txt
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp06.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-06.txt 
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp07.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-07.txt 
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i /data/yago4/2020-02-24/split/split_exp08.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-08.txt 
+java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -last -i /data/yago4/2020-02-24/split/split_exp09.nt -DRDBMSDBName=cl_yago -rs -f LATEX -v > yago-09.txt
 
 commande.sh
+```sql
+copy (SELECT e.id, e.source, e.target, e.label, CASE WHEN s1.nin IS NULL then 1 ELSE s1.nin END AS nin, CASE WHEN s2.nout IS NULL then 1 ELSE s2.nout END AS nout FROM edges e LEFT OUTER JOIN specificity s1 ON e.target = s1.representative AND e.label = s1.edge_label LEFT OUTER JOIN specificiy s2 ON e.source=s2.representative AND e.label = s2.edge_label) to '/tmp/cc.csv' delimiter ',' csv header;
+```
+
+```sql
+copy (SELECT e.id, e.source, e.target, e.label, 2/(CASE WHEN s1.nin IS NULL then 1 ELSE s1.nin END + CASE WHEN s2.nout IS NULL then 1 ELSE s2.nout END) AS specificity FROM edges e LEFT OUTER JOIN specificity s1 ON e.target = s1.representative AND e.label = s1.edge_label LEFT OUTER JOIN specificity s2 ON e.source=s2.representative AND e.label = s2.edge_label) to '/tmp/bb.csv' delimiter ',' csv header;
+```
+
+```sql
+SELECT label, target where label http://www.w3.org/2000/01/rdf-schema#comment
+```
+
+```bash
+a=0
+b=0
+filenames=$(ls /data/yago4/2020-02-24/split/ | grep 'split')
+for filename in $filenames
+do
+        echo "$filename"
+        if [ $a == $b ]
+        then
+                java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -lateIdx -i "/data/yago4/2020-02-24/split/$filename" -DRDBMSDBName=cl_yago -rs -f LATEX -v > "tmpload/yago-$filename.txt"
+                a=1
+        elif ["$filename" == *"9011"*]
+        then
+                java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -last -i "/data/yago4/2020-02-24/split/$filename" -DRDBMSDBName=cl_yago -rs -f LATEX -v > "tmpload/yago-$filename.txt"
+        else
+                java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -i "/data/yago4/2020-02-24/split/$filename" -DRDBMSDBName=cl_yago -rs -f LATEX -v > "tmpload/yago-$filename.txt"
+        fi
+        sleep 1
+done
+```
 # References
 [1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th d knowledge management. 2011.
 
