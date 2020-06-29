@@ -1750,7 +1750,7 @@ do
         then
                 java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -lateIdx -i "/data/yago4/2020-02-24/split/$filename" -DRDBMSDBName=cl_yago -rs -f LATEX -v > "tmpload/yago-$filename.txt"
                 a=1
-        elif ["$filename" == *"9011"*]
+        elif [ "$filename" == *"9011"* ]
         then
                 java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -last -i "/data/yago4/2020-02-24/split/$filename" -DRDBMSDBName=cl_yago -rs -f LATEX -v > "tmpload/yago-$filename.txt"
         else

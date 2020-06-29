@@ -1752,7 +1752,7 @@ filenames=$(ls /data/yago4/2020-02-24/split/ | grep <span class="hljs-string">'s
         <span class="hljs-keyword">then</span>
                 java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -lateIdx -i <span class="hljs-string">"/data/yago4/2020-02-24/split/<span class="hljs-variable">$filename</span>"</span> -DRDBMSDBName=cl_yago -rs -f LATEX -v &gt; <span class="hljs-string">"tmpload/yago-<span class="hljs-variable">$filename</span>.txt"</span>
                 a=1
-        <span class="hljs-keyword">elif</span> [<span class="hljs-string">"<span class="hljs-variable">$filename</span>"</span> == *<span class="hljs-string">"9011"</span>*]
+        <span class="hljs-keyword">elif</span> [ <span class="hljs-string">"<span class="hljs-variable">$filename</span>"</span> == *<span class="hljs-string">"9011"</span>* ]
         <span class="hljs-keyword">then</span>
                 java -jar connection-lens/core/target/connection-lens-core-full-0.6-SNAPSHOT-xin-branch-4b6b4dd-20200624-1617.jar -n -lateIdx -last -i <span class="hljs-string">"/data/yago4/2020-02-24/split/<span class="hljs-variable">$filename</span>"</span> -DRDBMSDBName=cl_yago -rs -f LATEX -v &gt; <span class="hljs-string">"tmpload/yago-<span class="hljs-variable">$filename</span>.txt"</span>
         <span class="hljs-keyword">else</span>
