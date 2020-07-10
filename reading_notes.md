@@ -1738,7 +1738,7 @@ copy (SELECT e.id, e.source, e.target, e.label, 2/(CASE WHEN s1.nin IS NULL then
 ```sql
 SELECT label, target where label http://www.w3.org/2000/01/rdf-schema#comment
 ```
-cccc
+cccc ohlala
 ```bash
 a=0
 b=0
