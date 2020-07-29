@@ -62,6 +62,7 @@
       - [Space inside certain entities:](#space-inside-certain-entities)
   - [load with `ConnectionLens`](#load-with-connectionlens)
     - [divide the dataset](#divide-the-dataset)
+    - [Python Implementation](#python-implementation)
 - [References](#references)
 # Notes for answer tree ranking
 use git
@@ -1759,7 +1760,293 @@ do
         sleep 1
 done
 ```
-x
+### Python Implementation
+```python
+
+import graph_tool as gt
+import graph_tool.topology
+import time
+from collections import Counter
+import numpy as np
+
+threshold = 0.3
+k = 0.7
+
+def jaccard_similarity(list1, list2):
+    intersection = len(list(set(list1).intersection(list2)))
+    union = (len(list1) + len(list2)) - intersection
+    return float(intersection) / union
+
+# class NumericalToleranceMesh(object):
+#     '''
+#     tol.zero: consider floating point numbers less than this zero
+#     tol.merge: when merging vertices, consider vertices closer than this
+#                to be the same vertex. Here we use the same value (1e-8)
+#                as SolidWorks uses, according to their documentation.
+#     tol.planar: the maximum distance from a plane a point can be and
+#                 still be considered to be on the plane
+#     tol.facet_rsq: the minimum radius squared that an arc drawn from the
+#                    center of a face to the center of an adjacent face can
+#                    be to consider the two faces coplanar. This method is more
+#                    robust than considering just normal angles as it is tolerant
+#                    of numerical error on very small faces.
+#     '''
+#     def __init__(self, **kwargs):
+#         self.zero      = 1e-12
+#         self.merge     = 1e-8
+#         self.planar    = 1e-5
+#         self.facet_rsq = 1e8
+#         self.fit       = 1e-2
+#         self.id_len    = 6
+#         self.__dict__.update(kwargs)
+
+def group(values, min_len=2, max_len=np.inf):
+    '''
+    Return the indices of values that are identical
+
+    Arguments
+    ----------
+    values:     1D array
+    min_len:    int, the shortest group allowed
+                All groups will have len >= min_length
+    max_len:    int, the longest group allowed
+                All groups will have len <= max_length
+
+    Returns
+    ----------
+    groups: sequence of indices to form groups
+            IE [0,1,0,1] returns [[0,2], [1,3]]
+    '''
+    values = np.asanyarray(values)
+    order = values.argsort()
+    values = values[order]
+    dupe = np.greater(np.abs(np.diff(values)), 0)
+    dupe_idx = np.append(0, np.nonzero(dupe)[0] + 1)
+    dupe_len = np.diff(np.hstack((dupe_idx, len(values))))
+    dupe_ok = np.logical_and(np.greater_equal(dupe_len, min_len),
+                             np.less_equal(dupe_len, max_len))
+    groups = [order[i:(i + j)] for i, j in zip(dupe_idx[dupe_ok], dupe_len[dupe_ok])]
+    return groups
+
+# class Record:
+#     def __init__(self, record):
+#         self.elements = set()
+#         self.record = record
+#     def add_element(self, vertex):
+#         self.elements.add(vertex)
+start1 = time.time()
+edges = []
+count = 0
+egde_filter = ['<http://www.w3.org/2000/01/rdf-schema#comment>','<http://www.w3.org/2000/01/rdf-schema#label>','<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>','<http://schema.org/alternateName>','<http://schema.org/sameAs>','<http://www.w3.org/2002/07/owl#sameAs>']
+with open("rdflib_yago.nt",'r',encoding="utf-8") as f:
+#with open("../gtsplit00.nt", 'r', encoding="utf-8") as f:
+    line = f.readline()
+    while line:
+        count +=1
+        if count % 1000000 == 0:
+            print(count)
+        if not any(x in line for x in egde_filter):
+            s,p,o,dot = line.split('\t')
+            edges.append((s,o,p))
+        line = f.readline()
+g = gt.Graph()
+g.edge_properties["edge_label"] = g.new_edge_property("string")
+g.vertex_properties["node_label"] = g.add_edge_list(edges, hashed=True, string_vals=True, eprops=[g.edge_properties["edge_label"]])
+del edges
+f.close()
+end1 = time.time()
+print("Loading time: " + str(end1 -start1))
+# SEPARATING INTERNAL AND THE LEAF NODES:
+start2 = time.time()
+internal_nodes = {}
+leaf_nodes = set()
+collections = set()
+stack = []
+records = {}
+for e in g.edges():
+    s = e.source()
+    t = e.target()
+    if s in internal_nodes:
+        internal_nodes[s] += 1
+    else:
+        internal_nodes[s] = 1
+    if s in leaf_nodes:
+        leaf_nodes.remove(s)
+    leaf_nodes.add(t)
+end2 =time.time()
+print("Seperation time: "+str(end2-start2))
+# FINDING THE COLLECTIONS:
+start3 = time.time()
+for ni in internal_nodes:
+    if internal_nodes[ni] > 1:
+        labels = [g.edge_properties["edge_label"][x] for x in ni.out_edges()]
+        oc_count = Counter(labels)
+        per = oc_count.most_common(1)[0][1]/len(labels)
+        if per > k:
+            # sim = 0
+            # count = 0
+            # for e1 in ni.out_edges():
+            #     for e2 in ni.out_edges():
+            #         if g.vertex_index[e2.target()] > g.vertex_index[e1.target()]:
+            #             if e1.target() not in internal_nodes and e2.target() not in internal_nodes:
+            #                 if g.edge_properties["edge_label"][e1] == g.edge_properties["edge_label"][e2]:
+            #                     sim += 1
+            #                     count +=1
+            #                 else:
+            #                     count += 1
+            #             else:
+            #                 l1 = [g.edge_properties["edge_label"][x] for x in e1.target().out_edges()]
+            #                 l2 = [g.edge_properties["edge_label"][x] for x in e2.target().out_edges()]
+            #                 sim += jaccard_similarity(l1, l2)
+            #                 count += 1
+            #         else:
+            #             sim += 1
+            #             count += 1
+            # sim = sim/count
+            sim = 0
+            leaves = []
+            internals = []
+            for e in ni.out_edges():
+                if e in internal_nodes:
+                    internals.append(e)
+                else:
+                    leaves.append(e)
+            length = len(internals)+len(leaves)
+            n = (length*length - length)/2
+            labels_leaves = [g.edge_properties["edge_label"][x] for x in leaves]
+            ll_count = Counter(labels_leaves)
+            # similarities between leaf edges
+            for a in ll_count:
+                if ll_count[a] > 1:
+                    sim += (ll_count[a]*ll_count[a]-ll_count[a])/2
+            for e1 in internals:
+                for e2 in internals:
+                    if g.vertex_index[e2.target()] > g.vertex_index[e1.target()]:
+                        l1 = [g.edge_properties["edge_label"][x] for x in e1.target().out_edges()]
+                        l2 = [g.edge_properties["edge_label"][x] for x in e2.target().out_edges()]
+                        sim += jaccard_similarity(l1, l2)
+            sim = sim/n
+            if sim > threshold:
+                collections.add(ni)
+
+for n in collections:
+    stack.append([None,n])
+end3 = time.time()
+print("Collection time: "+str(end3-start3))
+del internals
+del internal_nodes
+del labels
+del labels_leaves
+del leaves
+del ll_count
+del oc_count
+#FINDING NODES IN CYCLES:
+start4 = time.time()
+sbb = graph_tool.topology.label_components(g, directed=True)[0].a
+components = group(sbb)
+nodes_in_cycle = set()
+for comp in components:
+    for a in comp:
+        a = g.vertex(a)
+        records[a] = set()
+        stack.append([None, a])
+        nodes_in_cycle.add(a)
+end4 = time.time()
+print("Cycle time: "+str(end4-start4))
+#         print("")
+# print("")
+# FINALIZING THE IDENTIFICATION OF RECORDS:
+start5 = time.time()
+del components
+del sbb
+del leaf_nodes
+maxlen = len(stack)
+cnt =0
+
+disc = 0
+maxsofar = 0
+while len(stack)>0:
+    maxlen = max(len(stack), maxlen)
+    a, n = stack.pop()
+    cnt = cnt + 1
+    bbb = False
+    if cnt%1000000==0:
+        temp = disc
+        disc = maxlen - maxsofar
+        if disc == temp:
+            with open('stack.txt','w',encoding='utf-8') as fb:
+                for i in range(1, disc):
+                    if a is not None:
+                        aa = g.vertex_properties["node_label"][a]
+                    nn = g.vertex_properties["node_label"][n]
+                    fb.write(aa + nn + "\n")
+            fb.close()
+            bbb = True
+            break
+        print("max size so far: " + str(maxlen))
+        maxsofar = maxlen
+    if bbb:
+        break
+    if n in collections:
+        for m in g.get_out_neighbors(n):
+            if g.vertex(m) not in records:
+                records[g.vertex(m)] = set()
+                stack.append([g.vertex(m), g.vertex(m)])
+    elif n in records:
+        for p in g.get_out_neighbors(n):
+            p = g.vertex(p)
+            if p not in collections and p not in nodes_in_cycle and p not in records[n] :
+                stack.append([n,p])
+    else:
+        if a is not None:
+            if a in records:
+                records[a].add(n)
+            for p in g.get_out_neighbors(n):
+                p = g.vertex(p)
+                if p not in collections and p not in nodes_in_cycle:
+                    if p not in records[a]:
+                        stack.append([a,p])
+end5 = time.time()
+
+print("Identification time: " + str(end5-start5))
+del nodes_in_cycle
+
+with open('collections.txt','w',encoding='utf-8') as fc:
+    for c in collections:
+        labels = [g.edge_properties["edge_label"][x] for x in c.out_edges()]
+        label = max(set(labels), key=labels.count)
+        fc.write("Collection Node: "+g.vertex_properties["node_label"][c]+", most common label: "+label+"\n")
+fc.close()
+
+with open('records.txt','w',encoding='utf-8') as fr:
+    for r in records:
+        fr.write("Record Node: "+g.vertex_properties["node_label"][r]+", members:"+"\n")
+        for e in records[r]:
+            fr.write(g.vertex_properties["node_label"][e]+"\n")
+        fr.write("\n")
+```
+```bash
+Loading time: 177.26254844665527
+Seperation time: 35.15782928466797
+Collection time: 69.27971482276917
+Cycle time: 2.1327993869781494
+max size so far: 15266763
+max size so far: 31266763
+max size so far: 47266763
+max size so far: 63266763
+max size so far: 79266763
+max size so far: 95266763
+max size so far: 111266763
+max size so far: 127266763
+max size so far: 143266763
+max size so far: 159266763
+max size so far: 175266763
+max size so far: 191266763
+```
+```xml
+<http://yago-knowledge.org/resource/Danica_McKellar>	<http://schema.org/spouse>	<http://yago-knowledge.org/resource/Danica_McKellar>	.
+```
+x afskgjndf
 # References
 [1] Elbassuoni, Shady, and Roi Blanco. "Keyword search over RDF graphs." Proceedings of the 20th d knowledge management. 2011.
 

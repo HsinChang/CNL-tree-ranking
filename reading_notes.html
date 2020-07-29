@@ -147,6 +147,7 @@
 <li><a href="#load-with-connectionlens">load with <code>ConnectionLens</code></a>
 <ul>
 <li><a href="#divide-the-dataset">divide the dataset</a></li>
+<li><a href="#python-implementation">Python Implementation</a></li>
 </ul>
 </li>
 </ul>
@@ -1762,7 +1763,290 @@ filenames=$(ls /data/yago4/2020-02-24/split/ | grep <span class="hljs-string">'s
         sleep 1
 <span class="hljs-keyword">done</span>
 </div></code></pre>
-<p>x</p>
+<h3 id="python-implementation">Python Implementation</h3>
+<pre><code class="language-python"><div>
+<span class="hljs-keyword">import</span> graph_tool <span class="hljs-keyword">as</span> gt
+<span class="hljs-keyword">import</span> graph_tool.topology
+<span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+
+threshold = <span class="hljs-number">0.3</span>
+k = <span class="hljs-number">0.7</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">jaccard_similarity</span><span class="hljs-params">(list1, list2)</span>:</span>
+    intersection = len(list(set(list1).intersection(list2)))
+    union = (len(list1) + len(list2)) - intersection
+    <span class="hljs-keyword">return</span> float(intersection) / union
+
+<span class="hljs-comment"># class NumericalToleranceMesh(object):</span>
+<span class="hljs-comment">#     '''</span>
+<span class="hljs-comment">#     tol.zero: consider floating point numbers less than this zero</span>
+<span class="hljs-comment">#     tol.merge: when merging vertices, consider vertices closer than this</span>
+<span class="hljs-comment">#                to be the same vertex. Here we use the same value (1e-8)</span>
+<span class="hljs-comment">#                as SolidWorks uses, according to their documentation.</span>
+<span class="hljs-comment">#     tol.planar: the maximum distance from a plane a point can be and</span>
+<span class="hljs-comment">#                 still be considered to be on the plane</span>
+<span class="hljs-comment">#     tol.facet_rsq: the minimum radius squared that an arc drawn from the</span>
+<span class="hljs-comment">#                    center of a face to the center of an adjacent face can</span>
+<span class="hljs-comment">#                    be to consider the two faces coplanar. This method is more</span>
+<span class="hljs-comment">#                    robust than considering just normal angles as it is tolerant</span>
+<span class="hljs-comment">#                    of numerical error on very small faces.</span>
+<span class="hljs-comment">#     '''</span>
+<span class="hljs-comment">#     def __init__(self, **kwargs):</span>
+<span class="hljs-comment">#         self.zero      = 1e-12</span>
+<span class="hljs-comment">#         self.merge     = 1e-8</span>
+<span class="hljs-comment">#         self.planar    = 1e-5</span>
+<span class="hljs-comment">#         self.facet_rsq = 1e8</span>
+<span class="hljs-comment">#         self.fit       = 1e-2</span>
+<span class="hljs-comment">#         self.id_len    = 6</span>
+<span class="hljs-comment">#         self.__dict__.update(kwargs)</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">group</span><span class="hljs-params">(values, min_len=<span class="hljs-number">2</span>, max_len=np.inf)</span>:</span>
+    <span class="hljs-string">'''
+    Return the indices of values that are identical
+
+    Arguments
+    ----------
+    values:     1D array
+    min_len:    int, the shortest group allowed
+                All groups will have len &gt;= min_length
+    max_len:    int, the longest group allowed
+                All groups will have len &lt;= max_length
+
+    Returns
+    ----------
+    groups: sequence of indices to form groups
+            IE [0,1,0,1] returns [[0,2], [1,3]]
+    '''</span>
+    values = np.asanyarray(values)
+    order = values.argsort()
+    values = values[order]
+    dupe = np.greater(np.abs(np.diff(values)), <span class="hljs-number">0</span>)
+    dupe_idx = np.append(<span class="hljs-number">0</span>, np.nonzero(dupe)[<span class="hljs-number">0</span>] + <span class="hljs-number">1</span>)
+    dupe_len = np.diff(np.hstack((dupe_idx, len(values))))
+    dupe_ok = np.logical_and(np.greater_equal(dupe_len, min_len),
+                             np.less_equal(dupe_len, max_len))
+    groups = [order[i:(i + j)] <span class="hljs-keyword">for</span> i, j <span class="hljs-keyword">in</span> zip(dupe_idx[dupe_ok], dupe_len[dupe_ok])]
+    <span class="hljs-keyword">return</span> groups
+
+<span class="hljs-comment"># class Record:</span>
+<span class="hljs-comment">#     def __init__(self, record):</span>
+<span class="hljs-comment">#         self.elements = set()</span>
+<span class="hljs-comment">#         self.record = record</span>
+<span class="hljs-comment">#     def add_element(self, vertex):</span>
+<span class="hljs-comment">#         self.elements.add(vertex)</span>
+start1 = time.time()
+edges = []
+count = <span class="hljs-number">0</span>
+egde_filter = [<span class="hljs-string">'&lt;http://www.w3.org/2000/01/rdf-schema#comment&gt;'</span>,<span class="hljs-string">'&lt;http://www.w3.org/2000/01/rdf-schema#label&gt;'</span>,<span class="hljs-string">'&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt;'</span>,<span class="hljs-string">'&lt;http://schema.org/alternateName&gt;'</span>,<span class="hljs-string">'&lt;http://schema.org/sameAs&gt;'</span>,<span class="hljs-string">'&lt;http://www.w3.org/2002/07/owl#sameAs&gt;'</span>]
+<span class="hljs-keyword">with</span> open(<span class="hljs-string">"rdflib_yago.nt"</span>,<span class="hljs-string">'r'</span>,encoding=<span class="hljs-string">"utf-8"</span>) <span class="hljs-keyword">as</span> f:
+<span class="hljs-comment">#with open("../gtsplit00.nt", 'r', encoding="utf-8") as f:</span>
+    line = f.readline()
+    <span class="hljs-keyword">while</span> line:
+        count +=<span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> count % <span class="hljs-number">1000000</span> == <span class="hljs-number">0</span>:
+            print(count)
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> any(x <span class="hljs-keyword">in</span> line <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> egde_filter):
+            s,p,o,dot = line.split(<span class="hljs-string">'\t'</span>)
+            edges.append((s,o,p))
+        line = f.readline()
+g = gt.Graph()
+g.edge_properties[<span class="hljs-string">"edge_label"</span>] = g.new_edge_property(<span class="hljs-string">"string"</span>)
+g.vertex_properties[<span class="hljs-string">"node_label"</span>] = g.add_edge_list(edges, hashed=<span class="hljs-literal">True</span>, string_vals=<span class="hljs-literal">True</span>, eprops=[g.edge_properties[<span class="hljs-string">"edge_label"</span>]])
+<span class="hljs-keyword">del</span> edges
+f.close()
+end1 = time.time()
+print(<span class="hljs-string">"Loading time: "</span> + str(end1 -start1))
+<span class="hljs-comment"># SEPARATING INTERNAL AND THE LEAF NODES:</span>
+start2 = time.time()
+internal_nodes = {}
+leaf_nodes = set()
+collections = set()
+stack = []
+records = {}
+<span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> g.edges():
+    s = e.source()
+    t = e.target()
+    <span class="hljs-keyword">if</span> s <span class="hljs-keyword">in</span> internal_nodes:
+        internal_nodes[s] += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">else</span>:
+        internal_nodes[s] = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">if</span> s <span class="hljs-keyword">in</span> leaf_nodes:
+        leaf_nodes.remove(s)
+    leaf_nodes.add(t)
+end2 =time.time()
+print(<span class="hljs-string">"Seperation time: "</span>+str(end2-start2))
+<span class="hljs-comment"># FINDING THE COLLECTIONS:</span>
+start3 = time.time()
+<span class="hljs-keyword">for</span> ni <span class="hljs-keyword">in</span> internal_nodes:
+    <span class="hljs-keyword">if</span> internal_nodes[ni] &gt; <span class="hljs-number">1</span>:
+        labels = [g.edge_properties[<span class="hljs-string">"edge_label"</span>][x] <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> ni.out_edges()]
+        oc_count = Counter(labels)
+        per = oc_count.most_common(<span class="hljs-number">1</span>)[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>]/len(labels)
+        <span class="hljs-keyword">if</span> per &gt; k:
+            <span class="hljs-comment"># sim = 0</span>
+            <span class="hljs-comment"># count = 0</span>
+            <span class="hljs-comment"># for e1 in ni.out_edges():</span>
+            <span class="hljs-comment">#     for e2 in ni.out_edges():</span>
+            <span class="hljs-comment">#         if g.vertex_index[e2.target()] &gt; g.vertex_index[e1.target()]:</span>
+            <span class="hljs-comment">#             if e1.target() not in internal_nodes and e2.target() not in internal_nodes:</span>
+            <span class="hljs-comment">#                 if g.edge_properties["edge_label"][e1] == g.edge_properties["edge_label"][e2]:</span>
+            <span class="hljs-comment">#                     sim += 1</span>
+            <span class="hljs-comment">#                     count +=1</span>
+            <span class="hljs-comment">#                 else:</span>
+            <span class="hljs-comment">#                     count += 1</span>
+            <span class="hljs-comment">#             else:</span>
+            <span class="hljs-comment">#                 l1 = [g.edge_properties["edge_label"][x] for x in e1.target().out_edges()]</span>
+            <span class="hljs-comment">#                 l2 = [g.edge_properties["edge_label"][x] for x in e2.target().out_edges()]</span>
+            <span class="hljs-comment">#                 sim += jaccard_similarity(l1, l2)</span>
+            <span class="hljs-comment">#                 count += 1</span>
+            <span class="hljs-comment">#         else:</span>
+            <span class="hljs-comment">#             sim += 1</span>
+            <span class="hljs-comment">#             count += 1</span>
+            <span class="hljs-comment"># sim = sim/count</span>
+            sim = <span class="hljs-number">0</span>
+            leaves = []
+            internals = []
+            <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> ni.out_edges():
+                <span class="hljs-keyword">if</span> e <span class="hljs-keyword">in</span> internal_nodes:
+                    internals.append(e)
+                <span class="hljs-keyword">else</span>:
+                    leaves.append(e)
+            length = len(internals)+len(leaves)
+            n = (length*length - length)/<span class="hljs-number">2</span>
+            labels_leaves = [g.edge_properties[<span class="hljs-string">"edge_label"</span>][x] <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> leaves]
+            ll_count = Counter(labels_leaves)
+            <span class="hljs-comment"># similarities between leaf edges</span>
+            <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> ll_count:
+                <span class="hljs-keyword">if</span> ll_count[a] &gt; <span class="hljs-number">1</span>:
+                    sim += (ll_count[a]*ll_count[a]-ll_count[a])/<span class="hljs-number">2</span>
+            <span class="hljs-keyword">for</span> e1 <span class="hljs-keyword">in</span> internals:
+                <span class="hljs-keyword">for</span> e2 <span class="hljs-keyword">in</span> internals:
+                    <span class="hljs-keyword">if</span> g.vertex_index[e2.target()] &gt; g.vertex_index[e1.target()]:
+                        l1 = [g.edge_properties[<span class="hljs-string">"edge_label"</span>][x] <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> e1.target().out_edges()]
+                        l2 = [g.edge_properties[<span class="hljs-string">"edge_label"</span>][x] <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> e2.target().out_edges()]
+                        sim += jaccard_similarity(l1, l2)
+            sim = sim/n
+            <span class="hljs-keyword">if</span> sim &gt; threshold:
+                collections.add(ni)
+
+<span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> collections:
+    stack.append([<span class="hljs-literal">None</span>,n])
+end3 = time.time()
+print(<span class="hljs-string">"Collection time: "</span>+str(end3-start3))
+<span class="hljs-keyword">del</span> internals
+<span class="hljs-keyword">del</span> internal_nodes
+<span class="hljs-keyword">del</span> labels
+<span class="hljs-keyword">del</span> labels_leaves
+<span class="hljs-keyword">del</span> leaves
+<span class="hljs-keyword">del</span> ll_count
+<span class="hljs-keyword">del</span> oc_count
+<span class="hljs-comment">#FINDING NODES IN CYCLES:</span>
+start4 = time.time()
+sbb = graph_tool.topology.label_components(g, directed=<span class="hljs-literal">True</span>)[<span class="hljs-number">0</span>].a
+components = group(sbb)
+nodes_in_cycle = set()
+<span class="hljs-keyword">for</span> comp <span class="hljs-keyword">in</span> components:
+    <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> comp:
+        a = g.vertex(a)
+        records[a] = set()
+        stack.append([<span class="hljs-literal">None</span>, a])
+        nodes_in_cycle.add(a)
+end4 = time.time()
+print(<span class="hljs-string">"Cycle time: "</span>+str(end4-start4))
+<span class="hljs-comment">#         print("")</span>
+<span class="hljs-comment"># print("")</span>
+<span class="hljs-comment"># FINALIZING THE IDENTIFICATION OF RECORDS:</span>
+start5 = time.time()
+<span class="hljs-keyword">del</span> components
+<span class="hljs-keyword">del</span> sbb
+<span class="hljs-keyword">del</span> leaf_nodes
+maxlen = len(stack)
+cnt =<span class="hljs-number">0</span>
+
+disc = <span class="hljs-number">0</span>
+maxsofar = <span class="hljs-number">0</span>
+<span class="hljs-keyword">while</span> len(stack)&gt;<span class="hljs-number">0</span>:
+    maxlen = max(len(stack), maxlen)
+    a, n = stack.pop()
+    cnt = cnt + <span class="hljs-number">1</span>
+    bbb = <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">if</span> cnt%<span class="hljs-number">1000000</span>==<span class="hljs-number">0</span>:
+        temp = disc
+        disc = maxlen - maxsofar
+        <span class="hljs-keyword">if</span> disc == temp:
+            <span class="hljs-keyword">with</span> open(<span class="hljs-string">'stack.txt'</span>,<span class="hljs-string">'w'</span>,encoding=<span class="hljs-string">'utf-8'</span>) <span class="hljs-keyword">as</span> fb:
+                <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>, disc):
+                    <span class="hljs-keyword">if</span> a <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+                        aa = g.vertex_properties[<span class="hljs-string">"node_label"</span>][a]
+                    nn = g.vertex_properties[<span class="hljs-string">"node_label"</span>][n]
+                    fb.write(aa + nn + <span class="hljs-string">"\n"</span>)
+            fb.close()
+            bbb = <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">break</span>
+        print(<span class="hljs-string">"max size so far: "</span> + str(maxlen))
+        maxsofar = maxlen
+    <span class="hljs-keyword">if</span> bbb:
+        <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">if</span> n <span class="hljs-keyword">in</span> collections:
+        <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> g.get_out_neighbors(n):
+            <span class="hljs-keyword">if</span> g.vertex(m) <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> records:
+                records[g.vertex(m)] = set()
+                stack.append([g.vertex(m), g.vertex(m)])
+    <span class="hljs-keyword">elif</span> n <span class="hljs-keyword">in</span> records:
+        <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> g.get_out_neighbors(n):
+            p = g.vertex(p)
+            <span class="hljs-keyword">if</span> p <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> collections <span class="hljs-keyword">and</span> p <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> nodes_in_cycle <span class="hljs-keyword">and</span> p <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> records[n] :
+                stack.append([n,p])
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">if</span> a <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-keyword">if</span> a <span class="hljs-keyword">in</span> records:
+                records[a].add(n)
+            <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> g.get_out_neighbors(n):
+                p = g.vertex(p)
+                <span class="hljs-keyword">if</span> p <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> collections <span class="hljs-keyword">and</span> p <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> nodes_in_cycle:
+                    <span class="hljs-keyword">if</span> p <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> records[a]:
+                        stack.append([a,p])
+end5 = time.time()
+
+print(<span class="hljs-string">"Identification time: "</span> + str(end5-start5))
+<span class="hljs-keyword">del</span> nodes_in_cycle
+
+<span class="hljs-keyword">with</span> open(<span class="hljs-string">'collections.txt'</span>,<span class="hljs-string">'w'</span>,encoding=<span class="hljs-string">'utf-8'</span>) <span class="hljs-keyword">as</span> fc:
+    <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> collections:
+        labels = [g.edge_properties[<span class="hljs-string">"edge_label"</span>][x] <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> c.out_edges()]
+        label = max(set(labels), key=labels.count)
+        fc.write(<span class="hljs-string">"Collection Node: "</span>+g.vertex_properties[<span class="hljs-string">"node_label"</span>][c]+<span class="hljs-string">", most common label: "</span>+label+<span class="hljs-string">"\n"</span>)
+fc.close()
+
+<span class="hljs-keyword">with</span> open(<span class="hljs-string">'records.txt'</span>,<span class="hljs-string">'w'</span>,encoding=<span class="hljs-string">'utf-8'</span>) <span class="hljs-keyword">as</span> fr:
+    <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> records:
+        fr.write(<span class="hljs-string">"Record Node: "</span>+g.vertex_properties[<span class="hljs-string">"node_label"</span>][r]+<span class="hljs-string">", members:"</span>+<span class="hljs-string">"\n"</span>)
+        <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> records[r]:
+            fr.write(g.vertex_properties[<span class="hljs-string">"node_label"</span>][e]+<span class="hljs-string">"\n"</span>)
+        fr.write(<span class="hljs-string">"\n"</span>)
+</div></code></pre>
+<pre><code class="language-bash"><div>Loading time: 177.26254844665527
+Seperation time: 35.15782928466797
+Collection time: 69.27971482276917
+Cycle time: 2.1327993869781494
+max size so far: 15266763
+max size so far: 31266763
+max size so far: 47266763
+max size so far: 63266763
+max size so far: 79266763
+max size so far: 95266763
+max size so far: 111266763
+max size so far: 127266763
+max size so far: 143266763
+max size so far: 159266763
+max size so far: 175266763
+max size so far: 191266763
+</div></code></pre>
+<pre><code class="language-xml"><div><span class="hljs-tag">&lt;<span class="hljs-name">http:</span>//<span class="hljs-attr">yago-knowledge.org</span>/<span class="hljs-attr">resource</span>/<span class="hljs-attr">Danica_McKellar</span>&gt;</span>	<span class="hljs-tag">&lt;<span class="hljs-name">http:</span>//<span class="hljs-attr">schema.org</span>/<span class="hljs-attr">spouse</span>&gt;</span>	<span class="hljs-tag">&lt;<span class="hljs-name">http:</span>//<span class="hljs-attr">yago-knowledge.org</span>/<span class="hljs-attr">resource</span>/<span class="hljs-attr">Danica_McKellar</span>&gt;</span>	.
+</div></code></pre>
+<p>x afskgjndf</p>
 <h1 id="references">References</h1>
 <p>[1] Elbassuoni, Shady, and Roi Blanco. &quot;Keyword search over RDF graphs.&quot; Proceedings of the 20th d knowledge management. 2011.</p>
 <p>[2] Le, Wangchao, et al. &quot;Scalable keyword search on large RDF data.&quot; IEEE Transactions on knowledge and data engineering 26.11 (2014): 2774-2788.</p>
