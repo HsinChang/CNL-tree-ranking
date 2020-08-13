@@ -296,7 +296,18 @@ add nodes until the graph reaches size <span class="katex"><span class="katex-ma
 </ul>
 </li>
 </ol>
-<h4 id="dataset-espresso-knowledge-graph">Dataset: <code>Espresso Knowledge Graph</code></h4>
+<h2 id="learning-to-rank-literatures">Learning to rank literatures</h2>
+<h3 id="a-short-introduction-to-learning-to-rank-8">A Short Introduction to Learning to Rank [8]</h3>
+<h4 id="pointwise">Pointwise</h4>
+<p><img src="file:////Users/cedar/Documents/GitHub/Internship-cnl/pointwise.png" alt="PointWise">
+Using traditional ML approaches to learn the score, for our case, the order of the edges are important, pointwise approach will ignore this order</p>
+<h4 id="pairwise">Pairwise</h4>
+<p><img src="file:////Users/cedar/Documents/GitHub/Internship-cnl/pairwise.png" alt="Pairwise"></p>
+<h4 id="evaluation">Evaluation</h4>
+<h5 id="mapmean-average-precision">MAP(Mean Average Precision)</h5>
+<h5 id="ndcgnormalized-discounted-cumulative-gain">NDCG(Normalized Discounted Cumulative Gain)</h5>
+<p><img src="file:////Users/cedar/Documents/GitHub/Internship-cnl/mdcg.png" alt="Normalized Discounted Cumulative Gain"></p>
+<h3 id="dataset-espresso-knowledge-graph">Dataset: <code>Espresso Knowledge Graph</code></h3>
 <p>derived from <code>YAGO2</code> and <code>FreeBase</code>, Enriched by</p>
 <ul>
 <li>edge weights signifying the relatedness
@@ -2055,6 +2066,7 @@ max size so far: 191266763
 <p>[5]Kasneci, Gjergji, Shady Elbassuoni, and Gerhard Weikum. &quot;Ming: mining informative entity relationship subgraphs.&quot; Proceedings of the 18th ACM conference on Information and knowledge management. 2009.</p>
 <p>[6]Seufert, Stephan, et al. &quot;Espresso: explaining relationships between entity sets.&quot; Proceedings of the 25th ACM International on Conference on Information and Knowledge Management. 2016.</p>
 <p>[7]Tong, Hanghang, and Christos Faloutsos. &quot;Center-piece subgraphs: problem definition and fast solutions.&quot; Proceedings of the 12th ACM SIGKDD international conference on Knowledge discovery and data mining. 2006.</p>
+<p>[8] Li, Hang. &quot;A short introduction to learning to rank.&quot; IEICE TRANSACTIONS on Information and Systems 94.10 (2011): 1854-1862.</p>
 
     </body>
     </html>

@@ -23,7 +23,14 @@
       - [ESPRESSO knowledge graph](#espresso-knowledge-graph)
       - [Objective](#objective)
       - [Algorithm](#algorithm)
-      - [Dataset: `Espresso Knowledge Graph`](#dataset-espresso-knowledge-graph)
+  - [Learning to rank literatures](#learning-to-rank-literatures)
+    - [A Short Introduction to Learning to Rank [8]](#a-short-introduction-to-learning-to-rank-8)
+      - [Pointwise](#pointwise)
+      - [Pairwise](#pairwise)
+      - [Evaluation](#evaluation)
+        - [MAP(Mean Average Precision)](#mapmean-average-precision)
+        - [NDCG(Normalized Discounted Cumulative Gain)](#ndcgnormalized-discounted-cumulative-gain)
+    - [Dataset: `Espresso Knowledge Graph`](#dataset-espresso-knowledge-graph)
       - [Results](#results-1)
     - [Center-Piece Subgraphs: Problem Definition and Fast Solutions [7]](#center-piece-subgraphs-problem-definition-and-fast-solutions-7)
       - [Problem Statement](#problem-statement-1)
@@ -196,7 +203,20 @@ sources, et)
    * *Query Context Generation* keeps adding nodes with the highest score calculated by $\mathbf{x}_{Q_{1}}[v] \mathbf{x}_{Q_{2}}[v] \mathbf{x}_{c}[v] \cdot \operatorname{pr}(v)$, <br>
 add nodes until the graph reaches size $B$
 
-#### Dataset: `Espresso Knowledge Graph`
+## Learning to rank literatures
+### A Short Introduction to Learning to Rank [8]
+
+#### Pointwise
+![PointWise](pointwise.png)
+Using traditional ML approaches to learn the score, for our case, the order of the edges are important, pointwise approach will ignore this order
+#### Pairwise
+![Pairwise](pairwise.png)
+#### Evaluation
+##### MAP(Mean Average Precision)
+
+##### NDCG(Normalized Discounted Cumulative Gain)
+![Normalized Discounted Cumulative Gain](mdcg.png)
+### Dataset: `Espresso Knowledge Graph`
 derived from `YAGO2` and `FreeBase`, Enriched by
 - edge weights signifying the relatedness
 between entities
@@ -2061,3 +2081,6 @@ x afskgjndf dsgsgs inuhiuhiu
 [6]Seufert, Stephan, et al. "Espresso: explaining relationships between entity sets." Proceedings of the 25th ACM International on Conference on Information and Knowledge Management. 2016.
 
 [7]Tong, Hanghang, and Christos Faloutsos. "Center-piece subgraphs: problem definition and fast solutions." Proceedings of the 12th ACM SIGKDD international conference on Knowledge discovery and data mining. 2006.
+
+
+[8] Li, Hang. "A short introduction to learning to rank." IEICE TRANSACTIONS on Information and Systems 94.10 (2011): 1854-1862.
